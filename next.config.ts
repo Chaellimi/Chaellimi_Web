@@ -5,7 +5,9 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/:path*',
-        headers: [{ key: 'X-Forwarded-Proto', value: 'https' }],
+        headers: [
+          { key: 'X-Forwarded-Proto', value: 'chaellimi.jamkris.kro.kr' },
+        ],
       },
     ];
   },

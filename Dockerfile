@@ -12,4 +12,4 @@ RUN yarn build
 
 EXPOSE 7001
 
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "start", "-H", "0.0.0.0" ]
