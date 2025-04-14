@@ -1,7 +1,7 @@
 name: 🐞 Bug Report
 description: 버그 리포트를 위한 템플릿
-title: "[🐞 BugFix]"
-labels: ["🐞 Bugfix"]
+title: '[🐞 BugFix]'
+labels: ['🐞 Bugfix']
 assignees: []
 
 body:
