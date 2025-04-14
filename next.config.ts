@@ -1,7 +1,14 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [{ key: 'X-Forwarded-Proto', value: 'https' }],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
