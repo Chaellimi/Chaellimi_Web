@@ -7,10 +7,10 @@ interface OwnProps {
 
 const TextLogo = ({ width, height }: OwnProps) => {
   return (
-    <div style={{ width, height }}>
+    <div className="w-fit h-fit">
       <svg
-        width="262"
-        height="68"
+        width={width ? width : 262}
+        height={height ? height : 68}
         viewBox="0 0 262 68"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
