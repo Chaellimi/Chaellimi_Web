@@ -1,26 +1,27 @@
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: 'NotoSans-Blod';
+  font-weight: 700;
+  src: url('/fonts/NotoSansKR-Blod.ttf') format('truetype');
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@font-face {
+  font-family: 'NotoSans-SemiBlod';
+  font-weight: 600;
+  src: url('/fonts/NotoSansKR-SemiBlod.ttf') format('truetype');
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@font-face {
+  font-family: 'NotoSans-Medium';
+  font-weight: 500;
+  src: url('/fonts/NotoSansKR-Medium.ttf') format('truetype');
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@font-face {
+  font-family: 'NotoSans-Regular';
+  font-weight: 400;
+  src: url('/fonts/NotoSansKR-Regular.ttf') format('truetype');
 }
