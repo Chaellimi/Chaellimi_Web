@@ -31,7 +31,7 @@ const Home = () => {
   };
 
   return (
-    <div className="w-full h-full pl-10 pr-10">
+    <div className="w-full h-full pl-8 pr-8 ">
       <header className="flex items-center justify-between w-full h-11 pr-[0.31rem] pl-[0.31rem]">
         <TextLogo width={75} />
         <PointIcon />
@@ -70,7 +70,7 @@ const Home = () => {
           <div className="text-gray-300 text-fn">2/3 완료</div>
         </div>
 
-        <div className="flex w-full overflow-scroll gap-[0.62rem]">
+        <div className="flex w-full overflow-scroll gap-[0.62rem] scrollbar-hide">
           {ActiveChallengeData.challenges.map((item, index) => {
             return (
               <ActiveChallenge
@@ -91,7 +91,7 @@ const Home = () => {
           <div className="text-he">요즘 뜨는 챌린지</div>
           <ArrowIcon />
         </div>
-        <div className="flex overflow-scroll gap-[0.62rem]">
+        <div className="flex overflow-scroll gap-[0.62rem] scrollbar-hide">
           {HotChallengeData.challenges.map((item, index) => (
             <div key={index}>
               <HotChallenge
