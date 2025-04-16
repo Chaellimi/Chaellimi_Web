@@ -21,7 +21,8 @@ module.exports = {
           400: '#A5A5A5',
           300: '#C9C9C9',
           200: '#DEDEDE',
-          100: '#F7F7F7',
+          100: '#EFEFEF',
+          50: '#F7F7F7',
           white: '#FFFFFF',
         },
         sub: {
