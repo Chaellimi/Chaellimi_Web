@@ -5,12 +5,15 @@ import {
   PointIcon,
   MagnifyingGlassIcon,
   SearchBarCancelIcon,
+  ArrowIcon,
 } from '@public/icons/Home';
 import Image from 'next/image';
 import React from 'react';
 import Banner from '@public/images/HomeBanner.png';
 import ActiveChallenge from '@/components/Home/ActiveChallenge';
-import ChallengeData from '@/data/Home/HomeGetChallengeState.json';
+import HotChallenge from '@/components/Home/HotChallenge';
+import ActiveChallengeData from '@/data/Home/ChallengeState.json';
+import HotChallengeData from '@/data/Home/ChallengeHot.json';
 
 const Home = () => {
   const [isSearchbarVisible, setIsSearchbarVisiable] = React.useState(false);
@@ -28,7 +31,7 @@ const Home = () => {
   };
 
   return (
-    <div className="w-full h-full pl-8 pr-8">
+    <div className="w-full h-full pl-10 pr-10">
       <header className="flex items-center justify-between w-full h-11 pr-[0.31rem] pl-[0.31rem]">
         <TextLogo width={75} />
         <PointIcon />
@@ -61,14 +64,14 @@ const Home = () => {
         <Image src={Banner} width={413} alt="" />
       </div>
 
-      <div className="mt-5">
-        <div className="flex items-center justify-between mb-2">
+      <div className="flex flex-col gap-2 mt-5">
+        <div className="flex items-center justify-between">
           <div className="text-he">참여중인 챌린지</div>
           <div className="text-gray-300 text-fn">2/3 완료</div>
         </div>
 
-        <div className="flex w-full mt-5 overflow-scroll gap-[0.62rem]">
-          {ChallengeData.challenges.map((item, index) => {
+        <div className="flex w-full overflow-scroll gap-[0.62rem]">
+          {ActiveChallengeData.challenges.map((item, index) => {
             return (
               <ActiveChallenge
                 key={index}
@@ -80,6 +83,24 @@ const Home = () => {
               />
             );
           })}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2 mt-5">
+        <div className="flex items-center justify-between">
+          <div className="text-he">요즘 뜨는 챌린지</div>
+          <ArrowIcon />
+        </div>
+        <div className="flex overflow-scroll gap-[0.62rem]">
+          {HotChallengeData.challenges.map((item, index) => (
+            <div key={index}>
+              <HotChallenge
+                count={item.activePeopleCount}
+                title={item.title}
+                imgUrl={item.imgUrl}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
