@@ -1,5 +1,5 @@
 import GoogleIcon from '@/components/login/GoogleIcon';
-import TextLogo from '@/shared/components/TextLogo';
+import TextLogo from '@/components/shared/TextLogo';
 import Image from 'next/image';
 import React from 'react';
 
