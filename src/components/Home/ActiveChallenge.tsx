@@ -17,7 +17,7 @@ const ActiveChallenge = ({
   title,
 }: OwnProps) => {
   return (
-    <div className="flex flex-col w-[12.5rem] border-[1px] border-gray-100 rounded-lg p-[0.88rem] gap-[0.62rem]">
+    <div className="flex flex-col w-[12.5rem] border-[1px] border-gray-100 rounded-lg p-[0.88rem] gap-[0.62rem] min-w-[12.5rem] max-w-[12.5rem]">
       <div
         className={`text-c1 w-fit pr-[0.38rem] pl-[0.38rem] pt-[0.19rem] pb-[0.19rem] rounded
           ${isActive ? 'text-primary-default bg-primary-light' : 'text-gray-400 bg-gray-100'}`}
@@ -26,13 +26,13 @@ const ActiveChallenge = ({
       </div>
 
       <div className="flex items-center gap-[0.62rem] w-full">
-        <div>
+        <div className="w-[2.875rem] h-[2.875rem] relative">
           <Image
             src={imgURL}
+            alt=""
             width={46}
             height={46}
-            alt=""
-            className="rounded-xl"
+            className="object-cover object-top w-full h-full rounded-xl"
           />
         </div>
         <div>
