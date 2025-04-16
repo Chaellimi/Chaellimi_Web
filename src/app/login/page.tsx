@@ -1,4 +1,4 @@
-import GoogleIcon from '@/components/login/GoogleIcon';
+import GoogleIcon from '@/components/Login/GoogleIcon';
 import TextLogo from '@/components/shared/TextLogo';
 import Image from 'next/image';
 import React from 'react';
