@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    domains: ['www.google.com'],
+    domains: ['www.google.com', 'img.freepik.com'],
   },
 };
 
