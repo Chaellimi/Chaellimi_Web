@@ -11,8 +11,19 @@ import React from 'react';
 import Banner from '@public/images/HomeBanner.png';
 
 const Home = () => {
-  const [isSearchbarFocus, setIsSearchbarFocus] = React.useState(false);
+  const [isSearchbarVisible, setIsSearchbarVisiable] = React.useState(false);
   const [searchText, setSearchText] = React.useState('');
+
+  const handleChangeSearchText = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setSearchText(e.target.value);
+    if (searchText.length > 0) {
+      setIsSearchbarVisiable(true);
+    } else {
+      setIsSearchbarVisiable(false);
+    }
+  };
 
   return (
     <div className="w-full h-[100vh] pr-6 pl-6">
@@ -23,19 +34,22 @@ const Home = () => {
 
       <div className="flex items-center justify-between w-full h-12 p-3 bg-gray-50 rounded-xl mb-[0.62rem]">
         <div className="flex items-center w-full gap-2">
-          <MagnifyingGlassIcon isFocus={isSearchbarFocus} />
+          <MagnifyingGlassIcon isFocus={isSearchbarVisible} />
           <input
             type="text"
             placeholder="검색어를 입력해주세요."
             value={searchText}
-            onChange={(e) => setSearchText(e.currentTarget.value)}
+            onChange={handleChangeSearchText}
             className="w-full placeholder-gray-300 outline-none caret-black caret-w-[1.5rem] bg-gray-50 mr-2"
-            onFocus={() => setIsSearchbarFocus(true)}
-            onBlur={() => setIsSearchbarFocus(false)}
           />
         </div>
-        {isSearchbarFocus ? (
-          <div className="flex items-center justify-between">
+        {isSearchbarVisible ? (
+          <div
+            className="flex items-center justify-between"
+            onClick={() => {
+              setSearchText('');
+            }}
+          >
             <SearchBarCancelIcon />
           </div>
         ) : null}
