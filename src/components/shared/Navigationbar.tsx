@@ -12,7 +12,7 @@ interface OwnProps {
 
 const Navigationbar = ({ Active }: OwnProps) => {
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-between pl-6 pr-6 pt-[0.47rem] pb-[0.47rem] border-t border-gray-50 rounded-tr-[1.25rem] rounded-tl-[1.25rem] mb-8">
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-[430px] flex justify-between pl-6 pr-6 pt-[0.47rem] pb-[0.47rem] border-t border-gray-50 rounded-tr-[1.25rem] rounded-tl-[1.25rem] mb-8">
       <div className="flex flex-col items-center justify-center gap-1 pl-6 pr-6">
         <HomeIcon disabled={Active === 'home' ? false : true} />
         <div
