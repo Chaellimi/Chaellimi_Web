@@ -35,7 +35,7 @@ module.exports = {
         h1: [
           '24px',
           {
-            lineHeight: '140%',
+            lineHeight: '150%',
             letterSpacing: '-0.04em',
             fontWeight: '700',
             fontFamily: 'NotoSans-Blod',
