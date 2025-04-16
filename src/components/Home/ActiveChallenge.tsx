@@ -20,7 +20,7 @@ const ActiveChallenge = ({
     <div className="flex flex-col w-[12.5rem] border-[1px] border-gray-100 rounded-lg p-[0.88rem] gap-[0.62rem] min-w-[12.5rem] max-w-[12.5rem]">
       <div
         className={`text-c1 w-fit pr-[0.38rem] pl-[0.38rem] pt-[0.19rem] pb-[0.19rem] rounded
-          ${isActive ? 'text-primary-default bg-primary-light' : 'text-gray-400 bg-gray-100'}`}
+          ${isActive ? 'text-gray-400 bg-gray-100' : 'text-primary-default bg-primary-light'}`}
       >
         진행률 {progress}%
       </div>
@@ -43,7 +43,7 @@ const ActiveChallenge = ({
 
       <div
         className={`flex items-center justify-center w-full p-[0.62rem] text-bn3 text-white rounded-lg
-          ${isActive ? 'bg-primary-default' : 'bg-gray-300'}`}
+          ${isActive ? 'bg-gray-300' : 'bg-primary-default'}`}
       >
         {isActive ? '오늘 인증 완료!' : '인증하러 가기'}
       </div>
