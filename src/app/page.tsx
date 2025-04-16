@@ -6,7 +6,9 @@ import {
   MagnifyingGlassIcon,
   SearchBarCancelIcon,
 } from '@public/icons/Home';
+import Image from 'next/image';
 import React from 'react';
+import Banner from '@public/images/HomeBanner.png';
 
 const Home = () => {
   const [isSearchbarFocus, setIsSearchbarFocus] = React.useState(false);
@@ -18,7 +20,8 @@ const Home = () => {
         <TextLogo width={75} />
         <PointIcon />
       </header>
-      <div className="flex items-center justify-between w-full h-12 p-3 bg-gray-50 rounded-xl">
+
+      <div className="flex items-center justify-between w-full h-12 p-3 bg-gray-50 rounded-xl mb-[0.62rem]">
         <div className="flex items-center w-full gap-2">
           <MagnifyingGlassIcon isFocus={isSearchbarFocus} />
           <input
@@ -36,6 +39,10 @@ const Home = () => {
             <SearchBarCancelIcon />
           </div>
         ) : null}
+      </div>
+
+      <div>
+        <Image src={Banner} width={413} alt="" />
       </div>
     </div>
   );
