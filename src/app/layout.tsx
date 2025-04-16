@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import LayoutWithNav from './layoutWithNav';
 
 export const metadata: Metadata = {
   title: 'Chaellimi',
@@ -13,9 +14,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className="w100vw h100vh">
-        <div className="flex justify-center w-full h-full bg-primary-light">
-          <div className="w-[430px] min-h-screen bg-white">{children}</div>
+      <body className=" bg-primary-light w-[100vw] h-[100vh] max-h-[100vh] max-w-[100vw] overflow-hidden">
+        <div className="flex justify-center items-cente min-h-screen sm:h-[820px] sm:pl-[39%] sm:pr-[39%] sm:pt-[8%]">
+          <div
+            className="w-full min-h-screen md:h-[200px] bg-white sm:rounded-xl sm:pt-10"
+            style={{
+              boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            <LayoutWithNav>{children}</LayoutWithNav>
+          </div>
         </div>
       </body>
     </html>

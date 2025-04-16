@@ -1,4 +1,4 @@
-import TextLogo from '@/shared/components/TextLogo';
+import TextLogo from '@/components/shared/TextLogo';
 import React from 'react';
 
 const Splash = () => {

@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  images: {
+    domains: ['www.google.com', 'img.freepik.com'],
+  },
 };
 
 export default nextConfig;

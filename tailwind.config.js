@@ -1,3 +1,5 @@
+import scrollbarHide from 'tailwind-scrollbar-hide';
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -21,7 +23,8 @@ module.exports = {
           400: '#A5A5A5',
           300: '#C9C9C9',
           200: '#DEDEDE',
-          100: '#F7F7F7',
+          100: '#EFEFEF',
+          50: '#F7F7F7',
           white: '#FFFFFF',
         },
         sub: {
@@ -34,7 +37,7 @@ module.exports = {
         h1: [
           '24px',
           {
-            lineHeight: '140%',
+            lineHeight: '150%',
             letterSpacing: '-0.04em',
             fontWeight: '700',
             fontFamily: 'NotoSans-Blod',
@@ -155,5 +158,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [scrollbarHide],
 };

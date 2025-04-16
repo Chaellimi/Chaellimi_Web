@@ -1,0 +1,28 @@
+{
+  "challenges": [
+    {
+      "id": 1,
+      "title": "Challenge 1",
+      "activePeopleCount": 300,
+      "imgUrl": "https://img.freepik.com/free-photo/man-jump-through-gap-hill-man-jumping-cliff-blue-sky-business-concept-idea_1323-185.jpg?semt=ais_hybrid&w=740",
+      "createdAt": "2023-10-01T12:00:00Z",
+      "updatedAt": "2023-10-02T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "title": "Challenge 2",
+      "activePeopleCount": 100,
+      "imgUrl": "https://img.freepik.com/free-photo/man-jump-through-gap-hill-man-jumping-cliff-blue-sky-business-concept-idea_1323-185.jpg?semt=ais_hybrid&w=740",
+      "createdAt": "2023-10-01T12:00:00Z",
+      "updatedAt": "2023-10-02T12:00:00Z"
+    },
+    {
+      "id": 3,
+      "title": "Challenge 3",
+      "activePeopleCount": 159,
+      "imgUrl": "https://img.freepik.com/free-photo/man-jump-through-gap-hill-man-jumping-cliff-blue-sky-business-concept-idea_1323-185.jpg?semt=ais_hybrid&w=740",
+      "createdAt": "2023-10-01T12:00:00Z",
+      "updatedAt": "2023-10-02T12:00:00Z"
+    }
+  ]
+}
