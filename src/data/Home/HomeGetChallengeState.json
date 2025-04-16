@@ -1,0 +1,33 @@
+{
+  "totalChallengeCount": 3,
+  "completedChallengeCount": 2,
+  "challenges": [
+    {
+      "id": 1,
+      "title": "Challenge 1",
+      "progress": 89,
+      "certificationState": false,
+      "certificationTime": "08:00",
+      "createdAt": "2023-10-01T12:00:00Z",
+      "updatedAt": "2023-10-02T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "title": "Challenge 2",
+      "progress": 100,
+      "certificationState": true,
+      "certificationTime": "08:00",
+      "createdAt": "2023-10-01T12:00:00Z",
+      "updatedAt": "2023-10-02T12:00:00Z"
+    },
+    {
+      "id": 3,
+      "title": "Challenge 3",
+      "progress": 50,
+      "certificationState": false,
+      "certificationTime": "08:00",
+      "createdAt": "2023-10-01T12:00:00Z",
+      "updatedAt": "2023-10-02T12:00:00Z"
+    }
+  ]
+}
