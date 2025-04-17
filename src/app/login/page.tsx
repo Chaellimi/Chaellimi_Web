@@ -4,11 +4,17 @@ import GoogleIcon from '@/components/Login/GoogleIcon';
 import TextLogo from '@/components/shared/TextLogo';
 import Image from 'next/image';
 import { signIn, useSession } from 'next-auth/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 const Login = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleGoogleLogin = () => {
-    signIn('google');
+    setIsLoading(true);
+    signIn('google', { callbackUrl: '/' }).catch((error) => {
+      console.error('Login failed:', error);
+      setIsLoading(false);
+    });
   };
 
   const { data: session } = useSession();
@@ -32,11 +38,12 @@ const Login = () => {
       <button
         onClick={handleGoogleLogin}
         className="relative flex justify-center items-center w-full border border-gray-200 rounded-[0.75rem] text-bn2 pt-[1.31rem] pr-[1.25rem] pb-[1.31rem] pl-[1.25rem]"
+        disabled={isLoading}
       >
         <div className="absolute left-[1.25rem] -translate-y-1/2 top-1/2">
           <GoogleIcon />
         </div>
-        구글 계정으로 시작하기
+        {isLoading ? '로그인 중...' : '구글 계정으로 시작하기'}
       </button>
     </div>
   );
