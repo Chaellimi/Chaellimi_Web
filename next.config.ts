@@ -1,3 +1,4 @@
+/** @type {import('next').NextConfig} */
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
@@ -11,7 +12,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-
+  serverExternalPackages: ['sequelize', 'mysql2'],
   images: {
     domains: ['www.google.com', 'img.freepik.com'],
   },
