@@ -1,7 +1,9 @@
+// app/api/user/route.ts
 import { NextResponse } from 'next/server';
+import { withLogging } from '@/lib/middleware/withLogging';
 import Users from '@/database/models/User';
 
-export async function GET() {
+async function handler() {
   try {
     const data = await Users.findAll({
       attributes: ['userId', 'email', 'name'],
@@ -16,3 +18,5 @@ export async function GET() {
     );
   }
 }
+
+export const GET = withLogging(handler);
