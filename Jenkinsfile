@@ -86,6 +86,9 @@ pipeline {
         }
         
         stage('Deploy') {
+            when {
+                branch 'main'
+            }
             steps {
                 sh '''
                     docker build -t chaellimi \
