@@ -90,7 +90,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                sh """
+                sh '''
                     docker build -t chaellimi \
                     --build-arg DB_HOST=$DB_HOST \
                     --build-arg DB_PORT=$DB_PORT \
@@ -99,13 +99,8 @@ pipeline {
                     --build-arg DB_NAME=$DB_NAME \
                     --build-arg GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID \
                     --build-arg GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET \
-                    --build-arg NEXTAUTH_SECRET=$NEXTAUTH_SECRET \
-                    .
-                """
-                sh 'docker stop chaellimi || true'
-                sh 'docker rm chaellimi || true'
-                sh 'docker run -d --name chaellimi -p 4001:3000 chaellimi'
-                sh 'sudo systemctl restart nginx'
+                    --build-arg NEXTAUTH_SECRET=$NEXTAUTH_SECRET .
+                '''
             }
         }
     }
