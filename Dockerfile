@@ -26,10 +26,10 @@ COPY --from=builder /src/app/public ./public
 COPY --from=builder /src/app/.next ./.next
 COPY --from=builder /src/app/package.json ./package.json
 COPY --from=builder /src/app/yarn.lock ./yarn.lock
-COPY --from=builder /src/app/next.config.js ./next.config.js
 COPY --from=builder /src/app/tsconfig.json ./tsconfig.json
 COPY --from=builder /src/app/src ./src
 COPY --from=builder /src/app/.env .env
+COPY next.config.js ./next.config.js
 
 RUN yarn install --production --frozen-lockfile
 
