@@ -106,7 +106,7 @@ pipeline {
                 sh 'docker build -t chaellimi .'
                 sh 'docker stop chaellimi || true'
                 sh 'docker rm chaellimi || true'
-                sh 'docker run -d --name chaellimi -p 7001:3000 chaellimi'
+                sh 'docker run -d --name chaellimi -p 4001:3000 chaellimi'
                 sh 'sudo systemctl restart nginx'
             }
         }
