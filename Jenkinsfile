@@ -90,7 +90,18 @@ pipeline {
                 branch 'main'
             }
             steps {
-                sh 'docker build -t chaellimi .'
+                sh """
+                    docker build -t chaellimi \\
+                        --build-arg DB_HOST=$DB_HOST \\
+                        --build-arg DB_PORT=$DB_PORT \\
+                        --build-arg DB_USER=$DB_USER \\
+                        --build-arg DB_PASSWORD=$DB_PASSWORD \\
+                        --build-arg DB_NAME=$DB_NAME \\
+                        --build-arg GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID \\
+                        --build-arg GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET \\
+                        --build-arg NEXTAUTH_SECRET=$NEXTAUTH_SECRET \\
+                        .
+                """
                 sh 'docker stop chaellimi || true'
                 sh 'docker rm chaellimi || true'
                 sh 'docker run -d --name chaellimi -p 4001:3000 chaellimi'
