@@ -23,6 +23,15 @@ pipeline {
 
     environment {
         GITHUB_CREDS = credentials('github-token')
+        DB_HOST = credentials('DB_HOST')
+        DB_PORT = credentials('DB_PORT')
+        DB_USER = credentials('DB_USER')
+        DB_PASSWORD = credentials('DB_PASSWORD')
+        DB_NAME = credentials('DB_NAME')
+        DEV_TYPE = credentials('DEV_TYPE')
+        GOOGLE_CLIENT_ID = credentials('GOOGLE_CLIENT_ID')
+        GOOGLE_CLIENT_SECRET = credentials('GOOGLE_CLIENT_SECRET')
+        NEXTAUTH_SECRET = credentials('NEXTAUTH_SECRET')
     }
     
     stages {
@@ -37,6 +46,22 @@ pipeline {
                 sh 'npm install -g yarn'
             }
         }
+
+        stage('Load Environment') {
+            steps {
+                sh """
+                    echo "DB_HOST=$DB_HOST" >> .env
+                    echo "DB_PORT=$DB_PORT" >> .env
+                    echo "DB_USER=$DB_USER" >> .env
+                    echo "DB_PASSWORD=$DB_PASSWORD" >> .env
+                    echo "DB_NAME=$DB_NAME" >> .env
+                    echo "GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" >> .env
+                    echo "GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET" >> .env
+                    echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
+                """
+            }
+        }
+
 
         stage('Build & Test') {
             when {
