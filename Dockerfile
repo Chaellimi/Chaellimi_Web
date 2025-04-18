@@ -6,6 +6,8 @@ COPY package.json yarn.lock ./
 
 RUN yarn install --frozen-lockfile
 
+COPY .env .env
+
 COPY . .
 
 RUN yarn build
