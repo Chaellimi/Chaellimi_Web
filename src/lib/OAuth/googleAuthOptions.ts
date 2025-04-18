@@ -36,10 +36,15 @@ export const authOptions: AuthOptions = {
           where: { authId, provider },
         });
 
+        if (!email) {
+          console.error('User email is missing from OAuth provider');
+          return false;
+        }
+
         if (!existingUser) {
           await Users.create({
             authId,
-            email: email ?? '',
+            email,
             name: name ?? '',
             refreshToken: account.refresh_token ?? null,
             profileImg: image ?? '',
