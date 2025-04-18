@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
   images: {
     domains: ['www.google.com', 'img.freepik.com'],
   },
+  reactStrictMode: true,
+  output: 'standalone',
 };
 
 export default nextConfig;
