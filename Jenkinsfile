@@ -58,6 +58,7 @@ pipeline {
                     echo "GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" >> .env
                     echo "GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET" >> .env
                     echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
+                    echo "NEXTAUTH_URL=https://www.chaellimi.kro.kr" >> .env
                 """
             }
         }
@@ -99,7 +100,8 @@ pipeline {
                     DB_NAME=$DB_NAME
                     GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
                     GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
-                    NEXTAUTH_SECRET=$NEXTAUTH_SECRET
+                    NEXTAUTH_SECRET=$NEXTAUTH_SECRET;
+                    NEXTAUTH_URL=https://www.chaellimi.kro.kr
                     EOF
                 '''
 
