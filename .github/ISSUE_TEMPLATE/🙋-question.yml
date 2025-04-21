@@ -2,7 +2,7 @@ name: 🙋 Question
 description: 질문을 위한 템플릿
 title: '[🙋 Question] '
 labels: ['🙋 Question']
-assignees: []
+assignees: ['Jamkris']
 
 body:
   - type: textarea

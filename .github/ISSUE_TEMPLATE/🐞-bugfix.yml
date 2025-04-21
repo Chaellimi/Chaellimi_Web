@@ -2,7 +2,7 @@ name: 🐞 Bug Report
 description: 버그 리포트를 위한 템플릿
 title: '[🐞 BugFix] '
 labels: ['🐞 BugFix']
-assignees: []
+assignees: ['Jamkris']
 
 body:
   - type: textarea

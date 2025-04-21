@@ -2,7 +2,7 @@ name: 🔨 Refactor Request
 description: 리펙토링 및 코드 개선 요청을 위한 템플릿
 title: '[🔨 Refactor] '
 labels: ['🔨 Refactor']
-assignees: []
+assignees: ['Jamkris']
 
 body:
   - type: textarea

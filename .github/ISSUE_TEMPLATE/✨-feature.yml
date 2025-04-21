@@ -2,7 +2,7 @@ name: ✨ Feature Request
 description: 새로운 기능 요청을 위한 템플릿
 title: '[✨ Feature] '
 labels: ['✨ Feature']
-assignees: []
+assignees: ['Jamkris']
 
 body:
   - type: textarea
