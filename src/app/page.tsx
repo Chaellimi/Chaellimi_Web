@@ -23,7 +23,8 @@ const Home = () => {
     target: { value: React.SetStateAction<string> };
   }) => {
     setSearchText(e.target.value);
-    if (searchText.length > 0) {
+    console.log(searchText);
+    if (searchText) {
       setIsSearchbarVisiable(true);
     } else {
       setIsSearchbarVisiable(false);
@@ -46,6 +47,14 @@ const Home = () => {
             value={searchText}
             onChange={handleChangeSearchText}
             className="w-full placeholder-gray-300 outline-none caret-black caret-w-[1.5rem] bg-gray-50 mr-2"
+            onFocus={() => {
+              setIsSearchbarVisiable(true);
+            }}
+            onBlur={() => {
+              if (!searchText) {
+                setIsSearchbarVisiable(false);
+              }
+            }}
           />
         </div>
         {isSearchbarVisible ? (
