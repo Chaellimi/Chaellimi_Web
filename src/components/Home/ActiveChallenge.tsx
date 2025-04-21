@@ -36,8 +36,8 @@ const ActiveChallenge = ({
           />
         </div>
         <div>
-          <div className="text-c2">{time}</div>
-          <div className="text-b2">{title}</div>
+          <div className="text-c2 text-gray-black">{time}</div>
+          <div className="text-b2 text-gray-black">{title}</div>
         </div>
       </div>
 

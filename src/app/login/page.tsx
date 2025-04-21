@@ -37,7 +37,7 @@ const Login = () => {
       </div>
       <button
         onClick={handleGoogleLogin}
-        className="relative flex justify-center items-center w-full border border-gray-200 rounded-[0.75rem] text-bn2 pt-[1.31rem] pr-[1.25rem] pb-[1.31rem] pl-[1.25rem]"
+        className="relative flex justify-center items-center w-full border border-gray-200 text-gray-black rounded-[0.75rem] text-bn2 pt-[1.31rem] pr-[1.25rem] pb-[1.31rem] pl-[1.25rem]"
         disabled={isLoading}
       >
         <div className="absolute left-[1.25rem] -translate-y-1/2 top-1/2">

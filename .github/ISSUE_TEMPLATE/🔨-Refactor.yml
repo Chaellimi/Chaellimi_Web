@@ -1,0 +1,26 @@
+name: 🔨 Refactor Request
+description: 리펙토링 및 코드 개선 요청을 위한 템플릿
+title: '[🔨 Refactor] '
+labels: ['🔨 Refactor']
+assignees: ['Jamkris']
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 📌 문제항목
+      description: 수정하고자 하는 기능에 대해 자세히 설명해 주세요.
+      placeholder: 디자인 시스템 수정을 통해 코드의 리펙토링이 필요합니다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: todo
+    attributes:
+      label: 📋 작업 항목
+      description: 구현을 위해 어떤 작업이 필요한지 리스트 형식으로 작성해 주세요.
+      placeholder: |
+        - [ ] 폰트 추가
+        - [ ] 색상 추가
+    validations:
+      required: true

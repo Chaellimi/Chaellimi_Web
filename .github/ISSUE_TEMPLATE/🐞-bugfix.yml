@@ -1,8 +1,8 @@
 name: 🐞 Bug Report
 description: 버그 리포트를 위한 템플릿
-title: '[🐞 BugFix]'
-labels: ['🐞 Bugfix']
-assignees: []
+title: '[🐞 BugFix] '
+labels: ['🐞 BugFix']
+assignees: ['Jamkris']
 
 body:
   - type: textarea

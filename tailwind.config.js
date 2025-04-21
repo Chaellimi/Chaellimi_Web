@@ -14,6 +14,7 @@ module.exports = {
         primary: {
           default: '#FF6A00',
           hover: '#E55F00',
+          accent: '#FF9C55',
           light: '#FFF0E5',
         },
         gray: {
@@ -27,10 +28,15 @@ module.exports = {
           50: '#F7F7F7',
           white: '#FFFFFF',
         },
-        sub: {
-          blue: '#FF6A00',
-          red: '#F02B1D',
-          yellowLight: '#FFF0E5',
+        red: {
+          300: '#DE2518',
+          200: '#F02B1D',
+          100: '#FFEFEE',
+        },
+        green: {
+          300: '#0AAC40',
+          200: '#12BD4B',
+          100: '#E4FFED',
         },
       },
       fontSize: {
