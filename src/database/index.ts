@@ -20,7 +20,7 @@ const sequelize = new Sequelize(
 sequelize
   .authenticate()
   .then(async () => {
-    console.log('✅ DB 연결 성공');
+    console.log('-------------------- ✅ DB 연결 성공 --------------------');
 
     if (process.env.DEV_TYPE !== 'production') {
       await sequelize.sync({ alter: true });
@@ -28,7 +28,9 @@ sequelize
     }
   })
   .catch((error) => {
-    console.error('❌ DB 연결 실패:', error);
+    console.error('-------------------- ❌ DB 연결 실패 --------------------');
+    console.log(error);
+    console.log('------------------------------------------------');
   });
 
 export { sequelize };
