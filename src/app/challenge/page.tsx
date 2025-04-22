@@ -52,7 +52,7 @@ const Challenge = () => {
   return (
     <div className="flex flex-col w-full h-full text-gray-black">
       {/* Header */}
-      <header className="flex items-center justify-between w-full py-[0.59rem] h-11 px-7">
+      <header className="flex items-center justify-between w-full py-[0.59rem] h-11 px-[2.31rem]">
         <div className="text-h3">챌린지</div>
         <div className="flex items-center gap-2">
           <MagnifyingGlassIcon />
@@ -65,11 +65,17 @@ const Challenge = () => {
         {challengeCategories.map((item) => (
           <div
             key={item.id}
-            className={`flex items-center justify-center w-16 text-he pb-[0.44rem] ${
-              item.id === activeCategory
-                ? 'border-b-2 border-gray-black'
-                : 'text-gray-400 pb-[0.56rem]'
-            }`}
+            className={`
+                flex items-center justify-center 
+                w-16 text-he pb-[0.44rem] 
+                transition-all duration-300 ease-out
+                hover:cursor-pointer
+                ${
+                  item.id === activeCategory
+                    ? 'border-b-2 border-gray-black'
+                    : 'text-gray-400 pb-[0.56rem] '
+                }
+              `}
             onClick={() => setActiveCategory(item.id)}
           >
             {item.name}
@@ -78,7 +84,7 @@ const Challenge = () => {
       </div>
 
       {/* Filters */}
-      <div className="flex items-center gap-2 px-6 py-2 mt-1 overflow-x-auto whitespace-nowrap scrollbar-hide">
+      <div className="flex items-center gap-2 px-8 py-2 mt-1 overflow-x-auto whitespace-nowrap scrollbar-hide">
         {hasActiveFilters && (
           <div
             onClick={resetFilters}
@@ -118,7 +124,7 @@ const Challenge = () => {
       />
 
       {/* Challenge List */}
-      <div className="flex-1 h-0 min-h-0 px-6 pb-16 mt-2 overflow-y-scroll scrollbar-hide -webkit-overflow-scrolling-touch overscroll-contain">
+      <div className="flex-1 h-0 min-h-0 px-8 pb-16 mt-2 overflow-y-scroll scrollbar-hide -webkit-overflow-scrolling-touch overscroll-contain">
         <div className="grid grid-cols-2 gap-x-5 gap-y-5">
           {ChallengeData.challenges.map((item) => (
             <ChallengeContent

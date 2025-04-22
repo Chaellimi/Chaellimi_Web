@@ -12,7 +12,7 @@ interface OwnProps {
   createrImgUrl: string;
 }
 
-const Challenge = ({
+const ChallengeContent = ({
   imgUrl,
   title,
   count,
@@ -69,4 +69,4 @@ const Challenge = ({
   );
 };
 
-export default Challenge;
+export default ChallengeContent;

@@ -32,12 +32,14 @@ const Home = () => {
   };
 
   return (
-    <div className="w-full h-full pl-8 pr-8 ">
-      <header className="flex items-center justify-between w-full h-11 pr-[0.31rem] pl-[0.31rem]">
+    <div className="w-full h-full px-8 ">
+      {/* Header */}
+      <header className="flex items-center justify-between w-full h-11 px-[0.31rem]">
         <TextLogo width={75} />
         <PointIcon />
       </header>
 
+      {/* Search Bar */}
       <div className="flex items-center justify-between w-full h-12 p-3 bg-gray-50 rounded-xl mb-[0.62rem]">
         <div className="flex items-center w-full gap-2">
           <MagnifyingGlassIcon isFocus={isSearchbarVisible} />
@@ -69,10 +71,12 @@ const Home = () => {
         ) : null}
       </div>
 
+      {/* Main Content */}
       <div>
         <Image src={Banner} width={413} alt="" />
       </div>
 
+      {/* Active Challenge */}
       <div className="flex flex-col gap-2 mt-5">
         <div className="flex items-center justify-between">
           <div className="text-he">참여중인 챌린지</div>
@@ -95,6 +99,7 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Hot Challenge */}
       <div className="flex flex-col gap-2 mt-5">
         <div className="flex items-center justify-between">
           <div className="text-he">요즘 뜨는 챌린지</div>
