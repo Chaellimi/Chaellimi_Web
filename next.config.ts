@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages: ['sequelize', 'mysql2'],
   images: {
-    domains: ['www.google.com', 'img.freepik.com'],
+    domains: ['www.google.com', 'img.freepik.com', 'i.pinimg.com'],
   },
   reactStrictMode: true,
   output: 'standalone',
