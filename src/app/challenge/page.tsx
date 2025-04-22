@@ -8,6 +8,8 @@ import {
   UnderArrowIcon,
 } from '@public/icons/Challenge';
 import FilterModal from '@/components/Challenge/FilterModal';
+import ChallengeData from '@/data/Challenge/ChallengeData.json';
+import ChallengeContent from '@/components/Challenge/ChallengeContent';
 
 const challengeCategories = [
   { id: 1, name: '전체' },
@@ -48,7 +50,7 @@ const Challenge = () => {
   };
 
   return (
-    <div className="w-full h-full text-gray-black">
+    <div className="flex flex-col w-full h-full text-gray-black">
       {/* Header */}
       <header className="flex items-center justify-between w-full py-[0.59rem] h-11 px-7">
         <div className="text-h3">챌린지</div>
@@ -59,7 +61,7 @@ const Challenge = () => {
       </header>
 
       {/* Category Tabs */}
-      <div className="flex justify-between px-6 border-b border-gray-100">
+      <div className="flex justify-between px-6 mt-4 border-b border-gray-100">
         {challengeCategories.map((item) => (
           <div
             key={item.id}
@@ -76,7 +78,7 @@ const Challenge = () => {
       </div>
 
       {/* Filters */}
-      <div className="flex items-center gap-2 px-6 py-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
+      <div className="flex items-center gap-2 px-6 py-2 mt-1 overflow-x-auto whitespace-nowrap scrollbar-hide">
         {hasActiveFilters && (
           <div
             onClick={resetFilters}
@@ -114,6 +116,23 @@ const Challenge = () => {
           activeFilterKey && updateFilter(activeFilterKey, option)
         }
       />
+
+      {/* Challenge List */}
+      <div className="flex-1 h-0 min-h-0 px-6 pb-16 mt-2 overflow-y-scroll scrollbar-hide -webkit-overflow-scrolling-touch overscroll-contain">
+        <div className="grid grid-cols-2 gap-x-5 gap-y-5">
+          {ChallengeData.challenges.map((item) => (
+            <ChallengeContent
+              key={item.id}
+              count={item.activePeopleCount}
+              title={item.title}
+              imgUrl={item.imgUrl}
+              difficulty={item.difficulty}
+              createrName={item.createrName}
+              createrImgUrl={item.createrImgUrl}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
