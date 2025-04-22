@@ -1,0 +1,88 @@
+{
+  "challenges": [
+    {
+      "id": 1,
+      "title": "Challenge 1",
+      "activePeopleCount": 300,
+      "category": "Productivity",
+      "difficulty": "Easy",
+      "imgUrl": "https://img.freepik.com/free-photo/man-jump-through-gap-hill-man-jumping-cliff-blue-sky-business-concept-idea_1323-185.jpg?semt=ais_hybrid&w=740",
+      "createrName": "John Doe",
+      "createrImgUrl": "https://i.pinimg.com/474x/73/6b/ef/736befc7e8a3094c5ca140e3df4842c2.jpg",
+      "createdAt": "2023-10-01T12:00:00Z",
+      "updatedAt": "2023-10-02T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "title": "Challenge 2",
+      "activePeopleCount": 100,
+      "category": "Health",
+      "difficulty": "Medium",
+      "imgUrl": "https://img.freepik.com/free-photo/man-jump-through-gap-hill-man-jumping-cliff-blue-sky-business-concept-idea_1323-185.jpg?semt=ais_hybrid&w=740",
+      "createrName": "Jane Smith",
+      "createrImgUrl": "https://i.pinimg.com/474x/73/6b/ef/736befc7e8a3094c5ca140e3df4842c2.jpg",
+      "createdAt": "2023-10-01T12:00:00Z",
+      "updatedAt": "2023-10-02T12:00:00Z"
+    },
+    {
+      "id": 3,
+      "title": "Challenge 3",
+      "activePeopleCount": 159,
+      "category": "Fitness",
+      "difficulty": "Hard",
+      "imgUrl": "https://img.freepik.com/free-photo/man-jump-through-gap-hill-man-jumping-cliff-blue-sky-business-concept-idea_1323-185.jpg?semt=ais_hybrid&w=740",
+      "createrName": "Alice Johnson",
+      "createrImgUrl": "https://i.pinimg.com/474x/73/6b/ef/736befc7e8a3094c5ca140e3df4842c2.jpg",
+      "createdAt": "2023-10-01T12:00:00Z",
+      "updatedAt": "2023-10-02T12:00:00Z"
+    },
+    {
+      "id": 4,
+      "title": "Challenge 3",
+      "activePeopleCount": 159,
+      "category": "Learning",
+      "difficulty": "Hard",
+      "imgUrl": "https://img.freepik.com/free-photo/man-jump-through-gap-hill-man-jumping-cliff-blue-sky-business-concept-idea_1323-185.jpg?semt=ais_hybrid&w=740",
+      "createrName": "Alice Johnson",
+      "createrImgUrl": "https://i.pinimg.com/474x/73/6b/ef/736befc7e8a3094c5ca140e3df4842c2.jpg",
+      "createdAt": "2023-10-01T12:00:00Z",
+      "updatedAt": "2023-10-02T12:00:00Z"
+    },
+    {
+      "id": 5,
+      "title": "Challenge 3",
+      "activePeopleCount": 159,
+      "category": "Learning",
+      "difficulty": "Hard",
+      "imgUrl": "https://img.freepik.com/free-photo/man-jump-through-gap-hill-man-jumping-cliff-blue-sky-business-concept-idea_1323-185.jpg?semt=ais_hybrid&w=740",
+      "createrName": "Alice Johnson",
+      "createrImgUrl": "https://i.pinimg.com/474x/73/6b/ef/736befc7e8a3094c5ca140e3df4842c2.jpg",
+      "createdAt": "2023-10-01T12:00:00Z",
+      "updatedAt": "2023-10-02T12:00:00Z"
+    },
+    {
+      "id": 6,
+      "title": "Challenge 3",
+      "activePeopleCount": 159,
+      "category": "Learning",
+      "difficulty": "Hard",
+      "imgUrl": "https://img.freepik.com/free-photo/man-jump-through-gap-hill-man-jumping-cliff-blue-sky-business-concept-idea_1323-185.jpg?semt=ais_hybrid&w=740",
+      "createrName": "Alice Johnson",
+      "createrImgUrl": "https://i.pinimg.com/474x/73/6b/ef/736befc7e8a3094c5ca140e3df4842c2.jpg",
+      "createdAt": "2023-10-01T12:00:00Z",
+      "updatedAt": "2023-10-02T12:00:00Z"
+    },
+    {
+      "id": 7,
+      "title": "Challenge 3",
+      "activePeopleCount": 159,
+      "category": "Learning",
+      "difficulty": "Hard",
+      "imgUrl": "https://img.freepik.com/free-photo/man-jump-through-gap-hill-man-jumping-cliff-blue-sky-business-concept-idea_1323-185.jpg?semt=ais_hybrid&w=740",
+      "createrName": "Alice Johnson",
+      "createrImgUrl": "https://i.pinimg.com/474x/73/6b/ef/736befc7e8a3094c5ca140e3df4842c2.jpg",
+      "createdAt": "2023-10-01T12:00:00Z",
+      "updatedAt": "2023-10-02T12:00:00Z"
+    }
+  ]
+}
