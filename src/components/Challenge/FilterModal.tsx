@@ -24,7 +24,7 @@ const FilterModal = ({
     <AnimatePresence>
       {isOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50 overscroll-contain"
           onClick={onClose}
         >
           <motion.div
