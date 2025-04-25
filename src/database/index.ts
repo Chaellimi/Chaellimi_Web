@@ -23,7 +23,7 @@ sequelize
     console.log('-------------------- ✅ DB 연결 성공 --------------------');
 
     if (process.env.DEV_TYPE !== 'production') {
-      await sequelize.sync({ alter: true });
+      // await sequelize.sync({ alter: true }); // 테이블 변경
       // await sequelize.sync({ force: true }); // 테이블 초기화
     }
   })
