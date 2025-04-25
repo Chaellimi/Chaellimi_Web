@@ -10,6 +10,7 @@ import {
 import FilterModal from '@/components/Challenge/FilterModal';
 import ChallengeData from '@/data/Challenge/ChallengeData.json';
 import ChallengeContent from '@/components/Challenge/ChallengeContent';
+import Header from '@/components/shared/Header';
 
 const challengeCategories = [
   { id: 1, name: '전체' },
@@ -51,14 +52,12 @@ const Challenge = () => {
 
   return (
     <div className="flex flex-col w-full h-full text-gray-black">
-      {/* Header */}
-      <header className="flex items-center justify-between w-full py-[0.59rem] h-11 px-[2.31rem]">
-        <div className="text-h3">챌린지</div>
-        <div className="flex items-center gap-2">
-          <MagnifyingGlassIcon />
-          <PlusIcon />
-        </div>
-      </header>
+      <Header
+        type="title"
+        title="챌린지"
+        icon={<MagnifyingGlassIcon />}
+        icon2={<PlusIcon />}
+      />
 
       {/* Category Tabs */}
       <div className="flex justify-between px-6 mt-4 border-b border-gray-100">
