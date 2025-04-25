@@ -23,21 +23,27 @@ const Header = ({
   title,
   progress,
 }: OwnProps) => {
+  const commonHeaderClasses = 'flex items-center justify-between w-full h-12';
+
+  const renderIcons = () => (
+    <div className="flex items-center gap-2">
+      {icon && <div onClick={iconClick}>{icon}</div>}
+      {icon2 && <div onClick={iconClick2}>{icon2}</div>}
+    </div>
+  );
+
   return (
     <>
       {type === 'default' && (
-        <header className="flex items-center justify-between w-full py-[0.59rem] h-12 px-6">
+        <header className={`${commonHeaderClasses} px-6`}>
           <div onClick={backClick}>
             <BackArrowIcon />
           </div>
-          <div className="flex items-center gap-2">
-            {icon && <div onClick={iconClick}>{icon}</div>}
-            {icon2 && <div onClick={iconClick2}>{icon2}</div>}
-          </div>
+          {renderIcons()}
         </header>
       )}
       {type === 'search' && (
-        <header className="flex items-center justify-between w-full py-[0.59rem] h-12 px-6">
+        <header className={`${commonHeaderClasses} px-6`}>
           <div onClick={backClick}>
             <BackArrowIcon />
           </div>
@@ -47,35 +53,26 @@ const Header = ({
         </header>
       )}
       {type === 'progress' && (
-        <header className="flex items-center justify-between w-full h-12 px-6">
+        <header className={`${commonHeaderClasses} px-6`}>
           <div onClick={backClick}>
             <BackArrowIcon />
           </div>
           <div className="flex items-center gap-2">{progress}</div>
-          <div className="flex items-center gap-2">
-            {icon && <div onClick={iconClick}>{icon}</div>}
-            {icon2 && <div onClick={iconClick2}>{icon2}</div>}
-          </div>
+          {renderIcons()}
         </header>
       )}
       {type === 'logo' && (
-        <header className="flex items-center justify-between w-full h-12 px-7">
+        <header className={`${commonHeaderClasses} px-7`}>
           <div>
             <TextLogo width={75} />
           </div>
-          <div className="flex items-center gap-2">
-            {icon && <div onClick={iconClick}>{icon}</div>}
-            {icon2 && <div onClick={iconClick2}>{icon2}</div>}
-          </div>
+          {renderIcons()}
         </header>
       )}
       {type === 'title' && (
-        <header className="flex items-center justify-between w-full h-12 px-7">
+        <header className={`${commonHeaderClasses} px-7`}>
           <div className="text-h3">{title}</div>
-          <div className="flex items-center gap-2">
-            {icon && <div onClick={iconClick}>{icon}</div>}
-            {icon2 && <div onClick={iconClick2}>{icon2}</div>}
-          </div>
+          {renderIcons()}
         </header>
       )}
     </>
