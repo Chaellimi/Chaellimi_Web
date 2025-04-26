@@ -111,16 +111,17 @@ const Challenge = () => {
       </div>
 
       {/* Bottom Sheet */}
-      <FilterModal
-        isOpen={!!activeFilterKey}
-        onClose={() => setActiveFilterKey(null)}
-        title={`${activeFilterKey ?? ''} 선택`}
-        options={activeFilterKey ? filterOptions[activeFilterKey] : []}
-        selectedOption={activeFilterKey ? filters[activeFilterKey] : ''}
-        onSelect={(option) =>
-          activeFilterKey && updateFilter(activeFilterKey, option)
-        }
-      />
+      {activeFilterKey && (
+        <FilterModal
+          isOpen={true}
+          onClose={() => setActiveFilterKey(null)}
+          title={`${activeFilterKey} 선택`}
+          options={filterOptions[activeFilterKey]}
+          selectedOption={filters[activeFilterKey]}
+          onSelect={(option) => updateFilter(activeFilterKey, option)}
+          filterKey={activeFilterKey}
+        />
+      )}
 
       {/* Challenge List */}
       <div className="flex-1 h-0 min-h-0 px-8 pb-16 mt-2 overflow-y-scroll scrollbar-hide -webkit-overflow-scrolling-touch overscroll-contain">
