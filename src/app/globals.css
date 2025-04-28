@@ -25,3 +25,19 @@
   font-weight: 400;
   src: url('/fonts/NotoSansKR-Regular.ttf') format('truetype');
 }
+
+.range-slider__thumb {
+  border-radius: 50%;
+  width: 28px !important;
+  height: 28px !important;
+  background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2228%22%20height%3D%2228%22%20viewBox%3D%220%200%2028%2028%22%20fill%3D%22none%22%3E%0A%20%20%3Cpath%20d%3D%22M27.4167%2014C27.4167%2021.4098%2021.4098%2027.4167%2014%2027.4167C6.59018%2027.4167%200.583333%2021.4098%200.583333%2014C0.583333%206.59018%206.59018%200.583333%2014%200.583333C21.4098%200.583333%2027.4167%206.59018%2027.4167%2014Z%22%20fill%3D%22white%22%20stroke%3D%22%23F7F7F7%22%20stroke-width%3D%221.16667%22/%3E%0A%20%20%3Cpath%20d%3D%22M24.5%2014C24.5%2019.799%2019.799%2024.5%2014%2024.5C8.20101%2024.5%203.5%2019.799%203.5%2014C3.5%208.20101%208.20101%203.5%2014%203.5C19.799%203.5%2024.5%208.20101%2024.5%2014Z%22%20fill%3D%22%23FF6A00%22/%3E%0A%3C/svg%3E')
+    #fff !important;
+}
+
+.range-slider__track {
+  background-color: #efefef !important;
+}
+
+.range-slider__range {
+  background-color: #ff6a00 !important;
+}
