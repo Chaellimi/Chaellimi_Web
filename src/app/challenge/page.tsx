@@ -56,6 +56,7 @@ const Challenge = () => {
         type="title"
         title="챌린지"
         icon={<MagnifyingGlassIcon />}
+        iconClick={'/challenge/search'}
         icon2={<PlusIcon />}
       />
 
@@ -111,7 +112,7 @@ const Challenge = () => {
       </div>
 
       {/* Bottom Sheet */}
-      {activeFilterKey && (
+      {activeFilterKey !== null && (
         <FilterModal
           isOpen={true}
           onClose={() => setActiveFilterKey(null)}

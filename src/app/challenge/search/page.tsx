@@ -15,6 +15,7 @@ const ChallengeSearch = () => {
         setSearchText={setSearchText}
         isSearchbarVisible={isSearchbarVisible}
         setIsSearchbarVisiable={setIsSearchbarVisiable}
+        backClick={'/challenge'}
       />
       <div></div>
     </div>
