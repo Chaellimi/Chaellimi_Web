@@ -1,5 +1,5 @@
 import {
-  BackArrowIcon,
+  ArrowIcon,
   MagnifyingGlassIcon,
   SearchBarCancelIcon,
 } from '@public/icons/shared';
@@ -36,7 +36,8 @@ const Header = ({
   isSearchbarVisible,
   setIsSearchbarVisiable,
 }: OwnProps) => {
-  const commonHeaderClasses = 'flex items-center justify-between w-full h-12';
+  const commonHeaderClasses =
+    'flex items-center justify-between w-full h-12 min-h-12';
 
   const renderIcons = () => (
     <div className="flex items-center gap-[0.62rem]">
@@ -47,16 +48,23 @@ const Header = ({
 
   const renderBackButton = () => (
     <Link href={backClick ? backClick : '/'}>
-      <BackArrowIcon />
+      <ArrowIcon width="24" height="24" location="left" fill="#1F1F1F" />
     </Link>
   );
 
   return (
     <>
       {type === 'default' && (
-        <header className={`${commonHeaderClasses} px-6`}>
-          {renderBackButton()}
-          {renderIcons()}
+        <header
+          className={`flex items-center justify-center w-full h-12 px-6 relative min-h-12`}
+        >
+          <div className="absolute left-[1.25rem] -translate-y-1/2 top-1/2">
+            {renderBackButton()}
+          </div>
+          <div className="text-h3 text-gray-black ">{title}</div>
+          <div className="absolute right-[1.25rem] -translate-y-1/2 top-1/2">
+            {renderIcons()}
+          </div>
         </header>
       )}
       {(type === 'search' || type === 'searchNoBack') && (

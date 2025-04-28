@@ -9,12 +9,17 @@ export default function LayoutWithNav({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const showNavbar = !['/login', '/splash'].includes(pathname);
 
-  // pathname에 따라 Active prop 설정
+  // Nav를 보여야 하는 조건
+  const showNavbar =
+    pathname !== '/login' &&
+    pathname !== '/splash' &&
+    !(pathname.startsWith('/challenge') && pathname !== '/challenge');
+
+  // activeNav 설정
   let activeNav: 'home' | 'challenge' | 'community' | 'profile' = 'home';
   if (pathname === '/') activeNav = 'home';
-  else if (pathname.startsWith('/challenge')) activeNav = 'challenge';
+  else if (pathname === '/challenge') activeNav = 'challenge';
   else if (pathname.startsWith('/community')) activeNav = 'community';
   else if (pathname.startsWith('/profile')) activeNav = 'profile';
 

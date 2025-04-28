@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react';
-import { PlusIcon, ResetIcon, UnderArrowIcon } from '@public/icons/Challenge';
+import { PlusIcon, ResetIcon } from '@public/icons/Challenge';
 import FilterModal from '@/components/Challenge/FilterModal';
 import ChallengeData from '@/data/Challenge/ChallengeData.json';
 import ChallengeContent from '@/components/Challenge/ChallengeContent';
 import Header from '@/components/shared/Header';
-import { MagnifyingGlassIcon } from '@public/icons/shared';
+import { ArrowIcon, MagnifyingGlassIcon } from '@public/icons/shared';
 
 const challengeCategories = [
   { id: 1, name: '전체' },
@@ -102,7 +102,7 @@ const Challenge = () => {
             {key === '정렬'
               ? value
               : `${key} ${value === '전체' || value === '인기순' ? '' : value}`}
-            <UnderArrowIcon />
+            <ArrowIcon location="down" />
           </div>
         ))}
       </div>
@@ -126,6 +126,7 @@ const Challenge = () => {
           {ChallengeData.challenges.map((item) => (
             <ChallengeContent
               key={item.id}
+              id={item.id}
               count={item.activePeopleCount}
               title={item.title}
               imgUrl={item.imgUrl}
