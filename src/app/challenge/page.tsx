@@ -102,7 +102,7 @@ const Challenge = () => {
             {key === '정렬'
               ? value
               : `${key} ${value === '전체' || value === '인기순' ? '' : value}`}
-            <ArrowIcon width="14" height="14" location="down" fill="#5C5C5C" />
+            <ArrowIcon location="down" />
           </div>
         ))}
       </div>
@@ -126,6 +126,7 @@ const Challenge = () => {
           {ChallengeData.challenges.map((item) => (
             <ChallengeContent
               key={item.id}
+              id={item.id}
               count={item.activePeopleCount}
               title={item.title}
               imgUrl={item.imgUrl}
