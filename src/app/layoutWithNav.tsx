@@ -18,8 +18,6 @@ export default function LayoutWithNav({
   else if (pathname.startsWith('/community')) activeNav = 'community';
   else if (pathname.startsWith('/profile')) activeNav = 'profile';
 
-  console.log(activeNav);
-
   return (
     <>
       {showNavbar && <Navigationbar Active={activeNav} />}
