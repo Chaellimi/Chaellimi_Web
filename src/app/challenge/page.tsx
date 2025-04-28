@@ -132,6 +132,7 @@ const Challenge = () => {
               count={item.activePeopleCount}
               title={item.title}
               imgUrl={item.imgUrl}
+              days={item.activeDays}
               difficulty={item.difficulty}
               createrName={item.createrName}
               createrImgUrl={item.createrImgUrl}
