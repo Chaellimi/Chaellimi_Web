@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  PointIcon,
-  MagnifyingGlassIcon,
-  SearchBarCancelIcon,
-  ArrowIcon,
-} from '@public/icons/Home';
+import { PointIcon, ArrowIcon } from '@public/icons/Home';
 import Image from 'next/image';
 import React from 'react';
 import Banner from '@public/images/HomeBanner.png';
@@ -19,58 +14,23 @@ const Home = () => {
   const [isSearchbarVisible, setIsSearchbarVisiable] = React.useState(false);
   const [searchText, setSearchText] = React.useState('');
 
-  const handleChangeSearchText = (e: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
-    setSearchText(e.target.value);
-    console.log(searchText);
-    if (searchText) {
-      setIsSearchbarVisiable(true);
-    } else {
-      setIsSearchbarVisiable(false);
-    }
-  };
-
   return (
     <div className="w-full h-full">
       <Header type="logo" icon={<PointIcon />} />
 
       <div className="px-6">
         {/* Search Bar */}
-        <div className="flex items-center justify-between w-full h-12 p-3 bg-gray-50 rounded-xl mb-[0.62rem]">
-          <div className="flex items-center w-full gap-2">
-            <MagnifyingGlassIcon isFocus={isSearchbarVisible} />
-            <input
-              type="text"
-              placeholder="검색어를 입력해주세요."
-              value={searchText}
-              onChange={handleChangeSearchText}
-              className="w-full placeholder-gray-300 outline-none caret-black caret-w-[1.5rem] bg-gray-50 mr-2"
-              onFocus={() => {
-                setIsSearchbarVisiable(true);
-              }}
-              onBlur={() => {
-                if (!searchText) {
-                  setIsSearchbarVisiable(false);
-                }
-              }}
-            />
-          </div>
-          {isSearchbarVisible ? (
-            <div
-              className="flex items-center justify-between"
-              onClick={() => {
-                setSearchText('');
-              }}
-            >
-              <SearchBarCancelIcon />
-            </div>
-          ) : null}
-        </div>
+        <Header
+          type="searchNoBack"
+          searchText={searchText}
+          setSearchText={setSearchText}
+          isSearchbarVisible={isSearchbarVisible}
+          setIsSearchbarVisiable={setIsSearchbarVisiable}
+        />
 
         {/* Main Content */}
         <div>
-          <Image src={Banner} width={413} alt="" />
+          <Image src={Banner} width={413} alt="" className="mt-[0.88rem]" />
         </div>
 
         {/* Active Challenge */}
