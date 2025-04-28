@@ -1,5 +1,5 @@
 import { BookmarkIcon } from '@public/icons/Challenge';
-import { FireIcon } from '@public/icons/Home';
+import { FireIcon } from '@public/icons/shared';
 import Image from 'next/image';
 import React from 'react';
 
