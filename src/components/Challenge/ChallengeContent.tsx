@@ -10,6 +10,7 @@ interface OwnProps {
   difficulty: string;
   createrName: string;
   createrImgUrl: string;
+  days: number;
 }
 
 const ChallengeContent = ({
@@ -19,34 +20,48 @@ const ChallengeContent = ({
   difficulty,
   createrName,
   createrImgUrl,
+  days,
 }: OwnProps) => {
   return (
     <div className="flex flex-col gap-2">
-      <div className="relative w-full aspect-square">
-        <Image
-          src={imgUrl}
-          alt={title}
-          fill
-          className="object-cover object-top rounded-xl"
-        />
-        <div className="absolute top-2 right-2">
-          <BookmarkIcon />
+      <div
+        className="w-full aspect-square rounded-xl"
+        style={{
+          backgroundImage: `url(${imgUrl})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="flex flex-col justify-between h-full w-full px-[0.66rem] py-2">
+          <div className="flex justify-end w-full">
+            <BookmarkIcon />
+          </div>
+
+          <div className="flex items-center justify-between w-full">
+            <div
+              className={`text-center text-c2 px-[0.38rem] py-[0.15rem] rounded-[0.25rem] w-16
+                ${
+                  difficulty === 'Hard'
+                    ? 'bg-red-100 text-red-200'
+                    : difficulty === 'Medium'
+                      ? 'bg-primary-light text-primary-default'
+                      : 'bg-green-100 text-green-200'
+                }
+                `}
+            >
+              {difficulty === 'Hard'
+                ? '난이도 상'
+                : difficulty === 'Medium'
+                  ? '난이도 중'
+                  : '난이도 하'}
+            </div>
+            <div className="text-center text-c2 first-line px-[0.38rem] py-[0.15rem] bg-gray-50 rounded-[0.25rem] w-16 text-gray-500">
+              {days}일 도전
+            </div>
+          </div>
         </div>
       </div>
 
-      {difficulty === 'Hard' ? (
-        <div className="text-c2 px-[0.38rem] py-[0.15rem] bg-red-100 rounded-[0.25rem] w-fit text-red-200">
-          난이도 상
-        </div>
-      ) : difficulty === 'Medium' ? (
-        <div className="text-c2 px-[0.38rem] py-[0.15rem] bg-primary-light w-fit text-primary-default">
-          난이도 중
-        </div>
-      ) : (
-        <div className="text-c2 px-[0.38rem] py-[0.15rem] bg-green-100 w-fit text-green-200">
-          난이도 하
-        </div>
-      )}
       <div className="text-b2">{title}</div>
       <div className="flex items-center gap-1 text-gray-500 text-b3">
         <FireIcon />
