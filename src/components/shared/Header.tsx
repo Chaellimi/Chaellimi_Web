@@ -5,14 +5,15 @@ import {
 } from '@public/icons/shared';
 import React from 'react';
 import TextLogo from './TextLogo';
+import Link from 'next/link';
 
 interface OwnProps {
   type: 'default' | 'search' | 'searchNoBack' | 'progress' | 'logo' | 'title';
-  backClick?: () => void;
+  backClick?: string;
   icon?: React.ReactNode;
-  iconClick?: () => void;
+  iconClick?: string;
   icon2?: React.ReactNode;
-  iconClick2?: () => void;
+  iconClick2?: string;
   title?: string;
   progress?: number;
   searchText?: string;
@@ -39,18 +40,22 @@ const Header = ({
 
   const renderIcons = () => (
     <div className="flex items-center gap-[0.62rem]">
-      {icon && <div onClick={iconClick}>{icon}</div>}
-      {icon2 && <div onClick={iconClick2}>{icon2}</div>}
+      {icon && <Link href={iconClick ? iconClick : '/'}>{icon}</Link>}
+      {icon2 && <Link href={iconClick2 ? iconClick2 : '/'}>{icon2}</Link>}
     </div>
+  );
+
+  const renderBackButton = () => (
+    <Link href={backClick ? backClick : '/'}>
+      <BackArrowIcon />
+    </Link>
   );
 
   return (
     <>
       {type === 'default' && (
         <header className={`${commonHeaderClasses} px-6`}>
-          <div onClick={backClick}>
-            <BackArrowIcon />
-          </div>
+          {renderBackButton()}
           {renderIcons()}
         </header>
       )}
@@ -58,11 +63,7 @@ const Header = ({
         <header
           className={`${commonHeaderClasses} ${type === 'search' ? 'px-6' : ''} gap-4`}
         >
-          {type === 'search' ? (
-            <div onClick={backClick}>
-              <BackArrowIcon />
-            </div>
-          ) : null}
+          {type === 'search' ? renderBackButton() : null}
 
           <div className="flex items-center justify-between w-full h-12 gap-2 p-3 bg-gray-50 rounded-xl">
             <div>
@@ -103,9 +104,7 @@ const Header = ({
       )}
       {type === 'progress' && (
         <header className={`${commonHeaderClasses} px-6`}>
-          <div onClick={backClick}>
-            <BackArrowIcon />
-          </div>
+          {renderBackButton()}
           <div className="flex items-center gap-2">{progress}</div>
           {renderIcons()}
         </header>
