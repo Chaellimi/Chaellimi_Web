@@ -1,16 +1,12 @@
 'use client';
 
 import React from 'react';
-import {
-  MagnifyingGlassIcon,
-  PlusIcon,
-  ResetIcon,
-  UnderArrowIcon,
-} from '@public/icons/Challenge';
+import { PlusIcon, ResetIcon, UnderArrowIcon } from '@public/icons/Challenge';
 import FilterModal from '@/components/Challenge/FilterModal';
 import ChallengeData from '@/data/Challenge/ChallengeData.json';
 import ChallengeContent from '@/components/Challenge/ChallengeContent';
 import Header from '@/components/shared/Header';
+import { MagnifyingGlassIcon } from '@public/icons/shared';
 
 const challengeCategories = [
   { id: 1, name: '전체' },
@@ -55,7 +51,7 @@ const Challenge = () => {
       <Header
         type="title"
         title="챌린지"
-        icon={<MagnifyingGlassIcon type="header" />}
+        icon={<MagnifyingGlassIcon width="24" height="24" fill="#1F1F1F" />}
         iconClick={'/challenge/search'}
         icon2={<PlusIcon />}
       />

@@ -67,7 +67,11 @@ const Header = ({
 
           <div className="flex items-center justify-between w-full h-12 gap-2 p-3 bg-gray-50 rounded-xl">
             <div>
-              <MagnifyingGlassIcon isFocus={isSearchbarVisible} />
+              <MagnifyingGlassIcon
+                width="20"
+                height="20"
+                fill={isSearchbarVisible ? '#848484' : '#C9C9C9'}
+              />
             </div>
             <input
               type="text"
