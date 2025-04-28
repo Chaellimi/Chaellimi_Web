@@ -36,7 +36,8 @@ const Header = ({
   isSearchbarVisible,
   setIsSearchbarVisiable,
 }: OwnProps) => {
-  const commonHeaderClasses = 'flex items-center justify-between w-full h-12';
+  const commonHeaderClasses =
+    'flex items-center justify-between w-full h-12 min-h-12';
 
   const renderIcons = () => (
     <div className="flex items-center gap-[0.62rem]">
@@ -55,7 +56,7 @@ const Header = ({
     <>
       {type === 'default' && (
         <header
-          className={`flex items-center justify-center w-full h-12 px-6 relative`}
+          className={`flex items-center justify-center w-full h-12 px-6 relative min-h-12`}
         >
           <div className="absolute left-[1.25rem] -translate-y-1/2 top-1/2">
             {renderBackButton()}
