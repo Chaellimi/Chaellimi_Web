@@ -55,7 +55,7 @@ const Challenge = () => {
       <Header
         type="title"
         title="챌린지"
-        icon={<MagnifyingGlassIcon />}
+        icon={<MagnifyingGlassIcon type="header" />}
         iconClick={'/challenge/search'}
         icon2={<PlusIcon />}
       />
