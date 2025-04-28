@@ -94,6 +94,7 @@ const Header = ({
                 className="flex items-center justify-between"
                 onClick={() => {
                   setSearchText?.('');
+                  setIsSearchbarVisiable?.(false);
                 }}
               >
                 <SearchBarCancelIcon />
