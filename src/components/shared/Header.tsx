@@ -1,5 +1,5 @@
 import {
-  BackArrowIcon,
+  ArrowIcon,
   MagnifyingGlassIcon,
   SearchBarCancelIcon,
 } from '@public/icons/shared';
@@ -47,7 +47,7 @@ const Header = ({
 
   const renderBackButton = () => (
     <Link href={backClick ? backClick : '/'}>
-      <BackArrowIcon />
+      <ArrowIcon width="24" height="24" location="left" fill="#1F1F1F" />
     </Link>
   );
 
