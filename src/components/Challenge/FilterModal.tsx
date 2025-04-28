@@ -137,6 +137,7 @@ const FilterModal = ({
         >
           <motion.div
             drag="y"
+            dragElastic={false}
             dragConstraints={{ top: 0, bottom: 0 }}
             onDragEnd={(e, info) => {
               if (info.offset.y > 100) onClose();
