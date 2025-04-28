@@ -6,3 +6,4 @@ export { default as BookmarkIcon } from './Bookmark';
 export { default as FilterCheckIcon } from './FilterCheck';
 export { default as ClockIcon } from './Clock';
 export { default as CancelIocn } from './Cancel';
+export { default as MoreVerticalDotIcon } from './MoreVerticalDot';
