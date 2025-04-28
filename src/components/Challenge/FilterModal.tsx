@@ -4,8 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
-import classNames from 'classnames';
-import { CheckIcon } from '@public/icons/Challenge';
+import { CheckIcon, FilterCheckIcon } from '@public/icons/Challenge';
 
 interface FilterModalProps {
   isOpen: boolean;
@@ -82,25 +81,17 @@ const FilterModal = ({
             onSelect(option);
             onClose();
           }}
-          className={classNames(
-            'flex items-center justify-between px-1 py-2 text-lg transition-all',
-            {
-              'text-[#FF7A00] font-semibold': selectedOption === option,
-              'text-gray-700': selectedOption !== option,
-            }
-          )}
+          className={`flex items-center justify-between px-4 py-2 text-lg transition-all
+              ${selectedOption === option && 'text-[#FF7A00]'}
+              ${selectedOption !== option && 'text-gray-700'}
+            `}
         >
-          <span className="flex items-center">
-            <span
-              className={`inline-block w-5 h-5 rounded-full border mr-3 items-center justify-center
-                ${selectedOption === option ? 'border-[#FF7A00]' : 'border-gray-300'}
-                ${selectedOption === option ? 'bg-[#FF7A00]' : 'bg-white'}
-              `}
-            >
-              {selectedOption === option ? (
-                <span className="w-2.5 h-2.5 bg-white rounded-full block" />
-              ) : null}
-            </span>
+          <span className="flex items-center gap-4">
+            {selectedOption === option ? (
+              <FilterCheckIcon disabled={false} />
+            ) : (
+              <FilterCheckIcon disabled={true} />
+            )}
             {option}
           </span>
         </button>
