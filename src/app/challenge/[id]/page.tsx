@@ -2,9 +2,10 @@
 
 import ActionSheet from '@/components/shared/ActionSheet';
 import Header from '@/components/shared/Header';
-import { BookmarkIcon, MoreVerticalDotIcon } from '@public/icons/Challenge';
+import { MoreVerticalDotIcon } from '@public/icons/Challenge';
 import {
   ArrowIcon,
+  BookmarkIcon,
   EditIcon,
   FireIcon,
   ShareIcon,
@@ -22,6 +23,7 @@ const ChallengeSingle = () => {
     'https://img.freepik.com/free-photo/man-jump-through-gap-hill-man-jumping-cliff-blue-sky-business-concept-idea_1323-185.jpg?semt=ais_hybrid&w=740';
 
   const [actionSheet, setActionSheet] = React.useState(false);
+  const [isBookmarked, setIsBookmarked] = React.useState(false);
 
   return (
     <div className="relative flex flex-col w-full h-full text-gray-black">
@@ -208,8 +210,13 @@ const ChallengeSingle = () => {
       </div>
 
       <div className="flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 border-t bg-gray-white border-gray-50">
-        <div className="">
-          <BookmarkIcon width="26" height="26" fill="black" />
+        <div onClick={() => setIsBookmarked(!isBookmarked)}>
+          <BookmarkIcon
+            width="24"
+            height="24"
+            stroke="black"
+            isChecked={isBookmarked}
+          />
         </div>
         <div className="h-7 w-[0.0625rem] bg-gray-200" />
         <button
