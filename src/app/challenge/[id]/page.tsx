@@ -1,8 +1,15 @@
 'use client';
 
+import ActionSheet from '@/components/shared/ActionSheet';
 import Header from '@/components/shared/Header';
 import { BookmarkIcon, MoreVerticalDotIcon } from '@public/icons/Challenge';
-import { ArrowIcon, FireIcon } from '@public/icons/shared';
+import {
+  ArrowIcon,
+  EditIcon,
+  FireIcon,
+  ShareIcon,
+  TrashIcon,
+} from '@public/icons/shared';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import React from 'react';
@@ -13,8 +20,19 @@ const ChallengeSingle = () => {
   console.log(id);
   const imgUrl =
     'https://img.freepik.com/free-photo/man-jump-through-gap-hill-man-jumping-cliff-blue-sky-business-concept-idea_1323-185.jpg?semt=ais_hybrid&w=740';
+
+  const [actionSheet, setActionSheet] = React.useState(false);
+
   return (
-    <div className="flex flex-col w-full h-full text-gray-black">
+    <div className="relative flex flex-col w-full h-full text-gray-black">
+      {actionSheet && (
+        <div
+          className="absolute z-10 w-full h-full"
+          onClick={() => {
+            setActionSheet(false);
+          }}
+        />
+      )}
       <Header type="default" title="챌린지 상세" backClick="/challenge" />
 
       <div className="flex flex-col w-full h-full overflow-y-scroll">
@@ -32,7 +50,7 @@ const ChallengeSingle = () => {
         {/* Challenge Info */}
         <div className="flex flex-col w-full pt-[1.88rem]">
           {/* Info */}
-          <div className="flex flex-col w-full px-6 gap-[0.31rem]">
+          <div className="flex flex-col w-full px-6 gap-[0.31rem] relative">
             <div className="flex items-center justify-between w-full gap-1">
               <div className="flex items-center gap-1">
                 <div
@@ -56,9 +74,39 @@ const ChallengeSingle = () => {
                   30일 도전
                 </div>
               </div>
-              <div>
+              <div
+                className="absolute z-20 w-6 h-6 right-6"
+                onClick={() => {
+                  setActionSheet(!actionSheet);
+                }}
+              >
                 <MoreVerticalDotIcon />
               </div>
+
+              {actionSheet && (
+                <div className="absolute z-10 right-6 top-6">
+                  <ActionSheet
+                    buttons={[
+                      {
+                        icons: <ShareIcon />,
+                        text: '공유',
+                        onClick: () => {},
+                      },
+                      {
+                        icons: <EditIcon />,
+                        text: '수정',
+                        onClick: () => {},
+                      },
+                      {
+                        icons: <TrashIcon />,
+                        text: '삭제',
+                        textColor: 'red-200',
+                        onClick: () => {},
+                      },
+                    ]}
+                  />
+                </div>
+              )}
             </div>
 
             <div className="text-h2">하루 물 2리터 마시기</div>
