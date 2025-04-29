@@ -3,3 +3,4 @@ export { default as SearchBarCancelIcon } from './SearchBarCancel';
 export { default as FireIcon } from './Fire';
 export { default as ArrowIcon } from './Arrow';
 export { default as ShareIcon } from './Share';
+export { default as EditIcon } from './Edit';
