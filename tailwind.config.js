@@ -38,6 +38,11 @@ module.exports = {
           200: '#12BD4B',
           100: '#E4FFED',
         },
+        blue: {
+          300: '#2E88E0',
+          200: '#3396F9',
+          100: '#EBF5FF',
+        },
       },
       fontSize: {
         h1: [
