@@ -1,105 +1,115 @@
-1. 개요
+# GitHub Copilot 커스터마이징 설정
 
-   너는 Chaellimi_Web 프로젝트의 프론트엔드 리드 개발자다.
-   프로젝트의 코드 스타일과 폴더 구조, 네이밍 규칙을 준수해서 코드를 작성해라.
+# 이 파일은 Copilot이 프로젝트에 더 적합한 코드 제안을 할 수 있도록 유도하는 데 사용됩니다.
 
-   이 프로젝트는 아래와 같은 기술스택을 사용하고 있다.
-   "dependencies": {
-   "classnames": "^2.5.1",
-   "framer-motion": "^12.7.4",
-   "mysql2": "^3.14.0",
-   "next": "15.3.0",
-   "next-auth": "^4.24.11",
-   "next-connect": "^1.0.0",
-   "passport": "^0.7.0",
-   "passport-google-oauth20": "^2.0.0",
-   "react": "^19.0.0",
-   "react-dom": "^19.0.0",
-   "react-range-slider-input": "^3.2.1",
-   "sequelize": "^6.37.7",
-   "tailwind-scrollbar-hide": "^2.0.0",
-   "winston": "^3.17.0",
-   "winston-daily-rotate-file": "^5.0.0"
-   },
-   "devDependencies": {
-   "eslint": "^9.24.0",
-   "eslint-config-airbnb-typescript": "^18.0.0",
-   "eslint-config-next": "15.3.0",
-   "eslint-config-prettier": "^10.1.2",
-   "eslint-plugin-import": "^2.31.0",
-   "eslint-plugin-jsx-a11y": "^6.10.2",
-   "eslint-plugin-prettier": "^5.2.6",
-   "eslint-plugin-react": "^7.37.5",
-   "eslint-plugin-react-hooks": "^5.2.0",
-   "husky": "^9.1.7",
-   "lint-staged": "^15.5.1",
-   "postcss": "^8.5.3",
-   "prettier": "^3.5.3",
-   "tailwindcss": "3",
-   "ts-node": "^10.9.2",
-   "typescript": "^5"
-   }
+# ========================
 
-   이 프로젝트의 Elsint는 Airbnb를 이용하고 있고 아래는 커스텀 파일이다.
-   ./eslint.config.mjs
-   import { dirname } from 'path';
-   import { fileURLToPath } from 'url';
-   import { FlatCompat } from '@eslint/eslintrc';
+# 프로젝트 기본 정보
 
-   const **filename = fileURLToPath(import.meta.url);
-   const **dirname = dirname(\_\_filename);
+# ========================
 
-   const compat = new FlatCompat({
-   baseDirectory: \_\_dirname,
-   });
+project_name: "Chaellimi_Web"
+description: |
+30일 챌린지를 생성하고 관리하는 Next.js 기반 웹 애플리케이션입니다.
+최신 React 19 문법, TypeScript, App Router, TailwindCSS를 적극 활용합니다.
 
-   const eslintConfig = [
-   ...compat.extends('next/core-web-vitals', 'next/typescript'),
-   ];
+# ========================
 
-   export default eslintConfig;
+# 코드 스타일 가이드
 
-   ***
+# ========================
 
-   ./eslintrc.json
-   {
-   "extends": [
-   "airbnb",
-   "airbnb-typescript",
-   "plugin:react/recommended",
-   "plugin:jsx-a11y/recommended",
-   "plugin:react-hooks/recommended",
-   "plugin:@typescript-eslint/recommended",
-   "plugin:@typescript-eslint/recommended-requiring-type-checking"
-   ],
-   "parser": "@typescript-eslint/parser",
-   "parserOptions": {
-   "project": "./tsconfig.json",
-   "ecmaVersion": 2020,
-   "sourceType": "module"
-   },
-   "plugins": [
-   "react",
-   "jsx-a11y",
-   "react-hooks",
-   "@typescript-eslint",
-   "prettier"
-   ],
-   "rules": {
-   "@typescript-eslint/no-unused-vars": [
-   "warn",
-   { "argsIgnorePattern": "^_" }
-   ],
-   "@typescript-eslint/no-explicit-any": "off",
-   "react/prop-types": "off",
-   "import/prefer-default-export": "off",
-   "react/react-in-jsx-scope": "off"
-   }
-   }
+code_style:
+language: TypeScript
+framework: Next.js (App Router)
+styling: TailwindCSS
+eslint: Airbnb + 커스텀 설정 적용
+prettier: 사용 (eslint-plugin-prettier 포함)
 
-2. 주의사항 및 규칙
-   Chaellimi_Web은 Next.js 기반의 30일 챌린지 관리 서비스임
+# ========================
 
-   TypeScript, TailwindCSS, Next.js App Router, 최신 React 문법을 사용해야함
+# 디렉토리 구조 및 네이밍 규칙
 
-   컴포넌트, 훅, API 라우트 등은 기존 폴더 구조와 네이밍 규칙을 반드시 준수해야 해야함
+# ========================
+
+structure:
+components:
+path: src/components/
+naming: PascalCase (e.g., `ChallengeCard.tsx`)
+hooks:
+path: src/hooks/
+naming: camelCase (e.g., `useChallengeFilter.ts`)
+pages:
+path: src/app/
+routing: Next.js App Router 방식 (파일 기반)
+api:
+path: src/app/api/
+convention: next-connect를 이용한 핸들러 구조 사용
+styles:
+path: src/styles/
+convention: 전역 스타일은 `globals.css`, 컴포넌트 스타일은 Tailwind로 작성
+
+# ========================
+
+# 코드 작성 규칙
+
+# ========================
+
+rules:
+typescript:
+strict*typing: true
+allow_explicit_any: false
+unused_vars: warn (underscore(*) prefix로 예외 허용)
+react:
+use_functional_components: true
+use_hooks_only: true
+no_prop_types: true
+no_react_in_jsx_scope: true
+css:
+use_tailwind_only: true
+no_inline_styles: true
+import:
+prefer_named_exports: true
+no_index_exports: true
+testing:
+use: jest, react-testing-library (추후 도입 예정)
+
+# ========================
+
+# 추천 라이브러리
+
+# ========================
+
+libraries:
+animation: framer-motion
+auth: next-auth + passport (Google OAuth2)
+db: sequelize + mysql2
+logging: winston + winston-daily-rotate-file
+utility: classnames
+
+# ========================
+
+# 코드 예시 스타일
+
+# ========================
+
+examples:
+
+- description: "챌린지 카드 컴포넌트 생성 예시"
+  language: TypeScript
+  code: |
+  import React from 'react';
+
+  interface Props {
+  title: string;
+  count: number;
+  }
+
+  const ChallengeCard = ({ title, count }: Props) => (
+  <div className="p-4 rounded-lg bg-white shadow">
+  <h3 className="text-lg font-semibold">{title}</h3>
+  <p className="text-sm text-gray-500">{count}명 도전중</p>
+  </div>
+  );
+
+  export default ChallengeCard;
