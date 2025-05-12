@@ -26,10 +26,15 @@ const DropdownSelector = ({
   return (
     <div className="relative">
       <button
-        className="flex items-center justify-between w-full px-4 py-3 text-gray-300 border border-gray-300 text-b2 bg-gray-white rounded-xl"
+        className="flex items-center justify-between w-full px-4 py-3 border border-gray-300 text-b2 bg-gray-white rounded-xl"
         onClick={toggleDropdown}
       >
-        {selectedOption || placeholder}
+        {(selectedOption && (
+          <div className="text-bn2 text-gray-black">{selectedOption}</div>
+        )) ||
+          (placeholder && (
+            <div className="text-gray-300 text-bn2">{placeholder}</div>
+          ))}
 
         <ArrowIcon location="down" fill="#C9C9C9" width="18" height="18" />
       </button>
