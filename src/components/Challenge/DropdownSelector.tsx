@@ -6,7 +6,7 @@ interface DropdownSelectorProps {
   options: string[];
   selectedOption: string;
   onSelect: (option: string) => void;
-  placeholder?: string; // Optional placeholder text
+  placeholder?: string;
 }
 
 const DropdownSelector = ({
