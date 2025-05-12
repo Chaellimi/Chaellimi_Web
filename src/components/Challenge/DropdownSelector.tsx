@@ -26,7 +26,8 @@ const DropdownSelector = ({
   return (
     <div className="relative">
       <button
-        className="flex items-center justify-between w-full px-4 py-3 border border-gray-300 text-b2 bg-gray-white rounded-xl"
+        className={`flex items-center justify-between w-full px-4 py-3 border text-b2 bg-gray-white rounded-xl
+          ${!isOpen ? 'border-gray-300' : 'border-blue-200'}`}
         onClick={toggleDropdown}
       >
         {(selectedOption && (
