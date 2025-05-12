@@ -22,10 +22,11 @@ const Write = () => {
     difficulty: '',
     description: '',
   });
-  const categories = ['운동', '공부', '취미', '기타'];
+  const categories = ['건강', '생산성', '창의성', '학습'];
+  const difficulty = ['상', '중', '하'];
 
-  const handleCategoryChange = (category: string) => {
-    setChallengeData((prev) => ({ ...prev, category }));
+  const handleChange = (key: keyof ChallengeData, value: string) => {
+    setChallengeData((prev) => ({ ...prev, [key]: value }));
   };
 
   return (
@@ -50,7 +51,7 @@ const Write = () => {
           <DropdownSelector
             options={categories}
             selectedOption={challengeData.category}
-            onSelect={(category) => handleCategoryChange(category)}
+            onSelect={(category) => handleChange('category', category)}
           />
         </div>
 
@@ -75,6 +76,29 @@ const Write = () => {
               setChallengeData((prev) => ({ ...prev, period }))
             }
             placeholder="기간을 입력해주세요."
+          />
+        </div>
+
+        {/* 난이도 설정 */}
+        <div className="flex flex-col gap-2">
+          <div className="text-bn3">난이도</div>
+          <DropdownSelector
+            options={difficulty}
+            selectedOption={challengeData.difficulty}
+            onSelect={(difficulty) => handleChange('difficulty', difficulty)}
+          />
+        </div>
+
+        {/* 자세한 설명 */}
+        <div className="flex flex-col gap-2">
+          <div className="text-bn3">자세한 설명</div>
+          <Input
+            value={challengeData.description}
+            onChange={(description) =>
+              setChallengeData((prev) => ({ ...prev, description }))
+            }
+            placeholder={`챌린지에 대한 자세한 설명을 작성해 주세요.\n\n\n(예시: "하루 30분 운동을 30일 동안 꾸준히 실천하는 챌린지입니다.")`}
+            type="textarea"
           />
         </div>
       </div>
