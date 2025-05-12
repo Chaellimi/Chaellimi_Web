@@ -1,8 +1,14 @@
+'use client';
+
+import React, { useState } from 'react';
+import DropdownSelector from '@/components/Challenge/DropdownSelector';
 import Header from '@/components/shared/Header';
 import { CameraIcon, CancelIcon } from '@public/icons/Challenge/write';
-import React from 'react';
 
 const Write = () => {
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const categories = ['운동', '공부', '취미', '기타'];
+
   return (
     <div className="flex flex-col w-full h-full">
       <Header type="default" title="챌린지 생성" backIcon={<CancelIcon />} />
@@ -19,8 +25,12 @@ const Write = () => {
         </div>
 
         <div>
-          <div>카테고리</div>
-          <div></div>
+          <div className="mb-2 text-bn3">카테고리</div>
+          <DropdownSelector
+            options={categories}
+            selectedOption={selectedCategory}
+            onSelect={setSelectedCategory}
+          />
         </div>
       </div>
     </div>
