@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import LayoutWithNav from './layoutWithNav';
-import { Providers } from './providers';
+import { Providers } from './provider/next-auth';
 
 export const metadata: Metadata = {
   title: 'Chaellimi',

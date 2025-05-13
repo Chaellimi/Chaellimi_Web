@@ -9,6 +9,7 @@ import Link from 'next/link';
 
 interface OwnProps {
   type: 'default' | 'search' | 'searchNoBack' | 'progress' | 'logo' | 'title';
+  backIcon?: React.ReactNode;
   backClick?: string;
   icon?: React.ReactNode;
   iconClick?: string;
@@ -24,6 +25,7 @@ interface OwnProps {
 
 const Header = ({
   type,
+  backIcon,
   backClick,
   icon,
   iconClick,
@@ -48,7 +50,11 @@ const Header = ({
 
   const renderBackButton = () => (
     <Link href={backClick ? backClick : '/'}>
-      <ArrowIcon width="24" height="24" location="left" fill="#1F1F1F" />
+      {backIcon ? (
+        backIcon
+      ) : (
+        <ArrowIcon width="24" height="24" location="left" fill="#1F1F1F" />
+      )}
     </Link>
   );
 

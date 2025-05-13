@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Header from '@/components/shared/Header';
-import { ClockIcon, CancelIocn } from '@public/icons/Challenge';
+import { ClockIcon, CancelIocn } from '@public/icons/Challenge/search';
 import SearchHistory from '@/data/Challenge/Search/SearchHistory.json';
 import { MagnifyingGlassIcon } from '@public/icons/shared';
 

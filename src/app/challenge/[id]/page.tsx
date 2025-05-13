@@ -2,7 +2,7 @@
 
 import ActionSheet from '@/components/shared/ActionSheet';
 import Header from '@/components/shared/Header';
-import { MoreVerticalDotIcon } from '@public/icons/Challenge';
+import { MoreVerticalDotIcon } from '@public/icons/Challenge/id';
 import {
   ArrowIcon,
   BookmarkIcon,
