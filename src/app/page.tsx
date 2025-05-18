@@ -17,7 +17,7 @@ const Home = () => {
 
   return (
     <div className="w-full h-full">
-      <Header type="logo" icon={<PointIcon />} />
+      <Header type="logo" icon={<PointIcon />} iconClick="/point" />
 
       <div className="px-6">
         {/* Search Bar */}
