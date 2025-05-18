@@ -6,7 +6,7 @@ import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { CheckIcon, FilterCheckIcon } from '@public/icons/Challenge';
 
-interface FilterModalProps {
+interface OwnProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
@@ -24,7 +24,7 @@ const FilterModal = ({
   selectedOption,
   onSelect,
   filterKey,
-}: FilterModalProps) => {
+}: OwnProps) => {
   const [period, setPeriod] = useState<[number, number]>([30, 90]);
 
   useEffect(() => {
