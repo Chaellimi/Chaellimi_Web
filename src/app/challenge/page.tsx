@@ -66,11 +66,12 @@ const Challenge = () => {
                 flex items-center justify-center 
                 w-16 text-he pb-[0.44rem] 
                 transition-all duration-300 ease-out
+                border-b
                 hover:cursor-pointer
                 ${
                   item.id === activeCategory
-                    ? 'border-b-2 border-gray-black'
-                    : 'text-gray-400 pb-[0.56rem] '
+                    ? 'border-gray-black text-black'
+                    : 'border-transparent text-gray-400'
                 }
               `}
             onClick={() => setActiveCategory(item.id)}
