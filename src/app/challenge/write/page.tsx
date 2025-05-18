@@ -13,56 +13,62 @@ interface ChallengeData {
   period: string;
   difficulty: string;
   description: string;
-  imgUrl: File | string | null;
 }
 
 const Write = () => {
-  const [challengeData, setChallengeData] = useState<ChallengeData>({
+  const [imgUrl, setImgUrl] = useState<File | null>(null);
+  const [inputs, setInputs] = useState<ChallengeData>({
     category: '',
     title: '',
     period: '',
     difficulty: '',
     description: '',
-    imgUrl: '',
   });
+
   const categories = ['건강', '생산성', '창의성', '학습'];
   const difficulty = ['상', '중', '하'];
 
-  const handleChange = (
-    key: keyof ChallengeData,
-    value: string | File | null
-  ) => {
-    setChallengeData((prev) => ({ ...prev, [key]: value }));
+  const handleChange = (key: keyof ChallengeData, value: string) => {
+    setInputs((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
-    handleChange('imgUrl', file);
+    if (file && file.type.startsWith('image/')) {
+      setImgUrl(file);
+    } else {
+      alert('이미지 파일만 업로드할 수 있습니다.');
+    }
   };
 
   const isValid = () => {
     return (
-      challengeData.category &&
-      challengeData.title &&
-      challengeData.period &&
-      challengeData.difficulty &&
-      challengeData.description &&
-      challengeData.imgUrl
+      inputs.category &&
+      inputs.title &&
+      inputs.period &&
+      inputs.difficulty &&
+      inputs.description &&
+      imgUrl
     );
   };
 
   return (
     <div className="flex flex-col w-full h-full overflow-scroll">
-      <Header type="default" title="챌린지 생성" backIcon={<CancelIcon />} />
+      <Header
+        type="default"
+        title="챌린지 생성"
+        backIcon={<CancelIcon />}
+        backClick="/challenge"
+      />
 
       <div className="flex flex-col w-full gap-5 px-6 mt-5">
         {/* 대표 이미지 */}
         <div className="flex flex-col w-full gap-2">
           <div className="text-bn3">대표 이미지</div>
-          {challengeData.imgUrl && typeof challengeData.imgUrl === 'object' ? (
-            <div className="w-full h-[10.8rem] relative">
+          {imgUrl && typeof imgUrl === 'object' ? (
+            <div className="w-full h-[10.8rem] relative" key={imgUrl.name}>
               <Image
-                src={URL.createObjectURL(challengeData.imgUrl)}
+                src={URL.createObjectURL(imgUrl)}
                 alt="Uploaded Preview"
                 width={200}
                 height={172.8}
@@ -70,7 +76,7 @@ const Write = () => {
               />
               <div
                 className="absolute top-[0.62rem] right-[0.62rem]"
-                onClick={() => handleChange('imgUrl', null)}
+                onClick={() => setImgUrl(null)}
               >
                 <CancelIcon fill="#F7F7F7" />
               </div>
@@ -82,6 +88,7 @@ const Write = () => {
                 type="file"
                 name="ChallengeImg"
                 id="ChallengeImg"
+                accept="image/*"
                 hidden
                 onChange={handleImageChange}
               />
@@ -100,7 +107,7 @@ const Write = () => {
           <div className="text-bn3">카테고리</div>
           <DropdownSelector
             options={categories}
-            selectedOption={challengeData.category}
+            selectedOption={inputs.category}
             onSelect={(category) => handleChange('category', category)}
           />
         </div>
@@ -109,10 +116,8 @@ const Write = () => {
         <div className="flex flex-col gap-2">
           <div className="text-bn3">챌린지 제목</div>
           <Input
-            value={challengeData.title}
-            onChange={(title) =>
-              setChallengeData((prev) => ({ ...prev, title }))
-            }
+            value={inputs.title}
+            onChange={(title) => setInputs((prev) => ({ ...prev, title }))}
             placeholder="챌린지 제목을 입력해주세요"
           />
         </div>
@@ -121,10 +126,8 @@ const Write = () => {
         <div className="flex flex-col gap-2">
           <div className="text-bn3">기간 설정</div>
           <Input
-            value={challengeData.period}
-            onChange={(period) =>
-              setChallengeData((prev) => ({ ...prev, period }))
-            }
+            value={inputs.period}
+            onChange={(period) => setInputs((prev) => ({ ...prev, period }))}
             placeholder="기간을 입력해주세요."
             type="number"
           />
@@ -135,7 +138,7 @@ const Write = () => {
           <div className="text-bn3">난이도</div>
           <DropdownSelector
             options={difficulty}
-            selectedOption={challengeData.difficulty}
+            selectedOption={inputs.difficulty}
             onSelect={(difficulty) => handleChange('difficulty', difficulty)}
           />
         </div>
@@ -144,9 +147,9 @@ const Write = () => {
         <div className="flex flex-col gap-2">
           <div className="text-bn3">자세한 설명</div>
           <Input
-            value={challengeData.description}
+            value={inputs.description}
             onChange={(description) =>
-              setChallengeData((prev) => ({ ...prev, description }))
+              setInputs((prev) => ({ ...prev, description }))
             }
             placeholder={`챌린지에 대한 자세한 설명을 작성해 주세요.\n\n\n(예시: "하루 30분 운동을 30일 동안 꾸준히 실천하는 챌린지입니다.")`}
             type="textarea"
