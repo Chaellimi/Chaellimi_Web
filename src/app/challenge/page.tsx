@@ -54,6 +54,7 @@ const Challenge = () => {
         icon={<MagnifyingGlassIcon width="24" height="24" fill="#1F1F1F" />}
         iconClick={'/challenge/search'}
         icon2={<PlusIcon />}
+        iconClick2="/challenge/write"
       />
 
       {/* Category Tabs */}
