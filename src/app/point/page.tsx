@@ -14,6 +14,12 @@ const PointCategory = [
 const Point = () => {
   const [activeCategory, setActiveCategory] = React.useState(1);
 
+  const filteredPoints = PointData.Point.filter((item) => {
+    if (activeCategory === 2) return item.point < 0;
+    if (activeCategory === 5) return item.point > 0;
+    return true;
+  });
+
   return (
     <div className="flex flex-col items-center w-full h-full">
       <Header type="default" backClick="/" title="포인트" />
@@ -48,8 +54,9 @@ const Point = () => {
             ))}
           </div>
         </div>
-        <div className="">
-          {PointData.Point.map((item) => (
+
+        <div>
+          {filteredPoints.map((item) => (
             <div
               className="flex items-center justify-between w-full py-5"
               key={item.id}
@@ -60,7 +67,9 @@ const Point = () => {
               </div>
               <div className="flex flex-col items-end justify-center gap-2">
                 <div
-                  className={`text-bn2 ${item.point > 0 ? 'text-primary-default' : 'text-gray-black'}`}
+                  className={`text-bn2 ${
+                    item.point > 0 ? 'text-primary-default' : 'text-gray-black'
+                  }`}
                 >
                   {item.point.toLocaleString()}P
                 </div>
