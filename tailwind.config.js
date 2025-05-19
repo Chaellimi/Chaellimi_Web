@@ -45,6 +45,15 @@ module.exports = {
         },
       },
       fontSize: {
+        Lg: [
+          '44px',
+          {
+            lineHeight: '140%',
+            letterSpacing: '-0.05em',
+            fontWeight: '600',
+            fontFamily: 'NotoSans-SemiBlod',
+          },
+        ],
         h1: [
           '24px',
           {

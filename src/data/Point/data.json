@@ -1,0 +1,40 @@
+{
+  "Point": [
+    {
+      "id": 1,
+      "date": "2024.01.01",
+      "title": "Challenge 1",
+      "point": 1000,
+      "totalPoint": 10000,
+      "createdAt": "2023-10-01T12:00:00Z",
+      "updatedAt": "2023-10-02T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "date": "2024.01.02",
+      "title": "Challenge 2",
+      "point": 2000,
+      "totalPoint": 12000,
+      "createdAt": "2023-10-03T12:00:00Z",
+      "updatedAt": "2023-10-04T12:00:00Z"
+    },
+    {
+      "id": 3,
+      "date": "2024.01.03",
+      "title": "Challenge 3",
+      "point": 3000,
+      "totalPoint": 15000,
+      "createdAt": "2023-10-05T12:00:00Z",
+      "updatedAt": "2023-10-06T12:00:00Z"
+    },
+    {
+      "id": 4,
+      "date": "2024.01.03",
+      "title": "Challenge 3",
+      "point": -3000,
+      "totalPoint": 15000,
+      "createdAt": "2023-10-05T12:00:00Z",
+      "updatedAt": "2023-10-06T12:00:00Z"
+    }
+  ]
+}
