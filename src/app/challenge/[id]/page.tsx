@@ -1,6 +1,7 @@
 'use client';
 
 import ActionSheet from '@/components/shared/ActionSheet';
+import BottomButton from '@/components/shared/BottomButton';
 import Header from '@/components/shared/Header';
 import SelectModal from '@/components/shared/SelectModal';
 import { MoreVerticalDotIcon } from '@public/icons/Challenge/id';
@@ -221,15 +222,13 @@ const ChallengeSingle = () => {
           />
         </div>
         <div className="h-7 w-[0.0625rem] bg-gray-200" />
-        <button
-          className="flex items-center justify-center w-full h-[3.25rem] bg-primary-default rounded-xl text-bn1 text-gray-white 
-        "
+        <BottomButton
+          title="참여하기"
           onClick={() => {
             setIsOpenConfirmModal(true);
           }}
-        >
-          참여하기
-        </button>
+          disabled="false"
+        />
       </div>
 
       {isOpenConfirmModal && (
