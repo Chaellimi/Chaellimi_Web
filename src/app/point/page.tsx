@@ -1,8 +1,9 @@
 'use client';
 
+import React from 'react';
 import Header from '@/components/shared/Header';
 import { PointIcon } from '@public/icons/Challenge/point';
-import React from 'react';
+import PointData from '@/data/Point/data.json';
 
 const PointCategory = [
   { id: 1, name: '전체' },
@@ -45,7 +46,29 @@ const Point = () => {
             ))}
           </div>
         </div>
-        <div className="">사용 내역이 없습니다.</div>
+        <div className="">
+          {PointData.Point.map((item) => (
+            <div
+              className="flex items-center justify-between w-full py-5"
+              key={item.id}
+            >
+              <div className="flex items-center gap-[0.88rem]">
+                <div className="text-gray-400 text-fn">{item.date}</div>
+                <div className="text-b3">{item.title}</div>
+              </div>
+              <div className="flex flex-col items-end justify-center gap-2">
+                <div
+                  className={`text-bn2 ${item.point > 0 ? 'text-primary-default' : 'text-gray-black'}`}
+                >
+                  {item.point.toLocaleString()}P
+                </div>
+                <div className="text-gray-400 text-c1">
+                  {item.totalPoint.toLocaleString()}P
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
