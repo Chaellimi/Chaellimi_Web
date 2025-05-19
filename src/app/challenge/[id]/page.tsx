@@ -15,8 +15,9 @@ import {
 } from '@public/icons/shared';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 
 const ChallengeSingle = () => {
   const router = useRouter();
@@ -26,9 +27,18 @@ const ChallengeSingle = () => {
   const imgUrl =
     'https://img.freepik.com/free-photo/man-jump-through-gap-hill-man-jumping-cliff-blue-sky-business-concept-idea_1323-185.jpg?semt=ais_hybrid&w=740';
 
-  const [actionSheet, setActionSheet] = React.useState(false);
-  const [isBookmarked, setIsBookmarked] = React.useState(false);
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = React.useState(false);
+  const [actionSheet, setActionSheet] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
+
+  useStatusBarBridge(
+    {
+      backgroundColor: '#FFF',
+      translucent: true,
+      bottomBackgroundColor: '#FFF',
+    },
+    [isOpenConfirmModal]
+  );
 
   return (
     <div className="relative flex flex-col w-full h-full text-gray-black">
@@ -215,7 +225,12 @@ const ChallengeSingle = () => {
       </div>
 
       <div className="flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 border-t bg-gray-white border-gray-50">
-        <div onClick={() => setIsBookmarked(!isBookmarked)}>
+        <div
+          onClick={() => {
+            setIsBookmarked(!isBookmarked);
+            router.push(`/challenge/${id}/progress`);
+          }}
+        >
           <BookmarkIcon
             width="24"
             height="24"
