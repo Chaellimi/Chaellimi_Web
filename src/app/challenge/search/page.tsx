@@ -1,14 +1,14 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/shared/Header';
 import { ClockIcon, CancelIocn } from '@public/icons/Challenge/search';
 import SearchHistory from '@/data/Challenge/Search/SearchHistory.json';
 import { MagnifyingGlassIcon } from '@public/icons/shared';
 
 const ChallengeSearch = () => {
-  const [isSearchbarVisible, setIsSearchbarVisiable] = React.useState(false);
-  const [searchText, setSearchText] = React.useState('');
+  const [isSearchbarVisible, setIsSearchbarVisiable] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
   return (
     <div className="flex flex-col w-full h-full text-gray-black">

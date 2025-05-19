@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/shared/Header';
 import { PointIcon } from '@public/icons/Challenge/point';
 import PointData from '@/data/Point/data.json';
@@ -12,7 +12,7 @@ const PointCategory = [
 ];
 
 const Point = () => {
-  const [activeCategory, setActiveCategory] = React.useState(1);
+  const [activeCategory, setActiveCategory] = useState(1);
 
   const filteredPoints = PointData.Point.filter((item) => {
     if (activeCategory === 2) return item.point < 0;
