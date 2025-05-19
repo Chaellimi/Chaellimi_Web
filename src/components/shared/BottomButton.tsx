@@ -20,7 +20,7 @@ const BottomButton = ({ title, onClick, disabled }: OwnProps) => {
                 : null
         }`}
       onClick={onClick}
-      disabled={disabled === 'false' || 'progress' ? false : true}
+      disabled={disabled !== 'false' && disabled !== 'progress'}
     >
       {disabled === 'progress' ? '진행중' : title}
     </button>
