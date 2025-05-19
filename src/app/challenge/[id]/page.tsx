@@ -16,8 +16,10 @@ import {
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 const ChallengeSingle = () => {
+  const router = useRouter();
   const difficulty = 'Hard';
   const { id } = useParams();
   console.log(id);
@@ -238,7 +240,9 @@ const ChallengeSingle = () => {
           cancel={() => {
             setIsOpenConfirmModal(false);
           }}
-          confirm={() => {}}
+          confirm={() => {
+            router.push('/challenge/finish');
+          }}
         />
       )}
     </div>
