@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { CheckIcon, FilterCheckIcon } from '@public/icons/Challenge';
+import '@/style/FliterSlider.css';
 
 interface OwnProps {
   isOpen: boolean;
