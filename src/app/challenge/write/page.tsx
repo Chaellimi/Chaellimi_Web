@@ -6,6 +6,7 @@ import Header from '@/components/shared/Header';
 import { CameraIcon, CancelIcon } from '@public/icons/Challenge/write';
 import Input from '@/components/Challenge/Input';
 import Image from 'next/image';
+import BottomButton from '@/components/shared/BottomButton';
 
 interface ChallengeData {
   category: string;
@@ -158,16 +159,11 @@ const Write = () => {
       </div>
 
       <div className="w-full px-6 pt-3 border-t h-fit border-gray-50 mt-[0.62rem]">
-        <button
-          className={`w-full h-[3.25rem] px-6 py-[0.62rem] text-bn1 rounded-xl ${
-            isValid()
-              ? 'bg-primary-default text-gray-white'
-              : 'bg-gray-100 text-gray-600'
-          }`}
-          disabled={!isValid()}
-        >
-          등록
-        </button>
+        <BottomButton
+          title="등록"
+          onClick={() => {}}
+          disabled={isValid() ? 'false' : 'true'}
+        />
       </div>
     </div>
   );

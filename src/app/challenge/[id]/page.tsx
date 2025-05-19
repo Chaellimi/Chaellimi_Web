@@ -1,7 +1,9 @@
 'use client';
 
 import ActionSheet from '@/components/shared/ActionSheet';
+import BottomButton from '@/components/shared/BottomButton';
 import Header from '@/components/shared/Header';
+import SelectModal from '@/components/shared/SelectModal';
 import { MoreVerticalDotIcon } from '@public/icons/Challenge/id';
 import {
   ArrowIcon,
@@ -14,8 +16,10 @@ import {
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 const ChallengeSingle = () => {
+  const router = useRouter();
   const difficulty = 'Hard';
   const { id } = useParams();
   console.log(id);
@@ -24,6 +28,7 @@ const ChallengeSingle = () => {
 
   const [actionSheet, setActionSheet] = React.useState(false);
   const [isBookmarked, setIsBookmarked] = React.useState(false);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = React.useState(false);
 
   return (
     <div className="relative flex flex-col w-full h-full text-gray-black">
@@ -219,13 +224,27 @@ const ChallengeSingle = () => {
           />
         </div>
         <div className="h-7 w-[0.0625rem] bg-gray-200" />
-        <button
-          className="flex items-center justify-center w-full h-[3.25rem] bg-primary-default rounded-xl text-bn1 text-gray-white 
-        "
-        >
-          참여하기
-        </button>
+        <BottomButton
+          title="참여하기"
+          onClick={() => {
+            setIsOpenConfirmModal(true);
+          }}
+          disabled="false"
+        />
       </div>
+
+      {isOpenConfirmModal && (
+        <SelectModal
+          title="이 챌린지에 참여하시겠습니까?"
+          description="내일부터 챌린지가 시작됩니다."
+          cancel={() => {
+            setIsOpenConfirmModal(false);
+          }}
+          confirm={() => {
+            router.push('/challenge/finish');
+          }}
+        />
+      )}
     </div>
   );
 };
