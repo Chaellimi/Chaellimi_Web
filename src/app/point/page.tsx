@@ -15,18 +15,20 @@ const Point = () => {
   const [activeCategory, setActiveCategory] = React.useState(1);
 
   return (
-    <div className="flex flex-col items-center w-full h-full px-6">
+    <div className="flex flex-col items-center w-full h-full">
       <Header type="default" backClick="/" title="포인트" />
 
-      <div className="flex flex-col w-full gap-1 p-6 bg-gray-50 rounded-xl mt-[0.62rem]">
-        <div className="text-b3">보유 포인트</div>
-        <div className="flex items-center gap-4 text-Lg">
-          <PointIcon />
-          9,999P
+      <div className="w-full px-6">
+        <div className="flex flex-col w-full gap-1 p-6 bg-gray-50 rounded-xl mt-[0.62rem]">
+          <div className="text-b3">보유 포인트</div>
+          <div className="flex items-center gap-4 text-Lg">
+            <PointIcon />
+            9,999P
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-col w-full mt-5">
+      <div className="flex flex-col w-full px-6 mt-5">
         <div className="flex items-center justify-between w-full h-8">
           <div className="flex items-center h-full text-b2">적립내역</div>
           <div className="flex h-full gap-2">
