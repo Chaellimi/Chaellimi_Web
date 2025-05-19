@@ -2,6 +2,7 @@
 
 import ActionSheet from '@/components/shared/ActionSheet';
 import Header from '@/components/shared/Header';
+import SelectModal from '@/components/shared/SelectModal';
 import { MoreVerticalDotIcon } from '@public/icons/Challenge/id';
 import {
   ArrowIcon,
@@ -24,6 +25,7 @@ const ChallengeSingle = () => {
 
   const [actionSheet, setActionSheet] = React.useState(false);
   const [isBookmarked, setIsBookmarked] = React.useState(false);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = React.useState(false);
 
   return (
     <div className="relative flex flex-col w-full h-full text-gray-black">
@@ -222,10 +224,24 @@ const ChallengeSingle = () => {
         <button
           className="flex items-center justify-center w-full h-[3.25rem] bg-primary-default rounded-xl text-bn1 text-gray-white 
         "
+          onClick={() => {
+            setIsOpenConfirmModal(true);
+          }}
         >
           참여하기
         </button>
       </div>
+
+      {isOpenConfirmModal && (
+        <SelectModal
+          title="이 챌린지에 참여하시겠습니까?"
+          description="내일부터 챌린지가 시작됩니다."
+          cancel={() => {
+            setIsOpenConfirmModal(false);
+          }}
+          confirm={() => {}}
+        />
+      )}
     </div>
   );
 };
