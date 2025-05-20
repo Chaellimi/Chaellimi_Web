@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import { authOptions } from '@/lib/OAuth/googleAuthOptions';
+import '@/database/index';
 
 const handler = NextAuth(authOptions);
 

@@ -1,0 +1,23 @@
+import Users from './models/User';
+import Point from './models/Point';
+import Transactions from './models/Transactions';
+import Challenge from './models/Challenge';
+import ChallengeParticipants from './models/ChallengeParticipants';
+
+Users.hasOne(Point, { foreignKey: 'userId' });
+Point.belongsTo(Users, { foreignKey: 'userId' });
+
+Users.hasMany(Transactions, { foreignKey: 'userId' });
+Transactions.belongsTo(Users, { foreignKey: 'userId' });
+
+Users.hasMany(Challenge, { foreignKey: 'userId' });
+Challenge.belongsTo(Users, { foreignKey: 'userId' });
+
+Users.belongsToMany(Challenge, {
+  through: ChallengeParticipants,
+  foreignKey: 'userId',
+});
+Challenge.belongsToMany(Users, {
+  through: ChallengeParticipants,
+  foreignKey: 'challengeId',
+});
