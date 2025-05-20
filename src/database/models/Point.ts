@@ -5,7 +5,7 @@ import {
   InferAttributes,
   InferCreationAttributes,
 } from 'sequelize';
-import { sequelize } from '../index';
+import { sequelize } from '../sequelize';
 
 interface PointModel
   extends Model<
@@ -25,7 +25,10 @@ const Point = sequelize.define<PointModel>(
     totalPoint: { type: DataTypes.STRING, allowNull: false },
   },
   {
-    timestamps: false,
+    paranoid: true,
+    charset: 'utf8',
+    collate: 'utf8_general_ci',
+    timestamps: true,
     tableName: 'Point',
   }
 );
