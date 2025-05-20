@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { PlusIcon, ResetIcon } from '@public/icons/Challenge';
 import FilterModal from '@/components/Challenge/FilterModal';
 import ChallengeData from '@/data/Challenge/ChallengeData.json';
@@ -23,13 +23,13 @@ const filterOptions = {
 };
 
 const Challenge = () => {
-  const [activeCategory, setActiveCategory] = React.useState(1);
-  const [filters, setFilters] = React.useState({
+  const [activeCategory, setActiveCategory] = useState(1);
+  const [filters, setFilters] = useState({
     기간: '전체',
     난이도: '전체',
     정렬: '인기순',
   });
-  const [activeFilterKey, setActiveFilterKey] = React.useState<
+  const [activeFilterKey, setActiveFilterKey] = useState<
     null | keyof typeof filters
   >(null);
 

@@ -1,0 +1,27 @@
+.range-slider__thumb {
+  width: 32px !important;
+  height: 32px !important;
+  background: url('../../public/images/ProgressHand.png') transparent !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  transform: translate(-24px, -50%) !important;
+  top: 50% !important;
+}
+
+.range-slider {
+  background-color: #fff !important;
+}
+
+.range-slider__track {
+  background-color: #fff !important;
+}
+
+.range-slider__range {
+  left: 0 !important;
+  border-radius: 4px !important;
+  background-color: #ff6a00 !important;
+}
+
+.range-slider__thumb:nth-child(1) {
+  display: none !important;
+}

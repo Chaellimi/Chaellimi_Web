@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect } from 'react';
 
 interface OwnPorps {
   title: string;
@@ -8,6 +10,19 @@ interface OwnPorps {
 }
 
 const SelectModal = ({ title, description, cancel, confirm }: OwnPorps) => {
+  useEffect(() => {
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        type: 'SET_STATUS_BAR',
+        payload: {
+          backgroundColor: '#0000004D',
+          translucent: true,
+          bottomBackgroundColor: '#0000004D',
+        },
+      })
+    );
+  }, []);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
       <div className="absolute inset-0 z-10 bg-black/30" />

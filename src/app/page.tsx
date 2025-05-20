@@ -2,7 +2,7 @@
 
 import { PointIcon } from '@public/icons/Home';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import Banner from '@public/images/HomeBanner.png';
 import ActiveChallenge from '@/components/Home/ActiveChallenge';
 import HotChallenge from '@/components/Home/HotChallenge';
@@ -12,8 +12,8 @@ import Header from '@/components/shared/Header';
 import { ArrowIcon } from '@public/icons/shared';
 
 const Home = () => {
-  const [isSearchbarVisible, setIsSearchbarVisiable] = React.useState(false);
-  const [searchText, setSearchText] = React.useState('');
+  const [isSearchbarVisible, setIsSearchbarVisiable] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
   return (
     <div className="w-full h-full">

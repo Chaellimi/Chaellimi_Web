@@ -9,7 +9,7 @@ interface OwnProps {
 const BottomButton = ({ title, onClick, disabled }: OwnProps) => {
   return (
     <button
-      className={`flex items-center justify-center w-full h-[3.25rem] rounded-xl text-bn1
+      className={`flex items-center justify-center w-full h-[3.25rem] min-h-[3.25rem] rounded-xl text-bn1
         ${
           disabled === 'true'
             ? 'bg-gray-100 text-gray-600'
