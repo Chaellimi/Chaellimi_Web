@@ -9,8 +9,12 @@ import { CoinIcon, InfoIcon } from '@public/icons/Challenge/progress';
 import '@/style/ProgressSlider.css';
 import { ArrowIcon } from '@public/icons/shared';
 import BottomButton from '@/components/shared/BottomButton';
+import { useParams, useRouter } from 'next/navigation';
 
 const Progress = () => {
+  const router = useRouter();
+  const { id } = useParams();
+
   useStatusBarBridge({
     backgroundColor: '#FFF0E5',
     translucent: true,
@@ -18,9 +22,14 @@ const Progress = () => {
   });
 
   return (
-    <div className="flex flex-col w-full h-full overflow-y-auto ">
+    <div className="flex flex-col w-full h-full overflow-y-auto">
       <div className="bg-primary-light">
-        <Header type="default" title="진행사항" icon={<InfoIcon />} />
+        <Header
+          type="default"
+          title="진행사항"
+          icon={<InfoIcon />}
+          backClick={`/challenge/${id}`}
+        />
 
         <div className="flex flex-col w-full gap-5 px-6 pt-[0.62rem] pb-5 mt-4 bg-primary-light">
           <div>
@@ -65,7 +74,12 @@ const Progress = () => {
               </div>
             </div>
 
-            <button className="flex items-center justify-center rounded-[1.25rem] bg-gray-white w-fit px-4 py-[0.62rem] text-bn3 text-gray-600">
+            <button
+              className="flex items-center justify-center rounded-[1.25rem] bg-gray-white w-fit px-4 py-[0.62rem] text-bn3 text-gray-600"
+              onClick={() => {
+                router.push(`/challenge/${id}/all`);
+              }}
+            >
               전체보기
               <ArrowIcon
                 location="right"
