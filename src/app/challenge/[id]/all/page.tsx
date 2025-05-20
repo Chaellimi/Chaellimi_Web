@@ -4,9 +4,16 @@ import React from 'react';
 import Header from '@/components/shared/Header';
 import { CoinIcon, InfoIcon } from '@public/icons/Challenge/progress';
 import { useParams } from 'next/navigation';
+import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 
 const ALl = () => {
   const { id } = useParams();
+
+  useStatusBarBridge({
+    backgroundColor: '#FFF0E5',
+    translucent: true,
+    bottomBackgroundColor: '#FFF0E5',
+  });
 
   return (
     <div className="flex flex-col w-full h-full pb-4 overflow-y-auto bg-primary-light gap-[0.62rem]">

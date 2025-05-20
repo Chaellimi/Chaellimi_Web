@@ -18,7 +18,7 @@ const Progress = () => {
   useStatusBarBridge({
     backgroundColor: '#FFF0E5',
     translucent: true,
-    bottomBackgroundColor: '#FFF0E5',
+    bottomBackgroundColor: '#FFF',
   });
 
   return (
