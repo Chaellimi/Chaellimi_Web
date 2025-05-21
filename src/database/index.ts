@@ -1,13 +1,23 @@
-import './associations'; // 🔁 관계 정의 분리
 import { sequelize } from './sequelize';
 
-sequelize
-  .authenticate()
-  .then(async () => {
-    console.log('-------------------- ✅ DB 연결 성공 --------------------');
+import './models/Challenge';
+import './models/ChallengeParticipants';
+import './models/File';
+import './models/Point';
+import './models/Transactions';
+import './models/User';
+
+import './associations';
+
+export const connectToDatabase = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('✅ DB 연결 성공');
+
     await sequelize.sync({ alter: true });
-  })
-  .catch((error) => {
-    console.error('-------------------- ❌ DB 연결 실패 --------------------');
-    console.log(error);
-  });
+    console.log('✅ 모델 동기화 완료');
+  } catch (error) {
+    console.error('❌ DB 연결 또는 동기화 실패');
+    console.error(error);
+  }
+};
