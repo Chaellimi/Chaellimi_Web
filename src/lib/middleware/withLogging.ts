@@ -1,7 +1,10 @@
 import logger from '@/lib/logger';
+import { NextRequest, NextResponse } from 'next/server';
 
-export function withLogging(handler: (req: Request) => Promise<Response>) {
-  return async (req: Request) => {
+export function withLogging(
+  handler: (req: NextRequest) => Promise<NextResponse>
+) {
+  return async (req: NextRequest) => {
     const start = Date.now();
 
     const forwardedFor = req.headers.get('x-forwarded-for');
