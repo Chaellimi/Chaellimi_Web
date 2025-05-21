@@ -3,6 +3,7 @@ import Point from './models/Point';
 import Transactions from './models/Transactions';
 import Challenge from './models/Challenge';
 import ChallengeParticipants from './models/ChallengeParticipants';
+import './models/File';
 
 Users.hasOne(Point, { foreignKey: 'userId' });
 Point.belongsTo(Users, { foreignKey: 'userId' });
