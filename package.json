@@ -38,6 +38,7 @@
     "react-range-slider-input": "^3.2.1",
     "sequelize": "^6.37.7",
     "tailwind-scrollbar-hide": "^2.0.0",
+    "uuid": "^11.1.0",
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0"
   },
