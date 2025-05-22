@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
 import Challenge from '@/database/models/Challenge';
@@ -38,15 +38,14 @@ async function postHandler(req: NextRequest) {
 
     if (validationResponse) return validationResponse;
 
-    const user = await getUserFromRequest(req);
+    const user = await getUserFromRequest();
+
     if (!user) {
-      return NextResponse.json(
-        resUtil.successFalse({
-          status: 401,
-          message: 'Unauthorized',
-          data: {},
-        })
-      );
+      return resUtil.successFalse({
+        status: 401,
+        message: 'Unauthorized',
+        data: {},
+      });
     }
 
     const newChallenge = await Challenge.create({
@@ -59,16 +58,14 @@ async function postHandler(req: NextRequest) {
       imgURL,
     });
 
-    return NextResponse.json(
-      resUtil.successTrue({
-        status: 201,
-        message: '챌린지 생성 성공',
-        data: newChallenge,
-      })
-    );
+    return resUtil.successTrue({
+      status: 201,
+      message: '챌린지 생성 성공',
+      data: newChallenge,
+    });
   } catch (error) {
     console.error(error);
-    return NextResponse.json(resUtil.unknownError);
+    return resUtil.unknownError({});
   }
 }
 
