@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/OAuth/googleAuthOptions';
 import Users from '@/database/models/User';
@@ -11,9 +9,7 @@ export interface SessionUser {
   image?: string;
 }
 
-export async function getUserFromRequest(
-  req: NextRequest
-): Promise<SessionUser | null> {
+export async function getUserFromRequest(): Promise<SessionUser | null> {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user || !session.user.userId) {
