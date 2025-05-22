@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import resUtil from '@/lib/utils/responseUtil';
-import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
 
 async function handler() {
@@ -18,4 +17,4 @@ async function handler() {
   }
 }
 
-export const GET = withLogging(withAuth(handler));
+export const GET = withLogging(handler);
