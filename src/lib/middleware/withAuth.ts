@@ -8,13 +8,11 @@ export function withAuth(handler: (req: NextRequest) => Promise<NextResponse>) {
     const session = await getServerSession(authOptions);
 
     if (!session) {
-      return NextResponse.json(
-        resUtil.successFalse({
-          status: 401,
-          message: 'Unauthorized',
-          data: { session },
-        })
-      );
+      return resUtil.successFalse({
+        status: 401,
+        message: 'Unauthorized',
+        data: {},
+      });
     }
 
     return handler(req);
