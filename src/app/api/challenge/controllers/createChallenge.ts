@@ -5,15 +5,7 @@ import Challenge from '@/database/models/Challenge';
 import { validateRequiredFields } from '@/lib/utils/validateRequiredFields';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
 import resUtil from '@/lib/utils/responseUtil';
-
-interface ChallengeData {
-  title: string;
-  description: string;
-  category: string;
-  difficulty: 'easy' | 'normal' | 'hard';
-  day: string;
-  imgURL: string;
-}
+import { ChallengeData } from '../Challenge';
 
 async function postHandler(req: NextRequest) {
   try {
