@@ -6,3 +6,6 @@ export const GET = GetChallenge;
 
 import { DeleteChallenge } from './controllers/deleteChallenge';
 export const DELETE = DeleteChallenge;
+
+import { UpdateChallenge } from './controllers/updateChallenge';
+export const PUT = UpdateChallenge;
