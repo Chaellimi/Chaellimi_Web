@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import resUtil from '@/lib/utils/responseUtil';
 import { withLogging } from '@/lib/middleware/withLogging';
+import logger from '@/lib/logger';
 
 async function handler() {
   try {
@@ -12,7 +13,7 @@ async function handler() {
       })
     );
   } catch (error) {
-    console.log(error);
+    logger.error('API Test handler error:', { error });
     return NextResponse.json(resUtil.unknownError);
   }
 }
