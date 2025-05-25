@@ -5,3 +5,13 @@ declare module 'next' {
     session?: Session;
   }
 }
+
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      userId: number;
+      name: string;
+      image: string;
+    };
+  }
+}

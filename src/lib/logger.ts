@@ -4,7 +4,7 @@ import path from 'path';
 import fs from 'fs';
 
 const logDir = path.join(process.cwd(), 'logs');
-if (!fs.existsSync(logDir)) fs.mkdirSync(logDir);
+if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true });
 
 const logFormat = format.combine(
   format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),

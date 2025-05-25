@@ -9,7 +9,8 @@
     "lint": "next lint && yarn eslint ./src --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "next lint && eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "syncdb": "tsx scripts/syncdb.ts"
   },
   "lint-staged": {
     "**/*.(ts|tsx)": [
@@ -26,6 +27,7 @@
   },
   "dependencies": {
     "classnames": "^2.5.1",
+    "dotenv": "^16.5.0",
     "framer-motion": "^12.7.4",
     "mysql2": "^3.14.0",
     "next": "15.3.0",
@@ -38,6 +40,7 @@
     "react-range-slider-input": "^3.2.1",
     "sequelize": "^6.37.7",
     "tailwind-scrollbar-hide": "^2.0.0",
+    "uuid": "^11.1.0",
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0"
   },
@@ -70,6 +73,7 @@
     "prettier": "^3.5.3",
     "tailwindcss": "3",
     "ts-node": "^10.9.2",
+    "tsx": "^4.19.4",
     "typescript": "^5"
   }
 }
