@@ -3,6 +3,7 @@ import Point from './models/Point';
 import Transactions from './models/Transactions';
 import Challenge from './models/Challenge';
 import ChallengeParticipants from './models/ChallengeParticipants';
+import Bookmark from './models/Bookmark';
 import './models/File';
 
 Users.hasOne(Point, { foreignKey: 'userId' });
@@ -20,5 +21,16 @@ Users.belongsToMany(Challenge, {
 });
 Challenge.belongsToMany(Users, {
   through: ChallengeParticipants,
+  foreignKey: 'challengeId',
+});
+
+Users.belongsToMany(Challenge, {
+  through: Bookmark,
+  as: 'Bookmarks',
+  foreignKey: 'userId',
+});
+Challenge.belongsToMany(Users, {
+  through: Bookmark,
+  as: 'BookmarkedUsers',
   foreignKey: 'challengeId',
 });
