@@ -12,7 +12,6 @@ async function getHandler(): Promise<NextResponse> {
       where: { userId: user?.id },
       attributes: ['totalPoint'],
     });
-    console.log(point);
     return resUtil.successTrue({
       data: point || { totalPoint: 0 },
     });
