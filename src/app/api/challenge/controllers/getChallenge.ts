@@ -20,11 +20,36 @@ async function getHandler(req: NextRequest) {
       where.day = { [Op.lte]: Number(dayEnd) };
     }
 
+    const validDifficulties = ['easy', 'normal', 'hard'];
+    const validCategories = [
+      'Health',
+      'Productivity',
+      'Creativity',
+      'Learning',
+    ];
+
     if (searchParams.has('category')) {
-      where.category = searchParams.get('category');
+      const category = searchParams.get('category');
+      if (category === null || !validCategories.includes(category)) {
+        return resUtil.successFalse({
+          status: 400,
+          message: '유효하지 않은 카테고리입니다.',
+          data: {},
+        });
+      }
+      where.category = category;
     }
+
     if (searchParams.has('difficulty')) {
-      where.difficulty = searchParams.get('difficulty');
+      const difficulty = searchParams.get('difficulty');
+      if (difficulty === null || !validDifficulties.includes(difficulty)) {
+        return resUtil.successFalse({
+          status: 400,
+          message: '유효하지 않은 난이도입니다.',
+          data: {},
+        });
+      }
+      where.difficulty = difficulty;
     }
 
     const page = searchParams.get('page');

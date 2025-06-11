@@ -3,7 +3,7 @@ import Point from './models/Point';
 import Transactions from './models/Transactions';
 import Challenge from './models/Challenge';
 import ChallengeParticipants from './models/ChallengeParticipants';
-import './models/File';
+import File from './models/File';
 
 Users.hasOne(Point, { foreignKey: 'userId' });
 Point.belongsTo(Users, { foreignKey: 'userId' });
@@ -22,3 +22,6 @@ Challenge.belongsToMany(Users, {
   through: ChallengeParticipants,
   foreignKey: 'challengeId',
 });
+
+File.belongsTo(Users, { foreignKey: 'userId', as: 'user' });
+Users.hasMany(File, { foreignKey: 'userId', as: 'files' });
