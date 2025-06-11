@@ -3,17 +3,21 @@ import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
 import resUtil from '@/lib/utils/responseUtil';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-async function getHandler(): Promise<NextResponse> {
-  const user = await getUserFromRequest();
+async function getHandler(req: NextRequest): Promise<NextResponse> {
   try {
-    const point = await Transactions.findAll({
-      where: { userId: user?.id },
-    });
-    return resUtil.successTrue({
-      data: point,
-    });
+    const user = await getUserFromRequest();
+    const type = req.nextUrl.searchParams.get('type');
+
+    const where = {
+      userId: user?.id,
+      ...(type === 'deposit' || type === 'withdrawal' ? { type } : {}),
+    };
+
+    const transactions = await Transactions.findAll({ where });
+
+    return resUtil.successTrue({ data: transactions });
   } catch (error) {
     console.error(error);
     return resUtil.unknownError({});
