@@ -31,6 +31,18 @@ const resUtil = {
     );
   },
 
+  unauthorized: ({ data = {} }: OwnProps) => {
+    return NextResponse.json(
+      {
+        status: 401,
+        success: false,
+        message: 'Unauthorized',
+        data,
+      },
+      { status: 401 }
+    );
+  },
+
   unknownError: ({ data = {} }: OwnProps) => {
     return NextResponse.json(
       {
