@@ -14,7 +14,6 @@ async function getHandler(): Promise<NextResponse> {
     });
     console.log(point);
     return resUtil.successTrue({
-      message: 'Point retrieved successfully',
       data: point || { totalPoint: 0 },
     });
   } catch (error) {
