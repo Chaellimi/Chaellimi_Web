@@ -31,13 +31,8 @@ async function postHandler(req: NextRequest) {
     if (validationResponse) return validationResponse;
 
     const user = await getUserFromRequest();
-
     if (!user) {
-      return resUtil.successFalse({
-        status: 401,
-        message: 'Unauthorized',
-        data: {},
-      });
+      return resUtil.unauthorized({});
     }
 
     const newChallenge = await Challenge.create({
