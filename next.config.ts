@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
       'i.pinimg.com',
       'lh3.googleusercontent.com',
       'chaellimi.jamkris.kro.kr',
-      'localhost:3000',
+      'localhost',
     ],
   },
   reactStrictMode: true,
