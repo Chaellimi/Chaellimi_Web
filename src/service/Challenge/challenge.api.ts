@@ -1,4 +1,4 @@
-import { ChallengFilter } from '@/types/Challenge';
+import { ChallengeWriteType, ChallengFilter } from '@/types/Challenge';
 import axios from 'axios';
 
 const getChallenge = async ({
@@ -15,6 +15,26 @@ const getChallenge = async ({
   return data;
 };
 
-const API = { getChallenge };
+const postChallenge = async ({
+  imgURL,
+  category,
+  title,
+  day,
+  difficulty,
+  description,
+}: ChallengeWriteType) => {
+  const { data } = await axios.post('/api/challenge', {
+    imgURL,
+    category,
+    title,
+    day,
+    difficulty,
+    description,
+  });
+
+  return data;
+};
+
+const API = { getChallenge, postChallenge };
 
 export default API;
