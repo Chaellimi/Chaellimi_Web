@@ -11,11 +11,11 @@ import { useGetChallenge } from '@/service/Challenge/challenge.query';
 import Loading from '@/components/shared/Loading';
 
 const challengeCategories = [
-  { id: 1, name: '전체' },
-  { id: 2, name: '건강' },
-  { id: 3, name: '생산성' },
-  { id: 4, name: '창의성' },
-  { id: 5, name: '학습' },
+  { id: 1, name: '전체', apiValue: undefined },
+  { id: 2, name: '건강', apiValue: 'Health' },
+  { id: 3, name: '생산성', apiValue: 'Productivity' },
+  { id: 4, name: '창의성', apiValue: 'Creativity' },
+  { id: 5, name: '학습', apiValue: 'Learning' },
 ];
 
 const filterOptions = {
@@ -35,11 +35,10 @@ const Challenge = () => {
     null | keyof typeof filters
   >(null);
 
-  const categoryName = challengeCategories.find(
+  const mappedCategory = challengeCategories.find(
     (c) => c.id === activeCategory
-  )?.name;
-  const mappedCategory =
-    categoryName && categoryName !== '전체' ? categoryName : undefined;
+  )?.apiValue;
+
   const mappedDifficulty =
     filters.난이도 === '하'
       ? 'easy'
