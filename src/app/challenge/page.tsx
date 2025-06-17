@@ -66,8 +66,6 @@ const Challenge = () => {
 
   const { data: ChallengeData, isLoading } = useGetChallenge(filterParams);
 
-  console.log(isLoading);
-
   const hasActiveFilters = Object.values(filters).some(
     (v) => v !== '전체' && v !== '인기순'
   );
