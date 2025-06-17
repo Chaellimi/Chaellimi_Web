@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 import LayoutWithNav from './layoutWithNav';
 import { Providers } from './provider/next-auth';
+import ReactQueryProvider from './providers/react-query-provider';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export const metadata: Metadata = {
   title: 'Chaellimi',
@@ -24,7 +26,11 @@ export default function RootLayout({
                 boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <LayoutWithNav>{children}</LayoutWithNav>
+              <LayoutWithNav>
+                <ReactQueryProvider>
+                  {children} <ReactQueryDevtools initialIsOpen={false} />
+                </ReactQueryProvider>
+              </LayoutWithNav>
             </div>
           </div>
         </body>
