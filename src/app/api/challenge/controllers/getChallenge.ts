@@ -4,6 +4,7 @@ import { NextRequest } from 'next/server';
 import Challenge from '@/database/models/Challenge';
 import resUtil from '@/lib/utils/responseUtil';
 import { Op } from 'sequelize';
+import Users from '@/database/models/User';
 
 async function getHandler(req: NextRequest) {
   try {
@@ -68,7 +69,15 @@ async function getHandler(req: NextRequest) {
       queryOptions.offset = offset;
     }
 
-    const challenges = await Challenge.findAll(queryOptions);
+    const challenges = await Challenge.findAll({
+      ...queryOptions,
+      include: [
+        {
+          model: Users,
+          attributes: ['name', 'profileImg'],
+        },
+      ],
+    });
 
     return resUtil.successTrue({
       status: 200,
