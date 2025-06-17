@@ -6,6 +6,7 @@ import {
   InferCreationAttributes,
 } from 'sequelize';
 import { sequelize } from '../sequelize';
+import Users from './User';
 
 interface PointModel
   extends Model<
@@ -32,5 +33,8 @@ const Point = sequelize.define<PointModel>(
     tableName: 'Point',
   }
 );
+
+Point.belongsTo(Users, { foreignKey: 'userId' });
+Users.hasOne(Point, { foreignKey: 'userId' });
 
 export default Point;

@@ -1,3 +1,5 @@
+import Users from './User';
+import ChallengeParticipants from './ChallengeParticipants';
 import {
   Model,
   DataTypes,
@@ -45,5 +47,16 @@ const Challenge = sequelize.define<ChallengeModel>(
     tableName: 'Challenge',
   }
 );
+
+Challenge.belongsTo(Users, { foreignKey: 'userId', as: 'User' });
+Users.hasMany(Challenge, { foreignKey: 'userId', as: 'challenges' });
+Users.belongsToMany(Challenge, {
+  through: ChallengeParticipants,
+  foreignKey: 'userId',
+});
+Challenge.belongsToMany(Users, {
+  through: ChallengeParticipants,
+  foreignKey: 'challengeId',
+});
 
 export default Challenge;

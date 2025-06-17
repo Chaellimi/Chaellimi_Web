@@ -7,6 +7,10 @@ import {
 } from 'sequelize';
 import { sequelize } from '../sequelize';
 
+if (sequelize.models.Users) {
+  delete sequelize.models.Users;
+}
+
 interface UsersModel
   extends Model<
     InferAttributes<UsersModel>,
