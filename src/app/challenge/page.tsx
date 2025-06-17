@@ -3,10 +3,11 @@
 import React, { useState } from 'react';
 import { PlusIcon, ResetIcon } from '@public/icons/Challenge';
 import FilterModal from '@/components/Challenge/FilterModal';
-import ChallengeData from '@/data/Challenge/ChallengeData.json';
+// import ChallengeData from '@/data/Challenge/ChallengeData.json';
 import ChallengeContent from '@/components/Challenge/ChallengeContent';
 import Header from '@/components/shared/Header';
 import { ArrowIcon, MagnifyingGlassIcon } from '@public/icons/shared';
+import { useGetChallenge } from '@/service/Challenge/challenge.query';
 
 const challengeCategories = [
   { id: 1, name: '전체' },
@@ -22,6 +23,24 @@ const filterOptions = {
   정렬: ['인기순', '최신순'],
 };
 
+interface ChallengeType {
+  id: number;
+  userId: number;
+  title: string;
+  description: string;
+  category: string;
+  difficulty: 'hard' | 'normal' | 'easy';
+  day: string;
+  imgURL: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  User: {
+    name: string;
+    profileImg: string;
+  };
+}
+
 const Challenge = () => {
   const [activeCategory, setActiveCategory] = useState(1);
   const [filters, setFilters] = useState({
@@ -32,6 +51,9 @@ const Challenge = () => {
   const [activeFilterKey, setActiveFilterKey] = useState<
     null | keyof typeof filters
   >(null);
+
+  const { data: ChallengeData } = useGetChallenge();
+  console.log(ChallengeData);
 
   const hasActiveFilters = Object.values(filters).some(
     (v) => v !== '전체' && v !== '인기순'
@@ -125,17 +147,17 @@ const Challenge = () => {
       {/* Challenge List */}
       <div className="flex-1 h-0 min-h-0 px-8 pb-16 mt-2 overflow-y-scroll scrollbar-hide -webkit-overflow-scrolling-touch overscroll-contain">
         <div className="grid grid-cols-2 gap-x-5 gap-y-5">
-          {ChallengeData.challenges.map((item) => (
+          {ChallengeData?.data?.challenges?.map((item: ChallengeType) => (
             <ChallengeContent
               key={item.id}
               id={item.id}
-              count={item.activePeopleCount}
+              count={20}
               title={item.title}
-              imgUrl={item.imgUrl}
-              days={item.activeDays}
+              imgUrl={item.imgURL}
+              days={Number(item.day)}
               difficulty={item.difficulty}
-              createrName={item.createrName}
-              createrImgUrl={item.createrImgUrl}
+              createrName={item.User.name}
+              createrImgUrl={item.User.profileImg}
             />
           ))}
         </div>
