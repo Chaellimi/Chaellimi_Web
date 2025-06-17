@@ -8,6 +8,7 @@ import ChallengeContent from '@/components/Challenge/ChallengeContent';
 import Header from '@/components/shared/Header';
 import { ChallengeType, ChallengFilter } from '@/types/Challenge';
 import { useGetChallenge } from '@/service/Challenge/challenge.query';
+import Loading from '@/components/shared/Loading';
 
 const challengeCategories = [
   { id: 1, name: '전체' },
@@ -63,7 +64,9 @@ const Challenge = () => {
     size: 20,
   };
 
-  const { data: ChallengeData } = useGetChallenge(filterParams);
+  const { data: ChallengeData, isLoading } = useGetChallenge(filterParams);
+
+  console.log(isLoading);
 
   const hasActiveFilters = Object.values(filters).some(
     (v) => v !== '전체' && v !== '인기순'
@@ -80,6 +83,7 @@ const Challenge = () => {
 
   return (
     <div className="flex flex-col w-full h-full text-gray-black">
+      {isLoading && <Loading />}
       <Header
         type="title"
         title="챌린지"
@@ -88,7 +92,6 @@ const Challenge = () => {
         icon2={<PlusIcon />}
         iconClick2="/challenge/write"
       />
-
       <div className="flex justify-between px-6 mt-4 border-b border-gray-100">
         {challengeCategories.map((item) => (
           <div
@@ -104,7 +107,6 @@ const Challenge = () => {
           </div>
         ))}
       </div>
-
       <div className="flex items-center gap-2 px-8 py-2 mt-1 overflow-x-auto whitespace-nowrap scrollbar-hide">
         {hasActiveFilters && (
           <div
@@ -129,7 +131,6 @@ const Challenge = () => {
           </div>
         ))}
       </div>
-
       {activeFilterKey !== null && (
         <FilterModal
           isOpen={true}
@@ -141,7 +142,6 @@ const Challenge = () => {
           filterKey={activeFilterKey}
         />
       )}
-
       <div className="flex-1 h-0 min-h-0 px-8 pb-16 mt-2 overflow-y-scroll scrollbar-hide -webkit-overflow-scrolling-touch overscroll-contain">
         <div className="grid grid-cols-2 gap-x-5 gap-y-5">
           {ChallengeData?.data?.challenges?.map((item: ChallengeType) => (
