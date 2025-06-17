@@ -9,6 +9,11 @@ import Image from 'next/image';
 import BottomButton from '@/components/shared/BottomButton';
 import { useCreateChallenge } from '@/service/Challenge/challenge.mutation';
 import { ChallengeWriteType } from '@/types/Challenge';
+import { useUploadImg } from '@/service/shared/shared.mutation';
+import { SpinLogo } from '@public/icons/shared';
+import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
+import { challengeKeys } from '@/service/Challenge/challenge.key';
 
 const difficultyOptions = [
   { label: '상', value: 'hard' },
@@ -24,50 +29,85 @@ const categoryOptions = [
 ];
 
 const Write = () => {
-  const [imgUrl, setImgUrl] = useState<File | null>(null);
+  const navigate = useRouter();
+
   const [inputs, setInputs] = useState<Partial<ChallengeWriteType>>({});
+  const [uploadedImgUrl, setUploadedImgUrl] = useState<string>('');
+
+  const queryClient = useQueryClient();
+  const { mutateAsync: uploadImage, isPending: isPendingUploadImg } =
+    useUploadImg();
+  const { mutate: createChallenge } = useCreateChallenge();
 
   const handleChange = (key: keyof ChallengeWriteType, value: string) => {
     setInputs((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0] || null;
-    if (file && file.type.startsWith('image/')) {
-      setImgUrl(file);
-    } else {
+
+    if (!file || !file.type.startsWith('image/')) {
       alert('이미지 파일만 업로드할 수 있습니다.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const result = await uploadImage(formData);
+      setUploadedImgUrl(result.data.fileUrl);
+    } catch (err) {
+      alert('이미지 업로드에 실패했습니다.');
+      console.log(err);
     }
   };
 
   const isValid = () => {
+    if (!uploadedImgUrl) {
+      return false;
+    }
     return (
       !!inputs.category &&
       !!inputs.title &&
       !!inputs.day &&
       !!inputs.difficulty &&
-      !!inputs.description &&
-      !!imgUrl
+      !!inputs.description
     );
   };
 
-  const { mutate: createChallenge } = useCreateChallenge();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
     if (!isValid()) return;
 
-    createChallenge({
-      imgURL: '',
-      category: inputs.category as
-        | 'health'
-        | 'productivity'
-        | 'creativity'
-        | 'learning',
-      title: inputs.title!,
-      day: inputs.day!,
-      difficulty: inputs.difficulty as 'hard' | 'normal' | 'easy',
-      description: inputs.description!,
-    });
+    setIsSubmitting(true);
+
+    createChallenge(
+      {
+        imgURL: uploadedImgUrl,
+        category: inputs.category as
+          | 'health'
+          | 'productivity'
+          | 'creativity'
+          | 'learning',
+        title: inputs.title!,
+        day: inputs.day!,
+        difficulty: inputs.difficulty as 'hard' | 'normal' | 'easy',
+        description: inputs.description!,
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            predicate: (query) =>
+              query.queryKey[0] === challengeKeys.useGetChallenge,
+          });
+          navigate.push('/challenge');
+        },
+      }
+    );
   };
 
   return (
@@ -83,10 +123,14 @@ const Write = () => {
         {/* 대표 이미지 */}
         <div className="flex flex-col w-full gap-2">
           <div className="text-bn3">대표 이미지</div>
-          {imgUrl && typeof imgUrl === 'object' ? (
-            <div className="w-full h-[10.8rem] relative" key={imgUrl.name}>
+          {isPendingUploadImg ? (
+            <div className="flex items-center justify-center w-full h-[10.8rem] bg-gray-100 rounded-xl">
+              <SpinLogo />
+            </div>
+          ) : uploadedImgUrl ? (
+            <div className="w-full h-[10.8rem] relative" key={uploadedImgUrl}>
               <Image
-                src={URL.createObjectURL(imgUrl)}
+                src={uploadedImgUrl}
                 alt="Uploaded Preview"
                 width={200}
                 height={172.8}
@@ -94,7 +138,7 @@ const Write = () => {
               />
               <div
                 className="absolute top-[0.62rem] right-[0.62rem]"
-                onClick={() => setImgUrl(null)}
+                onClick={() => setUploadedImgUrl('')}
               >
                 <CancelIcon fill="#F7F7F7" />
               </div>
@@ -191,7 +235,7 @@ const Write = () => {
         <BottomButton
           title="등록"
           onClick={handleSubmit}
-          disabled={isValid() ? 'false' : 'true'}
+          disabled={isSubmitting ? 'progress' : isValid() ? 'false' : 'true'}
         />
       </div>
     </div>
