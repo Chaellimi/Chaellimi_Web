@@ -18,9 +18,8 @@ async function getHandler(req: NextRequest): Promise<NextResponse> {
     const transactions = await Transactions.findAll({ where });
 
     return resUtil.successTrue({ data: transactions });
-  } catch (error) {
-    console.error(error);
-    return resUtil.unknownError({});
+  } catch (err) {
+    return resUtil.unknownError({ data: { err } });
   }
 }
 

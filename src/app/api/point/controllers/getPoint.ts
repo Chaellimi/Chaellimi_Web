@@ -15,9 +15,8 @@ async function getHandler(): Promise<NextResponse> {
     return resUtil.successTrue({
       data: point || { totalPoint: 0 },
     });
-  } catch (error) {
-    console.error(error);
-    return resUtil.unknownError({});
+  } catch (err) {
+    return resUtil.unknownError({ data: { err } });
   }
 }
 

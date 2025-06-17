@@ -74,6 +74,7 @@ async function getHandler(req: NextRequest) {
       include: [
         {
           model: Users,
+          as: 'User',
           attributes: ['name', 'profileImg'],
         },
       ],
@@ -90,8 +91,8 @@ async function getHandler(req: NextRequest) {
             : null,
       },
     });
-  } catch {
-    return resUtil.unknownError({});
+  } catch (err) {
+    return resUtil.unknownError({ data: { err } });
   }
 }
 

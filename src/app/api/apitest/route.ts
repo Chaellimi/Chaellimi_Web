@@ -12,9 +12,9 @@ async function handler() {
         data: {},
       })
     );
-  } catch (error) {
-    logger.error('API Test handler error:', { error });
-    return NextResponse.json(resUtil.unknownError);
+  } catch (err) {
+    logger.error('API Test handler error:', { err });
+    return resUtil.unknownError({ data: { err } });
   }
 }
 
