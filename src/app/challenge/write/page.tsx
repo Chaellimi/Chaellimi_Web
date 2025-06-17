@@ -125,7 +125,7 @@ const Write = () => {
           <div className="text-bn3">대표 이미지</div>
           {isPendingUploadImg ? (
             <div className="flex items-center justify-center w-full h-[10.8rem] bg-gray-100 rounded-xl">
-              <SpinLogo />
+              <SpinLogo width={60} height={54} />
             </div>
           ) : uploadedImgUrl ? (
             <div className="w-full h-[10.8rem] relative" key={uploadedImgUrl}>
