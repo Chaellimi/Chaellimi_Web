@@ -20,7 +20,7 @@ interface ChallengeModel
   description: string;
   category: string;
   difficulty: 'hard' | 'normal' | 'easy';
-  day: string;
+  day: number;
   imgURL: string;
 }
 
@@ -36,7 +36,7 @@ const Challenge = sequelize.define<ChallengeModel>(
       type: DataTypes.ENUM('hard', 'normal', 'easy'),
       allowNull: false,
     },
-    day: { type: DataTypes.STRING, allowNull: false },
+    day: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
     imgURL: { type: DataTypes.STRING, allowNull: false },
   },
   {

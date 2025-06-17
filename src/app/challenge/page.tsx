@@ -47,12 +47,25 @@ const Challenge = () => {
         : filters.난이도 === '상'
           ? 'hard'
           : undefined;
-  const { dayStart, dayEnd } =
-    filters.기간 === '7일'
-      ? { dayStart: '7', dayEnd: '7' }
-      : filters.기간 === '30일'
-        ? { dayStart: '30', dayEnd: '30' }
-        : {};
+
+  let dayStart: string | undefined;
+  let dayEnd: string | undefined;
+
+  const periodRegex = /^(\d+)일~(\d+)일$/;
+
+  if (filters.기간 === '7일') {
+    dayStart = '7';
+    dayEnd = '7';
+  } else if (filters.기간 === '30일') {
+    dayStart = '30';
+    dayEnd = '30';
+  } else if (periodRegex.test(filters.기간)) {
+    const match = filters.기간.match(periodRegex);
+    if (match) {
+      dayStart = match[1];
+      dayEnd = match[2];
+    }
+  }
 
   const filterParams: ChallengFilter = {
     category: mappedCategory,
