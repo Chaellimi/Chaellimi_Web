@@ -11,8 +11,8 @@ Point.belongsTo(Users, { foreignKey: 'userId' });
 Users.hasMany(Transactions, { foreignKey: 'userId' });
 Transactions.belongsTo(Users, { foreignKey: 'userId' });
 
-Users.hasMany(Challenge, { foreignKey: 'userId' });
-Challenge.belongsTo(Users, { foreignKey: 'userId' });
+Users.hasMany(Challenge, { foreignKey: 'userId', as: 'challenges' });
+Challenge.belongsTo(Users, { foreignKey: 'userId', as: 'User' });
 
 Users.belongsToMany(Challenge, {
   through: ChallengeParticipants,
