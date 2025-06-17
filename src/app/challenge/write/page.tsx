@@ -7,29 +7,27 @@ import { CameraIcon, CancelIcon } from '@public/icons/Challenge/write';
 import Input from '@/components/Challenge/Input';
 import Image from 'next/image';
 import BottomButton from '@/components/shared/BottomButton';
+import { useCreateChallenge } from '@/service/Challenge/challenge.mutation';
+import { ChallengeWriteType } from '@/types/Challenge';
 
-interface ChallengeData {
-  category: string;
-  title: string;
-  period: string;
-  difficulty: string;
-  description: string;
-}
+const difficultyOptions = [
+  { label: '상', value: 'hard' },
+  { label: '중', value: 'normal' },
+  { label: '하', value: 'easy' },
+];
+
+const categoryOptions = [
+  { name: '건강', apiValue: 'Health' },
+  { name: '생산성', apiValue: 'Productivity' },
+  { name: '창의성', apiValue: 'Creativity' },
+  { name: '학습', apiValue: 'Learning' },
+];
 
 const Write = () => {
   const [imgUrl, setImgUrl] = useState<File | null>(null);
-  const [inputs, setInputs] = useState<ChallengeData>({
-    category: '',
-    title: '',
-    period: '',
-    difficulty: '',
-    description: '',
-  });
+  const [inputs, setInputs] = useState<Partial<ChallengeWriteType>>({});
 
-  const categories = ['건강', '생산성', '창의성', '학습'];
-  const difficulty = ['상', '중', '하'];
-
-  const handleChange = (key: keyof ChallengeData, value: string) => {
+  const handleChange = (key: keyof ChallengeWriteType, value: string) => {
     setInputs((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -44,13 +42,32 @@ const Write = () => {
 
   const isValid = () => {
     return (
-      inputs.category &&
-      inputs.title &&
-      inputs.period &&
-      inputs.difficulty &&
-      inputs.description &&
-      imgUrl
+      !!inputs.category &&
+      !!inputs.title &&
+      !!inputs.day &&
+      !!inputs.difficulty &&
+      !!inputs.description &&
+      !!imgUrl
     );
+  };
+
+  const { mutate: createChallenge } = useCreateChallenge();
+
+  const handleSubmit = async () => {
+    if (!isValid()) return;
+
+    createChallenge({
+      imgURL: '',
+      category: inputs.category as
+        | 'health'
+        | 'productivity'
+        | 'creativity'
+        | 'learning',
+      title: inputs.title!,
+      day: inputs.day!,
+      difficulty: inputs.difficulty as 'hard' | 'normal' | 'easy',
+      description: inputs.description!,
+    });
   };
 
   return (
@@ -107,9 +124,15 @@ const Write = () => {
         <div className="flex flex-col gap-2">
           <div className="text-bn3">카테고리</div>
           <DropdownSelector
-            options={categories}
-            selectedOption={inputs.category}
-            onSelect={(category) => handleChange('category', category)}
+            options={categoryOptions.map((c) => c.name)}
+            selectedOption={
+              categoryOptions.find((c) => c.apiValue === inputs.category)
+                ?.name ?? ''
+            }
+            onSelect={(label) => {
+              const selected = categoryOptions.find((c) => c.name === label);
+              if (selected) handleChange('category', selected.apiValue);
+            }}
           />
         </div>
 
@@ -127,8 +150,8 @@ const Write = () => {
         <div className="flex flex-col gap-2">
           <div className="text-bn3">기간 설정</div>
           <Input
-            value={inputs.period}
-            onChange={(period) => setInputs((prev) => ({ ...prev, period }))}
+            value={inputs.day}
+            onChange={(day) => setInputs((prev) => ({ ...prev, day }))}
             placeholder="기간을 입력해주세요."
             type="number"
           />
@@ -138,9 +161,15 @@ const Write = () => {
         <div className="flex flex-col gap-2">
           <div className="text-bn3">난이도</div>
           <DropdownSelector
-            options={difficulty}
-            selectedOption={inputs.difficulty}
-            onSelect={(difficulty) => handleChange('difficulty', difficulty)}
+            options={difficultyOptions.map((d) => d.label)}
+            selectedOption={
+              difficultyOptions.find((d) => d.value === inputs.difficulty)
+                ?.label || ''
+            }
+            onSelect={(label) => {
+              const selected = difficultyOptions.find((d) => d.label === label);
+              if (selected) handleChange('difficulty', selected.value);
+            }}
           />
         </div>
 
@@ -161,7 +190,7 @@ const Write = () => {
       <div className="w-full px-6 pt-3 border-t h-fit border-gray-50 mt-[0.62rem]">
         <BottomButton
           title="등록"
-          onClick={() => {}}
+          onClick={handleSubmit}
           disabled={isValid() ? 'false' : 'true'}
         />
       </div>
