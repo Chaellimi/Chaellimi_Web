@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { PlusIcon, ResetIcon } from '@public/icons/Challenge';
 import FilterModal from '@/components/Challenge/FilterModal';
-// import ChallengeData from '@/data/Challenge/ChallengeData.json';
 import ChallengeContent from '@/components/Challenge/ChallengeContent';
 import Header from '@/components/shared/Header';
 import { ArrowIcon, MagnifyingGlassIcon } from '@public/icons/shared';
