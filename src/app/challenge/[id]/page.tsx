@@ -67,6 +67,33 @@ const ChallengeSingle = () => {
     return <Loading />;
   }
 
+  const isOwner = myInfo?.data?.user.userId == challenge.userId;
+
+  const actionButtons = [
+    {
+      icons: <ShareIcon />,
+      text: '공유',
+      onClick: () => {
+        /* 공유 로직 */
+      },
+    },
+    ...(isOwner
+      ? [
+          {
+            icons: <EditIcon />,
+            text: '수정',
+            onClick: () => {},
+          },
+          {
+            icons: <TrashIcon />,
+            text: '삭제',
+            textColor: 'red-200',
+            onClick: () => {},
+          },
+        ]
+      : []),
+  ];
+
   return (
     <div className="relative flex flex-col w-full h-full text-gray-black">
       {actionSheet && (
@@ -124,33 +151,12 @@ const ChallengeSingle = () => {
                   setActionSheet(!actionSheet);
                 }}
               >
-                {myInfo?.data?.user.userId == challenge.userId && (
-                  <MoreVerticalDotIcon />
-                )}
+                <MoreVerticalDotIcon />
               </div>
 
               {actionSheet && (
                 <div className="absolute z-10 right-6 top-6">
-                  <ActionSheet
-                    buttons={[
-                      {
-                        icons: <ShareIcon />,
-                        text: '공유',
-                        onClick: () => {},
-                      },
-                      {
-                        icons: <EditIcon />,
-                        text: '수정',
-                        onClick: () => {},
-                      },
-                      {
-                        icons: <TrashIcon />,
-                        text: '삭제',
-                        textColor: 'red-200',
-                        onClick: () => {},
-                      },
-                    ]}
-                  />
+                  <ActionSheet buttons={actionButtons} />
                 </div>
               )}
             </div>
