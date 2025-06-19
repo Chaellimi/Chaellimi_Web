@@ -54,6 +54,7 @@ const ChallengeSingle = () => {
 
   const challenge = ChallengeData?.data?.challenge;
   const recentChallenges = ChallengeData?.data?.recentChallenges ?? [];
+  const totalChallenges = ChallengeData?.data?.totalChallenges ?? [];
 
   useStatusBarBridge(
     {
@@ -224,7 +225,7 @@ const ChallengeSingle = () => {
             </div>
             <div>
               <div className="text-b3">{challenge.User.name}</div>
-              <div className="text-c1">챌린지 개설 2개</div>
+              <div className="text-c1">챌린지 개설 {totalChallenges}개</div>
             </div>
           </div>
           <div>
@@ -235,35 +236,41 @@ const ChallengeSingle = () => {
         {/* Provider */}
         <div className="w-full my-4 min-h-1 bg-gray-50" />
 
-        <div className="flex flex-col px-6 gap-[0.63rem]">
-          <div className="text-he">이런 챌린지는 어때요?</div>
+        {recentChallenges && recentChallenges.length > 0 && (
+          <div className="flex flex-col px-6 gap-[0.63rem]">
+            <div className="text-he">이런 챌린지는 어때요?</div>
 
-          <div className="grid grid-cols-3 gap-x-5 gap-y-5">
-            {recentChallenges.map((item: recentChallengesType) => (
-              <div className="flex flex-col gap-[0.63rem]" key={item.id}>
+            <div className="grid grid-cols-3 gap-x-5 gap-y-5">
+              {recentChallenges.map((item: recentChallengesType) => (
                 <div
-                  className="aspect-square rounded-xl w-[6.25rem] h-[6.25rem]"
-                  style={{
-                    backgroundImage: `url(${item.imgURL})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  }}
+                  className="flex flex-col gap-[0.63rem]"
+                  key={item.id}
+                  onClick={() => router.push(`/challenge/${item.id}`)}
                 >
-                  <div className="flex flex-col justify-between h-full w-full px-[0.66rem] py-2">
-                    <div className="flex justify-end w-full">
-                      <BookmarkIcon width="19" height="18" />
+                  <div
+                    className="aspect-square rounded-xl w-[6.25rem] h-[6.25rem]"
+                    style={{
+                      backgroundImage: `url(${item.imgURL})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  >
+                    <div className="flex flex-col justify-between h-full w-full px-[0.66rem] py-2">
+                      <div className="flex justify-end w-full">
+                        <BookmarkIcon width="19" height="18" />
+                      </div>
                     </div>
                   </div>
+                  <div className="text-fn">{item.title}</div>
                 </div>
-                <div className="text-fn">{item.title}</div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          {/* <button className="flex items-center justify-center w-full text-gray-500 text-bn3 h-11 rounded-xl bg-gray-50">
+            {/* <button className="flex items-center justify-center w-full text-gray-500 text-bn3 h-11 rounded-xl bg-gray-50">
             다른 챌린지 더 보기
           </button> */}
-        </div>
+          </div>
+        )}
 
         <div className="w-full px-6 bg-gray-50 py-[0.62rem] mt-[1.88rem]">
           <span className="text-gray-400 text-fn">
