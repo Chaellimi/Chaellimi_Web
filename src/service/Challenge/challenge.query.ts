@@ -9,3 +9,10 @@ export const useGetChallenge = (filter?: ChallengFilter) => {
     queryFn: () => API.getChallenge(filter || {}),
   });
 };
+
+export const useGetChallengeById = (id: number) => {
+  return useQuery({
+    queryKey: [challengeKeys.useGetChallengeById, id],
+    queryFn: () => API.getChallengeById(id),
+  });
+};

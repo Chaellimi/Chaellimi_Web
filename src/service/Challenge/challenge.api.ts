@@ -35,6 +35,11 @@ const postChallenge = async ({
   return data;
 };
 
-const API = { getChallenge, postChallenge };
+const getChallengeById = async (id: number) => {
+  const { data } = await axios.get(`/api/challenge/${id}`);
+  return data;
+};
+
+const API = { getChallenge, postChallenge, getChallengeById };
 
 export default API;
