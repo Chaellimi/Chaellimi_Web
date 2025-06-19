@@ -3,6 +3,6 @@ export interface ChallengeData {
   description: string;
   category: string;
   difficulty: 'easy' | 'normal' | 'hard';
-  day: string;
+  day: number;
   imgURL: string;
 }
