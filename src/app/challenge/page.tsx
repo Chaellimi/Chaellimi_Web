@@ -91,9 +91,12 @@ const Challenge = () => {
     setFilters({ 기간: '전체', 난이도: '전체', 정렬: '인기순' });
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="flex flex-col w-full h-full text-gray-black">
-      {isLoading && <Loading />}
       <Header
         type="title"
         title="챌린지"
