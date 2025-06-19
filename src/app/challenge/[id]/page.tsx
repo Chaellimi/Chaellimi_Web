@@ -23,6 +23,7 @@ import Loading from '@/components/shared/Loading';
 import { ChangeKOR } from '@/lib/utils/getChangeCategory';
 import { timeAgo } from '@/lib/utils/timeAgo';
 import { useSession } from 'next-auth/react';
+import html2canvas from 'html2canvas';
 
 interface recentChallengesType {
   id: number;
@@ -69,13 +70,36 @@ const ChallengeSingle = () => {
 
   const isOwner = myInfo?.data?.user.userId == challenge.userId;
 
+  const handleShare = async () => {
+    try {
+      setActionSheet(false);
+      const element = document.getElementById('challenge-single-root');
+      if (!element) return;
+      const canvas = await html2canvas(element);
+      canvas.toBlob(async (blob) => {
+        if (!blob) return;
+        const file = new File([blob], 'screenshot.png', { type: blob.type });
+        if (navigator.canShare?.({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: challenge?.title,
+            text: challenge?.description || '',
+          });
+        } else {
+          const url = URL.createObjectURL(blob);
+          window.open(url, '_blank');
+        }
+      });
+    } catch (error) {
+      console.error('Share failed', error);
+    }
+  };
+
   const actionButtons = [
     {
       icons: <ShareIcon />,
       text: '공유',
-      onClick: () => {
-        /* 공유 로직 */
-      },
+      onClick: handleShare,
     },
     ...(isOwner
       ? [
