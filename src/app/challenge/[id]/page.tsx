@@ -286,7 +286,7 @@ const ChallengeSingle = () => {
         </div>
       </div>
 
-      <div className="flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 border-t bg-gray-white border-gray-50">
+      <div className="flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 border-t bg-gray-white border-gray-50 custom601:mb-6">
         <div
           onClick={() => {
             setIsBookmarked(!isBookmarked);

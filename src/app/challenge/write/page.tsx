@@ -231,7 +231,7 @@ const Write = () => {
         </div>
       </div>
 
-      <div className="w-full px-6 pt-3 border-t h-fit border-gray-50 mt-[0.62rem]">
+      <div className="w-full px-6 pt-3 border-t h-fit border-gray-50 mt-[0.62rem] custom601:mb-6">
         <BottomButton
           title="등록"
           onClick={handleSubmit}
