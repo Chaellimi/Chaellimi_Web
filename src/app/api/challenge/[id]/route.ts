@@ -4,7 +4,9 @@ import { NextRequest } from 'next/server';
 import { Op } from 'sequelize';
 import Challenge from '@/database/models/Challenge';
 import Users from '@/database/models/User';
+import ChallengeParticipants from '@/database/models/ChallengeParticipants';
 import resUtil from '@/lib/utils/responseUtil';
+import getUserFromRequest from '@/lib/utils/getUserFromRequest';
 
 async function getHandler(req: NextRequest) {
   try {
@@ -49,6 +51,30 @@ async function getHandler(req: NextRequest) {
       limit: 6,
     });
 
+    const loginUser = await getUserFromRequest();
+
+    let joinStatus: 'not_joined' | 'in_progress' | 'completed' | 'failed' =
+      'not_joined';
+
+    if (loginUser) {
+      const participant = await ChallengeParticipants.findOne({
+        where: {
+          challengeId,
+          userId: loginUser.id,
+        },
+      });
+
+      if (participant) {
+        if (participant.status === 'completed') {
+          joinStatus = 'completed';
+        } else if (participant.status === 'failed') {
+          joinStatus = 'failed';
+        } else {
+          joinStatus = 'in_progress';
+        }
+      }
+    }
+
     return resUtil.successTrue({
       status: 200,
       message: '챌린지 조회 성공',
@@ -56,6 +82,7 @@ async function getHandler(req: NextRequest) {
         challenge,
         totalChallenges,
         recentChallenges,
+        joinStatus,
       },
     });
   } catch (err) {
@@ -64,5 +91,4 @@ async function getHandler(req: NextRequest) {
 }
 
 const GetChallengeById = withLogging(withAuth(getHandler));
-
 export const GET = GetChallengeById;
