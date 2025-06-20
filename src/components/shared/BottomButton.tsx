@@ -16,7 +16,7 @@ const BottomButton = ({ title, onClick, disabled }: OwnProps) => {
             : disabled === 'false'
               ? 'bg-primary-default text-gray-white'
               : disabled === 'progress'
-                ? 'bg-primary-default text-gray-white'
+                ? 'bg-primary-light text-primary-default'
                 : null
         }`}
       onClick={onClick}
