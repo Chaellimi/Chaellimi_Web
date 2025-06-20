@@ -55,6 +55,7 @@ const ChallengeSingle = () => {
   const challenge = ChallengeData?.data?.challenge;
   const recentChallenges = ChallengeData?.data?.recentChallenges ?? [];
   const totalChallenges = ChallengeData?.data?.totalChallenges ?? [];
+  const isJoinedChallenge = ChallengeData?.data?.joinStatus ?? false;
 
   useStatusBarBridge(
     {
@@ -305,7 +306,13 @@ const ChallengeSingle = () => {
           onClick={() => {
             setIsOpenConfirmModal(true);
           }}
-          disabled="false"
+          disabled={
+            isJoinedChallenge == 'not_joined'
+              ? 'false'
+              : isJoinedChallenge == 'in_progress'
+                ? 'progress'
+                : 'true'
+          }
         />
       </div>
 
