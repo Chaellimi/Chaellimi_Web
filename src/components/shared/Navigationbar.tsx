@@ -30,7 +30,7 @@ const menuItems = [
 
 const Navigationbar = ({ Active }: OwnProps) => {
   return (
-    <div className="fixed z-50 bottom-0 left-1/2 -translate-x-1/2 w-[430px] flex justify-between px-6 py-[0.47rem] bg-white border-t border-gray-50 rounded-tr-[1.25rem] rounded-tl-[1.25rem]">
+    <div className="fixed z-50 bottom-0 custom601:bottom-6 left-1/2 -translate-x-1/2 w-full custom601:w-[430px] flex justify-between px-6 py-[0.47rem] custom601:py-3 bg-white border-t border-gray-50 rounded-tr-[1.25rem] rounded-tl-[1.25rem] custom601:rounded-b-[2rem]">
       {menuItems.map((item) => (
         <Link
           key={item.name}

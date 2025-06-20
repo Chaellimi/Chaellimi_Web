@@ -20,11 +20,12 @@ export default function RootLayout({
       <Providers>
         <body
           suppressHydrationWarning
-          className=" bg-primary-light w-[100vw] h-[100vh] max-h-[100vh] max-w-[100vw] overflow-hidden"
+          className="relative bg-primary-light w-[100vw] h-[100vh] overflow-hidden flex justify-center items-center custom601:pt-14 custom601:pb-6"
         >
-          <div className="flex justify-center items-cente min-h-screen sm:h-[820px] sm:pl-[39%] sm:pr-[39%] sm:pt-[8%]">
+          <div className="absolute z-[100] w-[500px] h-full top-4 pc-mockup-bg" />
+          <div className="w-full h-full flex justify-center items-cente custom601:w-[430px]">
             <div
-              className="w-full min-h-screen max-h-screen md:h-[200px] bg-white sm:rounded-xl sm:pt-10"
+              className="w-full h-full bg-white custom601:rounded-[2rem] custom601:pt-10"
               style={{
                 boxShadow: '0 0 20px rgba(0, 0, 0, 0.1)',
               }}
