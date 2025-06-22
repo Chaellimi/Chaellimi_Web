@@ -1,13 +1,31 @@
-export const ChangeKOR = (item: string) => {
-  if (item === 'Health') return '건강';
-  if (item === 'Productivity') return '생산성';
-  if (item === 'Creativity') return '창의성';
-  if (item === 'Learning') return '학습';
+const CATEGORY_KOR_MAP = {
+  Health: '건강',
+  Productivity: '생산성',
+  Creativity: '창의성',
+  Learning: '학습',
+} as const;
+
+export const ChangeKOR = (item: string): string => {
+  const result = CATEGORY_KOR_MAP[item as keyof typeof CATEGORY_KOR_MAP];
+  if (!result) {
+    console.warn(`Unknown category: ${item}`);
+    return item;
+  }
+  return result;
 };
 
-export const ChangeENG = (item: string) => {
-  if (item === '건강') return 'Health';
-  if (item === '생산성') return 'Productivity';
-  if (item === '창의성') return 'Creativity';
-  if (item === '학습') return 'Learning';
+export const CATEGORY_EN_MAP = {
+  건강: 'Health',
+  생산성: 'Productivity',
+  창의성: 'Creativity',
+  학습: 'Learning',
+} as const;
+
+export const ChangeENG = (item: string): string => {
+  const result = CATEGORY_EN_MAP[item as keyof typeof CATEGORY_EN_MAP];
+  if (!result) {
+    console.warn(`Unknown category: ${item}`);
+    return item;
+  }
+  return result;
 };
