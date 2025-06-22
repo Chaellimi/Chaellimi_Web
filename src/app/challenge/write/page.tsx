@@ -29,7 +29,7 @@ const categoryOptions = [
 ];
 
 const Write = () => {
-  const navigate = useRouter();
+  const router = useRouter();
 
   const [inputs, setInputs] = useState<Partial<ChallengeWriteType>>({});
   const [uploadedImgUrl, setUploadedImgUrl] = useState<string>('');
@@ -104,7 +104,7 @@ const Write = () => {
             predicate: (query) =>
               query.queryKey[0] === challengeKeys.useGetChallenge,
           });
-          navigate.push('/challenge');
+          router.push('/challenge');
         },
       }
     );
