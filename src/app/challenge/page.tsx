@@ -6,7 +6,7 @@ import { ArrowIcon, MagnifyingGlassIcon } from '@public/icons/shared';
 import FilterModal from '@/components/Challenge/FilterModal';
 import ChallengeContent from '@/components/Challenge/ChallengeContent';
 import Header from '@/components/shared/Header';
-import { ChallengeType, ChallengFilter } from '@/types/Challenge';
+import { ChallengeType, ChallengeFilter } from '@/types/Challenge';
 import { useGetChallenge } from '@/service/Challenge/challenge.query';
 import Loading from '@/components/shared/Loading';
 
@@ -67,7 +67,7 @@ const Challenge = () => {
     }
   }
 
-  const filterParams: ChallengFilter = {
+  const filterParams: ChallengeFilter = {
     category: mappedCategory,
     difficulty: mappedDifficulty,
     dayStart,

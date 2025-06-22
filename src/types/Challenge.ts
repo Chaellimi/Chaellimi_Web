@@ -1,4 +1,4 @@
-export interface ChallengFilter {
+export interface ChallengeFilter {
   dayStart?: string;
   dayEnd?: string;
   category?: string;

@@ -1,4 +1,4 @@
-import { ChallengeWriteType, ChallengFilter } from '@/types/Challenge';
+import { ChallengeWriteType, ChallengeFilter } from '@/types/Challenge';
 import axios from 'axios';
 
 const getChallenge = async ({
@@ -8,7 +8,7 @@ const getChallenge = async ({
   difficulty,
   page,
   size,
-}: ChallengFilter) => {
+}: ChallengeFilter) => {
   const { data } = await axios.get(
     `/api/challenge?${dayStart ? `dayStart=${dayStart}&` : ''}${dayEnd ? `dayEnd=${dayEnd}&` : ''}${category ? `category=${category}&` : ''}${difficulty ? `difficulty=${difficulty}&` : ''}${page ? `page=${page}&` : ''}${size ? `size=${size}` : ''}`
   );
