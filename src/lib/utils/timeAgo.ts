@@ -4,6 +4,16 @@ export function timeAgo(updatedAt: string): string {
   const diffMs = now.getTime() - updated.getTime();
   const diffSec = Math.floor(diffMs / 1000);
 
+  if (!updatedAt) return '시간 정보 없음';
+
+  if (isNaN(updated.getTime())) {
+    return '잘못된 시간 형식';
+  }
+
+  if (diffMs < 0) {
+    return '방금 전';
+  }
+
   if (diffSec < 60) {
     return `${diffSec}초 전`;
   }
