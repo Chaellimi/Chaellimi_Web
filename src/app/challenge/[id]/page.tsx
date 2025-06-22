@@ -153,17 +153,17 @@ const ChallengeSingle = () => {
                 <div
                   className={`text-center text-c2 px-[0.38rem] py-[0.15rem] rounded-[0.25rem] w-16
                 ${
-                  challenge.difficulty === 'Hard'
+                  challenge.difficulty === 'hard'
                     ? 'bg-red-100 text-red-200'
-                    : challenge.difficulty === 'Medium'
+                    : challenge.difficulty === 'normal'
                       ? 'bg-primary-light text-primary-default'
                       : 'bg-green-100 text-green-200'
                 }
                 `}
                 >
-                  {challenge.difficulty === 'Hard'
+                  {challenge.difficulty === 'hard'
                     ? '난이도 상'
-                    : challenge.difficulty === 'Medium'
+                    : challenge.difficulty === 'normal'
                       ? '난이도 중'
                       : '난이도 하'}
                 </div>
