@@ -72,8 +72,6 @@ const Challenge = () => {
     difficulty: mappedDifficulty,
     dayStart,
     dayEnd,
-    page: 1,
-    size: 20,
   };
 
   const { data: ChallengeData, isLoading } = useGetChallenge(filterParams);
