@@ -2,18 +2,20 @@
 
 import React, { useState } from 'react';
 import { PlusIcon, ResetIcon } from '@public/icons/Challenge';
+import { ArrowIcon, MagnifyingGlassIcon } from '@public/icons/shared';
 import FilterModal from '@/components/Challenge/FilterModal';
-import ChallengeData from '@/data/Challenge/ChallengeData.json';
 import ChallengeContent from '@/components/Challenge/ChallengeContent';
 import Header from '@/components/shared/Header';
-import { ArrowIcon, MagnifyingGlassIcon } from '@public/icons/shared';
+import { ChallengeType, ChallengeFilter } from '@/types/Challenge';
+import { useGetChallenge } from '@/service/Challenge/challenge.query';
+import Loading from '@/components/shared/Loading';
 
 const challengeCategories = [
-  { id: 1, name: '전체' },
-  { id: 2, name: '건강' },
-  { id: 3, name: '생산성' },
-  { id: 4, name: '창의성' },
-  { id: 5, name: '학습' },
+  { id: 1, name: '전체', apiValue: undefined },
+  { id: 2, name: '건강', apiValue: 'Health' },
+  { id: 3, name: '생산성', apiValue: 'Productivity' },
+  { id: 4, name: '창의성', apiValue: 'Creativity' },
+  { id: 5, name: '학습', apiValue: 'Learning' },
 ];
 
 const filterOptions = {
@@ -33,6 +35,47 @@ const Challenge = () => {
     null | keyof typeof filters
   >(null);
 
+  const mappedCategory = challengeCategories.find(
+    (c) => c.id === activeCategory
+  )?.apiValue;
+
+  const mappedDifficulty =
+    filters.난이도 === '하'
+      ? 'easy'
+      : filters.난이도 === '중'
+        ? 'normal'
+        : filters.난이도 === '상'
+          ? 'hard'
+          : undefined;
+
+  let dayStart: string | undefined;
+  let dayEnd: string | undefined;
+
+  const periodRegex = /^(\d+)일~(\d+)일$/;
+
+  if (filters.기간 === '7일') {
+    dayStart = '7';
+    dayEnd = '7';
+  } else if (filters.기간 === '30일') {
+    dayStart = '30';
+    dayEnd = '30';
+  } else if (periodRegex.test(filters.기간)) {
+    const match = filters.기간.match(periodRegex);
+    if (match) {
+      dayStart = match[1];
+      dayEnd = match[2];
+    }
+  }
+
+  const filterParams: ChallengeFilter = {
+    category: mappedCategory,
+    difficulty: mappedDifficulty,
+    dayStart,
+    dayEnd,
+  };
+
+  const { data: ChallengeData, isLoading } = useGetChallenge(filterParams);
+
   const hasActiveFilters = Object.values(filters).some(
     (v) => v !== '전체' && v !== '인기순'
   );
@@ -46,6 +89,10 @@ const Challenge = () => {
     setFilters({ 기간: '전체', 난이도: '전체', 정렬: '인기순' });
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="flex flex-col w-full h-full text-gray-black">
       <Header
@@ -56,32 +103,21 @@ const Challenge = () => {
         icon2={<PlusIcon />}
         iconClick2="/challenge/write"
       />
-
-      {/* Category Tabs */}
       <div className="flex justify-between px-6 mt-4 border-b border-gray-100">
         {challengeCategories.map((item) => (
           <div
             key={item.id}
-            className={`
-                flex items-center justify-center 
-                w-16 text-he pb-[0.44rem] 
-                transition-all duration-300 ease-out
-                border-b
-                hover:cursor-pointer
-                ${
-                  item.id === activeCategory
-                    ? 'border-gray-black text-black'
-                    : 'border-transparent text-gray-400'
-                }
-              `}
+            className={`flex items-center justify-center w-16 text-he pb-[0.44rem] border-b hover:cursor-pointer transition-all duration-300 ease-out ${
+              item.id === activeCategory
+                ? 'border-gray-black text-black'
+                : 'border-transparent text-gray-400'
+            }`}
             onClick={() => setActiveCategory(item.id)}
           >
             {item.name}
           </div>
         ))}
       </div>
-
-      {/* Filters */}
       <div className="flex items-center gap-2 px-8 py-2 mt-1 overflow-x-auto whitespace-nowrap scrollbar-hide">
         {hasActiveFilters && (
           <div
@@ -101,15 +137,11 @@ const Challenge = () => {
                 : 'border border-gray-200 text-black'
             }`}
           >
-            {key === '정렬'
-              ? value
-              : `${key} ${value === '전체' || value === '인기순' ? '' : value}`}
+            {key === '정렬' ? value : `${key} ${value === '전체' ? '' : value}`}
             <ArrowIcon location="down" />
           </div>
         ))}
       </div>
-
-      {/* Bottom Sheet */}
       {activeFilterKey !== null && (
         <FilterModal
           isOpen={true}
@@ -121,21 +153,19 @@ const Challenge = () => {
           filterKey={activeFilterKey}
         />
       )}
-
-      {/* Challenge List */}
       <div className="flex-1 h-0 min-h-0 px-8 pb-16 mt-2 overflow-y-scroll scrollbar-hide -webkit-overflow-scrolling-touch overscroll-contain">
         <div className="grid grid-cols-2 gap-x-5 gap-y-5">
-          {ChallengeData.challenges.map((item) => (
+          {ChallengeData?.data?.challenges?.map((item: ChallengeType) => (
             <ChallengeContent
               key={item.id}
               id={item.id}
-              count={item.activePeopleCount}
+              count={20}
               title={item.title}
-              imgUrl={item.imgUrl}
-              days={item.activeDays}
+              imgUrl={item.imgURL}
+              days={Number(item.day)}
               difficulty={item.difficulty}
-              createrName={item.createrName}
-              createrImgUrl={item.createrImgUrl}
+              createrName={item.User.name}
+              createrImgUrl={item.User.profileImg}
             />
           ))}
         </div>

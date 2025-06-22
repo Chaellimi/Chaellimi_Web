@@ -176,6 +176,9 @@ module.exports = {
           },
         ],
       },
+      screens: {
+        custom601: '601px',
+      },
     },
   },
   plugins: [scrollbarHide],

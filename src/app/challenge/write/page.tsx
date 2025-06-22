@@ -7,49 +7,106 @@ import { CameraIcon, CancelIcon } from '@public/icons/Challenge/write';
 import Input from '@/components/Challenge/Input';
 import Image from 'next/image';
 import BottomButton from '@/components/shared/BottomButton';
+import { useCreateChallenge } from '@/service/Challenge/challenge.mutation';
+import { ChallengeWriteType } from '@/types/Challenge';
+import { useUploadImg } from '@/service/shared/shared.mutation';
+import { SpinLogo } from '@public/icons/shared';
+import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
+import { challengeKeys } from '@/service/Challenge/challenge.key';
 
-interface ChallengeData {
-  category: string;
-  title: string;
-  period: string;
-  difficulty: string;
-  description: string;
-}
+const difficultyOptions = [
+  { label: '상', value: 'hard' },
+  { label: '중', value: 'normal' },
+  { label: '하', value: 'easy' },
+];
+
+const categoryOptions = [
+  { name: '건강', apiValue: 'Health' },
+  { name: '생산성', apiValue: 'Productivity' },
+  { name: '창의성', apiValue: 'Creativity' },
+  { name: '학습', apiValue: 'Learning' },
+];
 
 const Write = () => {
-  const [imgUrl, setImgUrl] = useState<File | null>(null);
-  const [inputs, setInputs] = useState<ChallengeData>({
-    category: '',
-    title: '',
-    period: '',
-    difficulty: '',
-    description: '',
-  });
+  const router = useRouter();
 
-  const categories = ['건강', '생산성', '창의성', '학습'];
-  const difficulty = ['상', '중', '하'];
+  const [inputs, setInputs] = useState<Partial<ChallengeWriteType>>({});
+  const [uploadedImgUrl, setUploadedImgUrl] = useState<string>('');
 
-  const handleChange = (key: keyof ChallengeData, value: string) => {
+  const queryClient = useQueryClient();
+  const { mutateAsync: uploadImage, isPending: isPendingUploadImg } =
+    useUploadImg();
+  const { mutate: createChallenge } = useCreateChallenge();
+
+  const handleChange = (key: keyof ChallengeWriteType, value: string) => {
     setInputs((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0] || null;
-    if (file && file.type.startsWith('image/')) {
-      setImgUrl(file);
-    } else {
+
+    if (!file || !file.type.startsWith('image/')) {
       alert('이미지 파일만 업로드할 수 있습니다.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const result = await uploadImage(formData);
+      setUploadedImgUrl(result.data.fileUrl);
+    } catch (err) {
+      alert('이미지 업로드에 실패했습니다.');
+      console.log(err);
     }
   };
 
   const isValid = () => {
+    if (!uploadedImgUrl) {
+      return false;
+    }
     return (
-      inputs.category &&
-      inputs.title &&
-      inputs.period &&
-      inputs.difficulty &&
-      inputs.description &&
-      imgUrl
+      !!inputs.category &&
+      !!inputs.title &&
+      !!inputs.day &&
+      !!inputs.difficulty &&
+      !!inputs.description
+    );
+  };
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!isValid()) return;
+
+    setIsSubmitting(true);
+
+    createChallenge(
+      {
+        imgURL: uploadedImgUrl,
+        category: inputs.category as
+          | 'health'
+          | 'productivity'
+          | 'creativity'
+          | 'learning',
+        title: inputs.title!,
+        day: inputs.day!,
+        difficulty: inputs.difficulty as 'hard' | 'normal' | 'easy',
+        description: inputs.description!,
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            predicate: (query) =>
+              query.queryKey[0] === challengeKeys.useGetChallenge,
+          });
+          router.push('/challenge');
+        },
+      }
     );
   };
 
@@ -66,10 +123,14 @@ const Write = () => {
         {/* 대표 이미지 */}
         <div className="flex flex-col w-full gap-2">
           <div className="text-bn3">대표 이미지</div>
-          {imgUrl && typeof imgUrl === 'object' ? (
-            <div className="w-full h-[10.8rem] relative" key={imgUrl.name}>
+          {isPendingUploadImg ? (
+            <div className="flex items-center justify-center w-full h-[10.8rem] bg-gray-100 rounded-xl">
+              <SpinLogo width={60} height={54} />
+            </div>
+          ) : uploadedImgUrl ? (
+            <div className="w-full h-[10.8rem] relative" key={uploadedImgUrl}>
               <Image
-                src={URL.createObjectURL(imgUrl)}
+                src={uploadedImgUrl}
                 alt="Uploaded Preview"
                 width={200}
                 height={172.8}
@@ -77,7 +138,7 @@ const Write = () => {
               />
               <div
                 className="absolute top-[0.62rem] right-[0.62rem]"
-                onClick={() => setImgUrl(null)}
+                onClick={() => setUploadedImgUrl('')}
               >
                 <CancelIcon fill="#F7F7F7" />
               </div>
@@ -107,9 +168,15 @@ const Write = () => {
         <div className="flex flex-col gap-2">
           <div className="text-bn3">카테고리</div>
           <DropdownSelector
-            options={categories}
-            selectedOption={inputs.category}
-            onSelect={(category) => handleChange('category', category)}
+            options={categoryOptions.map((c) => c.name)}
+            selectedOption={
+              categoryOptions.find((c) => c.apiValue === inputs.category)
+                ?.name ?? ''
+            }
+            onSelect={(label) => {
+              const selected = categoryOptions.find((c) => c.name === label);
+              if (selected) handleChange('category', selected.apiValue);
+            }}
           />
         </div>
 
@@ -127,8 +194,8 @@ const Write = () => {
         <div className="flex flex-col gap-2">
           <div className="text-bn3">기간 설정</div>
           <Input
-            value={inputs.period}
-            onChange={(period) => setInputs((prev) => ({ ...prev, period }))}
+            value={inputs.day}
+            onChange={(day) => setInputs((prev) => ({ ...prev, day }))}
             placeholder="기간을 입력해주세요."
             type="number"
           />
@@ -138,9 +205,15 @@ const Write = () => {
         <div className="flex flex-col gap-2">
           <div className="text-bn3">난이도</div>
           <DropdownSelector
-            options={difficulty}
-            selectedOption={inputs.difficulty}
-            onSelect={(difficulty) => handleChange('difficulty', difficulty)}
+            options={difficultyOptions.map((d) => d.label)}
+            selectedOption={
+              difficultyOptions.find((d) => d.value === inputs.difficulty)
+                ?.label || ''
+            }
+            onSelect={(label) => {
+              const selected = difficultyOptions.find((d) => d.label === label);
+              if (selected) handleChange('difficulty', selected.value);
+            }}
           />
         </div>
 
@@ -158,11 +231,11 @@ const Write = () => {
         </div>
       </div>
 
-      <div className="w-full px-6 pt-3 border-t h-fit border-gray-50 mt-[0.62rem]">
+      <div className="w-full px-6 pt-3 border-t h-fit border-gray-50 mt-[0.62rem] custom601:mb-6">
         <BottomButton
           title="등록"
-          onClick={() => {}}
-          disabled={isValid() ? 'false' : 'true'}
+          onClick={handleSubmit}
+          disabled={isSubmitting ? 'progress' : isValid() ? 'false' : 'true'}
         />
       </div>
     </div>

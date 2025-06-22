@@ -7,8 +7,6 @@ import './models/Point';
 import './models/Transactions';
 import './models/User';
 
-import './associations';
-
 export const connectToDatabase = async () => {
   try {
     await sequelize.authenticate();

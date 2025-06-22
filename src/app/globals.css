@@ -25,3 +25,16 @@
   font-weight: 400;
   src: url('/fonts/NotoSansKR-Regular.ttf') format('truetype');
 }
+
+@media (min-width: 601px) {
+  .pc-mockup-bg {
+    background-image: url('https://cloud.jamkris.kro.kr/apps/files_sharing/publicpreview/r3jWenFY8c524WT?file=/&fileId=31947&x=3420&y=2214&a=true&etag=7a5ede5526cff9dcbaeb744dd0225acc');
+    background-position: center;
+    pointer-events: none !important;
+  }
+}
+@media (max-width: 600px) {
+  .pc-mockup-bg {
+    display: none !important;
+  }
+}

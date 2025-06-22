@@ -1,3 +1,5 @@
+import Users from './User';
+import ChallengeParticipants from './ChallengeParticipants';
 import {
   Model,
   DataTypes,
@@ -18,7 +20,7 @@ interface ChallengeModel
   description: string;
   category: string;
   difficulty: 'hard' | 'normal' | 'easy';
-  day: string;
+  day: number;
   imgURL: string;
 }
 
@@ -28,13 +30,13 @@ const Challenge = sequelize.define<ChallengeModel>(
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     userId: { type: DataTypes.INTEGER, allowNull: false },
     title: { type: DataTypes.STRING, allowNull: false },
-    description: { type: DataTypes.STRING, allowNull: false },
+    description: { type: DataTypes.TEXT, allowNull: false },
     category: { type: DataTypes.STRING, allowNull: false },
     difficulty: {
       type: DataTypes.ENUM('hard', 'normal', 'easy'),
       allowNull: false,
     },
-    day: { type: DataTypes.STRING, allowNull: false },
+    day: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false },
     imgURL: { type: DataTypes.STRING, allowNull: false },
   },
   {
@@ -45,5 +47,16 @@ const Challenge = sequelize.define<ChallengeModel>(
     tableName: 'Challenge',
   }
 );
+
+Challenge.belongsTo(Users, { foreignKey: 'userId', as: 'User' });
+Users.hasMany(Challenge, { foreignKey: 'userId', as: 'challenges' });
+Users.belongsToMany(Challenge, {
+  through: ChallengeParticipants,
+  foreignKey: 'userId',
+});
+Challenge.belongsToMany(Users, {
+  through: ChallengeParticipants,
+  foreignKey: 'challengeId',
+});
 
 export default Challenge;

@@ -50,9 +50,8 @@ async function postHandler(req: NextRequest) {
       message: '챌린지 생성 성공',
       data: newChallenge,
     });
-  } catch (error) {
-    console.error(error);
-    return resUtil.unknownError({});
+  } catch (err) {
+    return resUtil.unknownError({ data: { err } });
   }
 }
 

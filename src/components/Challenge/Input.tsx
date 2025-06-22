@@ -2,14 +2,14 @@ import React from 'react';
 
 interface InputProps {
   type?: 'text' | 'number' | 'textarea';
-  value: string;
+  value?: string;
   onChange: (value: string) => void;
   placeholder?: string;
 }
 
 const Input = ({
   type = 'text',
-  value,
+  value = '',
   onChange,
   placeholder = '입력해주세요',
 }: InputProps) => {
