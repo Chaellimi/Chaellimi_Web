@@ -9,7 +9,7 @@ import {
 } from 'sequelize';
 import { sequelize } from '../sequelize';
 
-interface ChallengeModel
+export interface ChallengeModel
   extends Model<
     InferAttributes<ChallengeModel>,
     InferCreationAttributes<ChallengeModel>

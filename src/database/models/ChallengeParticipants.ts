@@ -6,6 +6,7 @@ import {
   InferCreationAttributes,
 } from 'sequelize';
 import { sequelize } from '../sequelize';
+import { ChallengeModel } from './Challenge';
 
 interface ChallengeParticipantsModel
   extends Model<
@@ -18,6 +19,8 @@ interface ChallengeParticipantsModel
   joinedAt: string;
   streak: string;
   status: string;
+
+  challenge?: ChallengeModel;
 }
 
 const ChallengeParticipants = sequelize.define<ChallengeParticipantsModel>(
