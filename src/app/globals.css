@@ -38,3 +38,7 @@
     display: none !important;
   }
 }
+
+.camera-clip-frame {
+  pointer-events: none;
+}

@@ -2,7 +2,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import { CameraIcon } from '@public/icons/Challenge/certification';
+import {
+  CameraIcon,
+  ChangeCameraIcon,
+  CloseIcon,
+  GalleryIcon,
+  ShapeQuestionIcon,
+} from '@public/icons/Challenge/certification';
 import React, { useRef, useState, useCallback } from 'react';
 
 const Certification = () => {
@@ -70,46 +76,25 @@ const Certification = () => {
       <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-4 pt-12 pb-4">
         {/* 닫기 버튼 */}
         <button className="flex items-center justify-center w-8 h-8">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M18 6L6 18M6 6l12 12"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
+          <CloseIcon />
         </button>
 
         {/* 제목 */}
-        <h2 className="text-lg font-semibold text-white">인증하기</h2>
+        <h2 className="text-white text-h3">인증하기</h2>
 
         {/* 도움말 버튼 */}
         <button className="flex items-center justify-center w-8 h-8">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2" />
-            <path
-              d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <path
-              d="M12 17h.01"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
+          <ShapeQuestionIcon />
         </button>
       </div>
 
       {/* 안내 텍스트 */}
-      <p className="absolute z-20 w-full px-4 text-base text-center text-white top-32 drop-shadow-lg">
+      <p className="absolute z-20 w-full px-4 text-center text-white text-h3 top-32 drop-shadow-lg">
         카메라 영역에 맞춰 촬영해주세요
       </p>
 
       {/* 카메라 전체 프리뷰 */}
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full h-full ">
         {!imgSrc ? (
           <video
             ref={videoRef}
@@ -141,58 +126,8 @@ const Certification = () => {
                 left: `calc(50% - ${(rectRatio * 100) / 2}vw)`,
               }}
             />
-            {/* 위쪽 블러 */}
-            <div
-              className="absolute top-0 left-0 w-full"
-              style={{
-                height: `calc(50vh - ${(rectRatio * 100) / aspectRatio / 2}vw)`,
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-                background: 'rgba(0,0,0,0.3)',
-              }}
-            />
-            {/* 아래쪽 블러 */}
-            <div
-              className="absolute bottom-0 left-0 w-full"
-              style={{
-                height: `calc(50vh - ${(rectRatio * 100) / aspectRatio / 2}vw)`,
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-                background: 'rgba(0,0,0,0.3)',
-              }}
-            />
-            {/* 좌측 블러 */}
-            <div
-              className="absolute top-[21.1%] left-0 h-[57.8%]"
-              style={{
-                width: `calc(50vw - ${(rectRatio * 100) / 2}vw)`,
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-                background: 'rgba(0,0,0,0.3)',
-              }}
-            />
-            {/* 우측 블러 */}
-            <div
-              className="absolute top-[21.1%] right-0 h-[57.8%]"
-              style={{
-                width: `calc(50vw - ${(rectRatio * 100) / 2}vw)`,
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-                background: 'rgba(0,0,0,0.3)',
-              }}
-            />
           </div>
         </div>
-      )}
-
-      {/* 다시 찍기 버튼 */}
-      {imgSrc && (
-        <button
-          onClick={() => setImgSrc(null)}
-          className="absolute z-30 px-4 py-2 text-sm font-medium text-black bg-white rounded-full shadow-lg top-32 right-6"
-        >
-          다시찍기
-        </button>
       )}
 
       {/* 하단 버튼 영역 */}
@@ -202,26 +137,7 @@ const Certification = () => {
             <>
               {/* 갤러리 버튼 */}
               <button className="flex items-center justify-center w-12 h-12 mr-auto">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                  <rect
-                    x="3"
-                    y="3"
-                    width="18"
-                    height="18"
-                    rx="2"
-                    ry="2"
-                    stroke="white"
-                    strokeWidth="2"
-                  />
-                  <circle
-                    cx="8.5"
-                    cy="8.5"
-                    r="1.5"
-                    stroke="white"
-                    strokeWidth="2"
-                  />
-                  <path d="M21 15l-5-5L5 21" stroke="white" strokeWidth="2" />
-                </svg>
+                <GalleryIcon />
               </button>
 
               {/* 촬영 버튼 */}
@@ -236,20 +152,7 @@ const Certification = () => {
 
               {/* 카메라 전환 버튼 */}
               <button className="flex items-center justify-center w-12 h-12 ml-auto">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M17 8l4 4-4 4M7 16l-4-4 4-4"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M21 12H3"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
+                <ChangeCameraIcon />
               </button>
             </>
           ) : (
