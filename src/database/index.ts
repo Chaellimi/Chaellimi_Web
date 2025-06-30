@@ -6,6 +6,7 @@ import './models/File';
 import './models/Point';
 import './models/Transactions';
 import './models/User';
+import './models/CertificationLog';
 import './models/index';
 
 export const connectToDatabase = async () => {
