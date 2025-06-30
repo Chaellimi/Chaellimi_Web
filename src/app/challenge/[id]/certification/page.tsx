@@ -11,8 +11,14 @@ import {
   ShapeQuestionIcon,
 } from '@public/icons/Challenge/certification';
 import React, { useRef, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { useUploadImg } from '@/service/shared/shared.mutation';
 
 const Certification = () => {
+  const router = useRouter();
+  const rectRatio = 0.85;
+  const aspectRatio = 3 / 4;
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const [imgSrc, setImgSrc] = useState<string | null>(null);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -38,27 +44,76 @@ const Certification = () => {
     }
   }, []);
 
+  const base64ToBlob = (base64: string): Blob => {
+    const byteString = atob(base64.split(',')[1]);
+    const mimeString = base64.split(',')[0].split(':')[1].split(';')[0];
+
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ab], { type: mimeString });
+  };
+
+  const { mutateAsync: uploadImage } = useUploadImg();
+
   // 캡쳐
-  const capture = useCallback(() => {
+  const capture = useCallback(async () => {
     if (videoRef.current) {
       const video = videoRef.current;
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+
+      const vw = video.videoWidth;
+      const vh = video.videoHeight;
+
+      const cropSize = 327;
+
+      const cropX = (vw - cropSize) / 2;
+      const cropY = (vh - cropSize) / 2;
+
+      canvas.width = cropSize;
+      canvas.height = cropSize;
 
       if (context) {
         context.save();
-        context.translate(canvas.width, 0);
+        context.translate(cropSize, 0);
         context.scale(-1, 1);
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        context.drawImage(
+          video,
+          cropX,
+          cropY,
+          cropSize,
+          cropSize,
+          0,
+          0,
+          cropSize,
+          cropSize
+        );
         context.restore();
 
         const imageSrc = canvas.toDataURL('image/png');
         setImgSrc(imageSrc);
+
+        const imageBlob = base64ToBlob(imageSrc);
+
+        const formData = new FormData();
+        formData.append('image', imageBlob, 'certification.png');
+
+        try {
+          const result = await uploadImage(formData);
+          router.push(
+            `/challenge/21/certification/done?image=${result.data.fileUrl}`
+          );
+        } catch (err) {
+          console.error('업로드 중 에러:', err);
+        }
       }
     }
-  }, []);
+  }, [router, uploadImage]);
 
   // 컴포넌트 마운트 시 카메라 시작
   React.useEffect(() => {
@@ -73,9 +128,6 @@ const Certification = () => {
       }
     };
   }, [startCamera]);
-
-  const rectRatio = 0.85;
-  const aspectRatio = 3 / 4;
 
   return (
     <div className="relative flex flex-col items-center justify-center w-screen h-screen overflow-hidden bg-black custom601:w-[430px] custom601:pb-[100px] certification-video">
@@ -140,33 +192,25 @@ const Certification = () => {
       {/* 하단 버튼 영역 */}
       <div className="absolute bottom-0 left-0 right-0 z-20 pb-8 custom601:bottom-28">
         <div className="flex items-center justify-center px-8">
-          {!imgSrc ? (
-            <>
-              {/* 갤러리 버튼 */}
-              <button className="flex items-center justify-center w-12 h-12 mr-auto">
-                <GalleryIcon />
-              </button>
+          {/* 갤러리 버튼 */}
+          <button className="flex items-center justify-center w-12 h-12 mr-auto">
+            <GalleryIcon />
+          </button>
 
-              {/* 촬영 버튼 */}
-              <button
-                onClick={capture}
-                className="flex items-center justify-center w-16 h-16 bg-orange-500 rounded-full shadow-lg"
-              >
-                <div className="flex items-center justify-center w-16 h-16 border-4 border-white rounded-full fill-[var(--primary-primary,#FF6A00)] shadow-[2px_2px_2px_0px_rgba(0,0,0,0.15)_inset,-2px_-2px_2px_0px_rgba(0,0,0,0.15)_inset]">
-                  <CameraIcon />
-                </div>
-              </button>
+          {/* 촬영 버튼 */}
+          <button
+            onClick={capture}
+            className="flex items-center justify-center w-16 h-16 bg-orange-500 rounded-full shadow-lg"
+          >
+            <div className="flex items-center justify-center w-16 h-16 border-4 border-white rounded-full fill-[var(--primary-primary,#FF6A00)] shadow-[2px_2px_2px_0px_rgba(0,0,0,0.15)_inset,-2px_-2px_2px_0px_rgba(0,0,0,0.15)_inset]">
+              <CameraIcon />
+            </div>
+          </button>
 
-              {/* 카메라 전환 버튼 */}
-              <button className="flex items-center justify-center w-12 h-12 ml-auto">
-                <ChangeCameraIcon />
-              </button>
-            </>
-          ) : (
-            <button className="px-8 py-3 text-lg font-semibold text-white bg-blue-500 rounded-lg shadow-lg">
-              인증 완료
-            </button>
-          )}
+          {/* 카메라 전환 버튼 */}
+          <button className="flex items-center justify-center w-12 h-12 ml-auto">
+            <ChangeCameraIcon />
+          </button>
         </div>
       </div>
     </div>
