@@ -3,3 +3,4 @@ export { default as GalleryIcon } from './gallery';
 export { default as ChangeCameraIcon } from './changeCamera';
 export { default as ShapeQuestionIcon } from './shapeQuestion';
 export { default as CloseIcon } from './close';
+export { default as WrongMarkIcon } from './wrongMark';
