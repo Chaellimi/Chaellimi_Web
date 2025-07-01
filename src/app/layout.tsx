@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import LayoutWithNav from './layoutWithNav';
-import { Providers } from './provider/next-auth';
-import ReactQueryProvider from './providers/react-query-provider';
+import { AuthProviders, ReactQueryProvider } from './providers';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export const metadata: Metadata = {
@@ -17,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <Providers>
+      <AuthProviders>
         <body
           suppressHydrationWarning
           className="relative bg-primary-light w-[100vw] h-[100vh] overflow-hidden flex justify-center items-center custom601:pt-14 custom601:pb-6"
@@ -38,7 +37,7 @@ export default function RootLayout({
             </div>
           </div>
         </body>
-      </Providers>
+      </AuthProviders>
     </html>
   );
 }
