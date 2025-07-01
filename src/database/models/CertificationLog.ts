@@ -6,8 +6,6 @@ import {
   InferCreationAttributes,
 } from 'sequelize';
 import { sequelize } from '../sequelize';
-import Users from './User';
-import Challenge from './Challenge';
 
 interface CertificationLogModel
   extends Model<
@@ -38,8 +36,5 @@ const CertificationLog = sequelize.define<CertificationLogModel>(
     collate: 'utf8_general_ci',
   }
 );
-
-CertificationLog.belongsTo(Users, { foreignKey: 'userId' });
-CertificationLog.belongsTo(Challenge, { foreignKey: 'challengeId' });
 
 export default CertificationLog;

@@ -1,6 +1,7 @@
 import Users from './User';
 import Challenge from './Challenge';
 import ChallengeParticipants from './ChallengeParticipants';
+import CertificationLog from './CertificationLog';
 
 Users.hasMany(Challenge, { foreignKey: 'userId', as: 'createdChallenges' });
 Users.belongsToMany(Challenge, {
@@ -19,4 +20,7 @@ ChallengeParticipants.belongsTo(Challenge, {
   as: 'challenge',
 });
 
-export { Users, Challenge, ChallengeParticipants };
+CertificationLog.belongsTo(Users, { foreignKey: 'userId' });
+CertificationLog.belongsTo(Challenge, { foreignKey: 'challengeId' });
+
+export { Users, Challenge, ChallengeParticipants, CertificationLog };
