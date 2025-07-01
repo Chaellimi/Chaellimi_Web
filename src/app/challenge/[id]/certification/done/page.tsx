@@ -20,7 +20,25 @@ const CertificationDone = () => {
     if (time) setTakenTime(time);
   }, []);
 
-  console.log(takenTime);
+  const formatExifDate = (exifDate: string): string => {
+    const [datePart, timePart] = exifDate.split(' ');
+    const [year, month, day] = datePart.split(':');
+    const [hour, minute] = timePart.split(':');
+
+    let hourNum = parseInt(hour, 10);
+    const isPM = hourNum >= 12;
+
+    if (hourNum === 0) {
+      hourNum = 12;
+    } else if (hourNum > 12) {
+      hourNum -= 12;
+    }
+
+    const hourFormatted = hourNum.toString().padStart(2, '0');
+    const ampm = isPM ? 'PM' : 'AM';
+
+    return `${year}.${month}.${day} ${hourFormatted}:${minute} ${ampm}`;
+  };
 
   if (!image) {
     return (
@@ -41,10 +59,10 @@ const CertificationDone = () => {
 
       <div className="flex flex-col items-center justify-center w-full h-full px-4">
         <h1 className="mb-4 text-center text-h3">
-          이 사진으로 인증할까요?{' '}
+          이 사진으로 인증할까요?
           {/* {takenTime ? (
             <span className="block mt-1 text-gray-500 text-c1">
-              촬영 시각: {takenTime}
+              {takenTime}
             </span>
           ) : (
             <span className="block mt-1 text-gray-400 text-c1">
@@ -62,11 +80,11 @@ const CertificationDone = () => {
             className="object-cover object-top w-full h-full shadow-md rounded-2xl"
           />
 
-          <div className="absolute text-white transform -translate-x-1/2 bottom-5 left-1/2 text-bn1">
+          <div className="absolute w-full text-center text-white transform -translate-x-1/2 bottom-5 left-1/2 text-bn1">
             {takenTime ? (
-              <span>촬영 시각: {takenTime}</span>
+              <span className="w-full">{formatExifDate(takenTime)}</span>
             ) : (
-              <span>촬영 시간 정보 없음</span>
+              <span className="w-full">촬영 시간 정보 없음</span>
             )}
           </div>
         </div>
