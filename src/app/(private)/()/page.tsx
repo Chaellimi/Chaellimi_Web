@@ -10,8 +10,10 @@ import ActiveChallengeData from '@/data/Home/ChallengeState.json';
 import HotChallengeData from '@/data/Home/ChallengeHot.json';
 import Header from '@/components/shared/Header';
 import { ArrowIcon } from '@public/icons/shared';
+import { useRouter } from 'next/navigation';
 
 const Home = () => {
+  const router = useRouter();
   const [isSearchbarVisible, setIsSearchbarVisiable] = useState(false);
   const [searchText, setSearchText] = useState('');
 
@@ -31,7 +33,15 @@ const Home = () => {
 
         {/* Main Content */}
         <div>
-          <Image src={Banner} width={413} alt="" className="mt-[0.88rem]" />
+          <Image
+            src={Banner}
+            width={413}
+            alt=""
+            className="mt-[0.88rem]"
+            onClick={() => {
+              router.push('/challenge/21/certification');
+            }}
+          />
         </div>
 
         {/* Active Challenge */}

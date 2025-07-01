@@ -71,7 +71,6 @@ const Certification = () => {
 
           const exif = data.payload.exif;
           if (exif && exif.DateTimeOriginal) {
-            // exif에서 직접 추출
             sessionStorage.setItem('cert-taken-time', exif.DateTimeOriginal);
           } else {
             const file = new File([imageBlob], 'certification.jpg', {
@@ -120,7 +119,7 @@ const Certification = () => {
   }, [router, uploadImage]);
 
   if (isPending) {
-    return <Loading />;
+    return <Loading subTitle="사진업로드 중입니다..." />;
   }
 
   return (
