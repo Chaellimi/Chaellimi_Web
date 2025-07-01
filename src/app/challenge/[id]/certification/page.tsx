@@ -1,216 +1,91 @@
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
+import BottomButton from '@/components/shared/BottomButton';
+import Header from '@/components/shared/Header';
 import {
-  CameraIcon,
-  ChangeCameraIcon,
-  CloseIcon,
-  GalleryIcon,
-  ShapeQuestionIcon,
+  WrongMarkIcon,
+  WrongXIcon,
 } from '@public/icons/Challenge/certification';
-import React, { useRef, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { useUploadImg } from '@/service/shared/shared.mutation';
+import ShapeQuestion from '@public/icons/Challenge/certification/shapeQuestion';
+import Image from 'next/image';
+
+const WrongCertificationExample = [
+  {
+    src: '/images/WrongCertification1.png',
+    alt: '인증불가 사진 예시 1',
+  },
+  {
+    src: '/images/WrongCertification2.jpg',
+    alt: '인증불가 사진 예시 2',
+  },
+  {
+    src: '/images/WrongCertification3.jpg',
+    alt: '인증불가 사진 예시 3',
+  },
+];
 
 const Certification = () => {
-  const router = useRouter();
-  const rectRatio = 0.85;
-  const aspectRatio = 3 / 4;
-
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [imgSrc, setImgSrc] = useState<string | null>(null);
-  const [isStreaming, setIsStreaming] = useState(false);
-
-  useStatusBarBridge({
-    backgroundColor: 'black',
-    translucent: true,
-    bottomBackgroundColor: 'black',
-  });
-
-  // 카메라 시작
-  const startCamera = useCallback(async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' },
-      });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        setIsStreaming(true);
-      }
-    } catch (err) {
-      console.error('카메라 접근 오류:', err);
-    }
-  }, []);
-
-  const base64ToBlob = (base64: string): Blob => {
-    const byteString = atob(base64.split(',')[1]);
-    const mimeString = base64.split(',')[0].split(':')[1].split(';')[0];
-
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-
-    return new Blob([ab], { type: mimeString });
-  };
-
-  const { mutateAsync: uploadImage } = useUploadImg();
-
-  // 캡쳐
-  const capture = useCallback(async () => {
-    if (videoRef.current) {
-      const video = videoRef.current;
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
-
-      const vw = video.videoWidth;
-      const vh = video.videoHeight;
-
-      const cropSize = 327;
-
-      const cropX = (vw - cropSize) / 2;
-      const cropY = (vh - cropSize) / 2;
-
-      canvas.width = cropSize;
-      canvas.height = cropSize;
-
-      if (context) {
-        context.save();
-        context.translate(cropSize, 0);
-        context.scale(-1, 1);
-        context.drawImage(
-          video,
-          cropX,
-          cropY,
-          cropSize,
-          cropSize,
-          0,
-          0,
-          cropSize,
-          cropSize
-        );
-        context.restore();
-
-        const imageSrc = canvas.toDataURL('image/png');
-        setImgSrc(imageSrc);
-
-        const imageBlob = base64ToBlob(imageSrc);
-
-        const formData = new FormData();
-        formData.append('image', imageBlob, 'certification.png');
-
-        try {
-          const result = await uploadImage(formData);
-          router.push(
-            `/challenge/21/certification/done?image=${result.data.fileUrl}`
-          );
-        } catch (err) {
-          console.error('업로드 중 에러:', err);
-        }
-      }
-    }
-  }, [router, uploadImage]);
-
-  // 컴포넌트 마운트 시 카메라 시작
-  React.useEffect(() => {
-    startCamera();
-
-    const currentVideo = videoRef.current;
-
-    return () => {
-      if (currentVideo && currentVideo.srcObject) {
-        const stream = currentVideo.srcObject as MediaStream;
-        stream.getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, [startCamera]);
-
   return (
-    <div className="relative flex flex-col items-center justify-center w-screen h-screen overflow-hidden bg-black custom601:w-[430px] custom601:pb-[100px] certification-video">
-      {/* 상태바 영역 */}
-      <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-4 pt-12 pb-4 custom601:w-[430px] custom601:pb-6">
-        {/* 닫기 버튼 */}
-        <button className="flex items-center justify-center w-8 h-8">
-          <CloseIcon />
-        </button>
+    <div className="flex flex-col w-full h-full ">
+      <Header
+        type="default"
+        title="인증하기"
+        icon={<ShapeQuestion color="#000" />}
+      />
 
-        {/* 제목 */}
-        <h2 className="text-white text-h3">인증하기</h2>
+      <div className="flex flex-col justify-between w-full h-full">
+        <div className="flex flex-col gap-5 p-6">
+          <div className="flex flex-col gap-4">
+            <div className="text-h3">인증 방법 안내</div>
 
-        {/* 도움말 버튼 */}
-        <button className="flex items-center justify-center w-8 h-8">
-          <ShapeQuestionIcon />
-        </button>
-      </div>
+            <div className="flex flex-col gap-1 p-3 bg-gray-50 rounded-xl">
+              <div className="text-fn">인증 시 유의사항</div>
+              <ul className="text-gray-400 text-c1">
+                <li>- 실제 활동 모습이 보이도록 촬영해 주세요.</li>
+                <li>- 챌린지 주제와 관련된 물품/공간이 포함되면 좋아요.</li>
+                <li>
+                  - 같은 사진 반복 사용 시 포인트 지급이 제한될 수 있어요.
+                </li>
+              </ul>
+            </div>
+          </div>
 
-      {/* 안내 텍스트 */}
-      <p className="absolute z-20 w-full px-4 text-center text-white text-h3 top-32 drop-shadow-lg custom601:w-[430px] custom601:pb-6">
-        카메라 영역에 맞춰 촬영해주세요
-      </p>
+          <div className="flex flex-col gap-[0.62rem]">
+            <div className="flex items-center gap-1">
+              <WrongMarkIcon />
+              <div className="text-b3">
+                이런 사진은 포인트 지급이 제한될 수 있어요
+              </div>
+            </div>
 
-      {/* 카메라 전체 프리뷰 */}
-      <div className="absolute inset-0 w-full h-full custom601:w-[430px] custom601:pb-6">
-        {!imgSrc ? (
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            muted
-            className="object-cover w-full h-full transform scale-x-[-1] custom601:pb-[100px]"
-          />
-        ) : (
-          <img
-            src={imgSrc}
-            alt="captured"
-            className="object-cover w-full h-full"
-          />
-        )}
-      </div>
-
-      {/* 블러 오버레이 */}
-      {!imgSrc && (
-        <div className="absolute inset-0 z-10 pointer-events-none">
-          <div className="relative flex items-center justify-center w-full h-full">
-            {/* 중앙 촬영 사각형 */}
-            <div
-              className="absolute border-2 border-white shadow-lg rounded-2xl"
-              style={{
-                width: `${rectRatio * 100}vw`,
-                height: `${(rectRatio * 100) / aspectRatio}vw`,
-                top: `calc(50% - ${(rectRatio * 100) / aspectRatio / 2}vw)`,
-                left: `calc(50% - ${(rectRatio * 100) / 2}vw)`,
-              }}
-            />
+            <div className="flex gap-[0.62rem] overflow-x-scroll scrollbar-hide">
+              {WrongCertificationExample.map((item) => (
+                <div className="flex flex-col gap-[0.62rem]" key={item.alt}>
+                  <div className="relative w-[280px] h-[280px]">
+                    <Image
+                      src={item.src}
+                      width={280}
+                      height={280}
+                      alt={item.alt}
+                      className="object-cover object-top w-full h-full rounded-2xl"
+                    />
+                  </div>
+                  <div className="flex items-center">
+                    <WrongXIcon />
+                    <div>챌린지 내용과 무관한 사진</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      )}
 
-      {/* 하단 버튼 영역 */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 pb-8 custom601:bottom-28">
-        <div className="flex items-center justify-center px-8">
-          {/* 갤러리 버튼 */}
-          <button className="flex items-center justify-center w-12 h-12 mr-auto">
-            <GalleryIcon />
-          </button>
-
-          {/* 촬영 버튼 */}
-          <button
-            onClick={capture}
-            className="flex items-center justify-center w-16 h-16 bg-orange-500 rounded-full shadow-lg"
-          >
-            <div className="flex items-center justify-center w-16 h-16 border-4 border-white rounded-full fill-[var(--primary-primary,#FF6A00)] shadow-[2px_2px_2px_0px_rgba(0,0,0,0.15)_inset,-2px_-2px_2px_0px_rgba(0,0,0,0.15)_inset]">
-              <CameraIcon />
-            </div>
-          </button>
-
-          {/* 카메라 전환 버튼 */}
-          <button className="flex items-center justify-center w-12 h-12 ml-auto">
-            <ChangeCameraIcon />
-          </button>
+        <div className="flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 border-t bg-gray-white border-gray-50 custom601:mb-6">
+          <BottomButton
+            title="촬영 시작하기"
+            onClick={() => {}}
+            disabled="false"
+          />
         </div>
       </div>
     </div>
