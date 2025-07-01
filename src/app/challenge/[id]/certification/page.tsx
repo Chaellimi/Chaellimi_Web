@@ -2,12 +2,16 @@
 
 import BottomButton from '@/components/shared/BottomButton';
 import Header from '@/components/shared/Header';
+import Loading from '@/components/shared/Loading';
+import { useUploadImg } from '@/service/shared/shared.mutation';
 import {
   WrongMarkIcon,
   WrongXIcon,
 } from '@public/icons/Challenge/certification';
 import ShapeQuestion from '@public/icons/Challenge/certification/shapeQuestion';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const WrongCertificationExample = [
   {
@@ -25,6 +29,74 @@ const WrongCertificationExample = [
 ];
 
 const Certification = () => {
+  const router = useRouter();
+
+  const [imgSrc, setImgSrc] = useState<string | null>(null);
+  console.log(imgSrc);
+
+  const base64ToBlob = (base64: string): Blob => {
+    const byteString = atob(base64.split(',')[1]);
+    const mimeString = base64.split(',')[0].split(':')[1].split(';')[0];
+
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ab], { type: mimeString });
+  };
+
+  const { mutateAsync: uploadImage, isPending } = useUploadImg();
+
+  // 네이티브 카메라 요청
+  const handleNativeCamera = () => {
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({ type: 'OPEN_CAMERA' })
+    );
+  };
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      try {
+        const data =
+          typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+
+        if (data.type === 'CAMERA_RESULT' && data.payload?.base64) {
+          const base64 = data.payload.base64;
+          const imageBlob = base64ToBlob(base64);
+          const formData = new FormData();
+          formData.append('image', imageBlob, 'certification.png');
+
+          setImgSrc(base64); // 미리보기용
+
+          uploadImage(formData)
+            .then((result) => {
+              const fileUrl = result.data.fileUrl;
+              if (fileUrl) {
+                router.push(
+                  `/challenge/21/certification/done?image=${fileUrl}`
+                );
+              }
+            })
+            .catch((err) => {
+              console.error('업로드 에러:', err);
+            });
+        }
+      } catch (err) {
+        console.error('WebView 메시지 파싱 오류:', err);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [router, uploadImage]);
+
+  if (isPending) {
+    return <Loading />;
+  }
+
   return (
     <div className="flex flex-col w-full h-full ">
       <Header
@@ -83,7 +155,7 @@ const Certification = () => {
         <div className="flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 border-t bg-gray-white border-gray-50 custom601:mb-6">
           <BottomButton
             title="촬영 시작하기"
-            onClick={() => {}}
+            onClick={handleNativeCamera}
             disabled="false"
           />
         </div>
