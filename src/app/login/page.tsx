@@ -4,10 +4,12 @@ import GoogleIcon from '@/components/Login/GoogleIcon';
 import TextLogo from '@/components/shared/TextLogo';
 import Image from 'next/image';
 import { signIn, useSession } from 'next-auth/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import KakaoIcon from '@/components/Login/KakaoIcon';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleGoogleLogin = () => {
@@ -26,9 +28,19 @@ const Login = () => {
     });
   };
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
-  console.log(session?.user?.name);
+  const isLoadingSession = status === 'loading';
+
+  useEffect(() => {
+    if (!isLoadingSession && session) {
+      router.replace('/');
+    }
+  }, [isLoadingSession, session, router]);
+
+  if (isLoadingSession || session) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full p-6 gap-[5.75rem]">
