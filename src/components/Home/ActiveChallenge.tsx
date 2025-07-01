@@ -16,6 +16,7 @@ const ActiveChallenge = ({
   time,
   title,
 }: OwnProps) => {
+  console.log(time);
   return (
     <div className="flex flex-col w-[12.5rem] border-[1px] border-gray-100 rounded-lg p-[0.88rem] gap-[0.62rem] min-w-[12.5rem] max-w-[12.5rem]">
       <div
@@ -36,7 +37,7 @@ const ActiveChallenge = ({
           />
         </div>
         <div>
-          <div className="text-c2 text-gray-black">{time}</div>
+          {/* <div className="text-c2 text-gray-black">{time}</div> */}
           <div className="text-b2 text-gray-black">{title}</div>
         </div>
       </div>
