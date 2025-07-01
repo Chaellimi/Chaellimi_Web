@@ -1,4 +1,9 @@
-import { Challenge, ChallengeParticipants } from '@/database/models';
+import { Op } from 'sequelize';
+import {
+  Challenge,
+  ChallengeParticipants,
+  CertificationLog,
+} from '@/database/models';
 import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
@@ -17,10 +22,37 @@ async function getHandler() {
         {
           model: Challenge,
           as: 'challenge',
-          attributes: ['id', 'title', 'description', 'difficulty', 'day'],
+          attributes: [
+            'id',
+            'title',
+            'description',
+            'difficulty',
+            'day',
+            'imgURL',
+          ],
         },
       ],
     });
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const todayCertifications = await CertificationLog.findAll({
+      where: {
+        userId: user.id,
+        certifiedAt: {
+          [Op.gte]: today,
+          [Op.lt]: tomorrow,
+        },
+      },
+      attributes: ['challengeId'],
+    });
+
+    const certifiedChallengeIds = new Set(
+      todayCertifications.map((item) => item.challengeId)
+    );
 
     const responseData = joinedChallenges.map((item) => {
       const challenge = item.challenge;
@@ -35,6 +67,7 @@ async function getHandler() {
         status: item.status,
         challenge,
         achievementRate,
+        isCertifiedToday: certifiedChallengeIds.has(item.challengeId),
       };
     });
 
@@ -50,5 +83,4 @@ async function getHandler() {
 }
 
 export const GetParticipatingChallengeList = withLogging(withAuth(getHandler));
-
 export const GET = GetParticipatingChallengeList;
