@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/OAuth/googleAuthOptions';
+import { authOptions } from '@/lib/OAuth/authOptions';
 import Users from '@/database/models/User';
 
 export interface SessionUser {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/OAuth/googleAuthOptions';
+import { authOptions } from '@/lib/OAuth/authOptions';
 import resUtil from '../utils/responseUtil';
 
 export function withAuth(handler: (req: NextRequest) => Promise<NextResponse>) {
