@@ -31,6 +31,8 @@ pipeline {
         DEV_TYPE = credentials('DEV_TYPE')
         GOOGLE_CLIENT_ID = credentials('GOOGLE_CLIENT_ID')
         GOOGLE_CLIENT_SECRET = credentials('GOOGLE_CLIENT_SECRET')
+        KAKAO_CLIENT_ID = credentials('KAKAO_CLIENT_ID')
+        KAKAO_CLIENT_SECRET = credentials('KAKAO_CLIENT_SECRET')
         NEXTAUTH_SECRET = credentials('NEXTAUTH_SECRET')
     }
     
@@ -57,6 +59,8 @@ pipeline {
                     echo "DB_NAME=$DB_NAME" >> .env
                     echo "GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" >> .env
                     echo "GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET" >> .env
+                    echo "KAKAO_CLIENT_ID=$KAKAO_CLIENT_ID" >> .env
+                    echo "KAKAO_CLIENT_SECRET=$KAKAO_CLIENT_SECRET" >> .env
                     echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
                     echo "NEXTAUTH_URL=https://www.chaellimi.kro.kr" >> .env
                 """
@@ -100,6 +104,8 @@ pipeline {
                     DB_NAME=$DB_NAME
                     GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
                     GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
+                    KAKAO_CLIENT_ID=$KAKAO_CLIENT_ID
+                    KAKAO_CLIENT_SECRET=$KAKAO_CLIENT_SECRET
                     NEXTAUTH_SECRET=$NEXTAUTH_SECRET;
                     NEXTAUTH_URL=https://www.chaellimi.kro.kr
                     EOF
