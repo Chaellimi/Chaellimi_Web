@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ShapeQuestionIcon } from '@public/icons/Challenge/certification';
 import Header from '@/components/shared/Header';
@@ -12,6 +12,15 @@ const CertificationDone = () => {
   const searchParams = useSearchParams();
   const image = searchParams.get('image');
   const challengeId = usePathname().split('/').slice(0, 4)[2];
+
+  const [takenTime, setTakenTime] = useState<string | null>(null);
+
+  useEffect(() => {
+    const time = sessionStorage.getItem('cert-taken-time');
+    if (time) setTakenTime(time);
+  }, []);
+
+  console.log(takenTime);
 
   if (!image) {
     return (
@@ -31,7 +40,19 @@ const CertificationDone = () => {
       />
 
       <div className="flex flex-col items-center justify-center w-full h-full px-4">
-        <h1 className="mb-4 text-h3">이 사진으로 인증할까요?</h1>
+        <h1 className="mb-4 text-center text-h3">
+          이 사진으로 인증할까요?{' '}
+          {/* {takenTime ? (
+            <span className="block mt-1 text-gray-500 text-c1">
+              촬영 시각: {takenTime}
+            </span>
+          ) : (
+            <span className="block mt-1 text-gray-400 text-c1">
+              촬영 시간 정보 없음
+            </span>
+          )} */}
+        </h1>
+
         <div className="relative h-[327px] w-[327px]">
           <Image
             width={327}
@@ -40,6 +61,14 @@ const CertificationDone = () => {
             alt="인증 사진"
             className="object-cover object-top w-full h-full shadow-md rounded-2xl"
           />
+
+          <div className="absolute text-white transform -translate-x-1/2 bottom-5 left-1/2 text-bn1">
+            {takenTime ? (
+              <span>촬영 시각: {takenTime}</span>
+            ) : (
+              <span>촬영 시간 정보 없음</span>
+            )}
+          </div>
         </div>
       </div>
 

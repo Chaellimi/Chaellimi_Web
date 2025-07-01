@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import BottomButton from '@/components/shared/BottomButton';
@@ -12,6 +13,7 @@ import ShapeQuestion from '@public/icons/Challenge/certification/shapeQuestion';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import EXIF from 'exif-js';
 
 const WrongCertificationExample = [
   {
@@ -66,10 +68,34 @@ const Certification = () => {
         if (data.type === 'CAMERA_RESULT' && data.payload?.base64) {
           const base64 = data.payload.base64;
           const imageBlob = base64ToBlob(base64);
+
+          const exif = data.payload.exif;
+          if (exif && exif.DateTimeOriginal) {
+            // exif에서 직접 추출
+            sessionStorage.setItem('cert-taken-time', exif.DateTimeOriginal);
+          } else {
+            const file = new File([imageBlob], 'certification.jpg', {
+              type: 'image/jpeg',
+            });
+
+            EXIF.getData(file as any, function (this: any) {
+              const date = EXIF.getTag(this, 'DateTimeOriginal');
+              if (date) {
+                const formatted = date.replace(
+                  /^(\d{4}):(\d{2}):(\d{2})/,
+                  '$1-$2-$3'
+                );
+                sessionStorage.setItem('cert-taken-time', formatted);
+              } else {
+                sessionStorage.removeItem('cert-taken-time');
+              }
+            });
+          }
+
           const formData = new FormData();
           formData.append('image', imageBlob, 'certification.png');
 
-          setImgSrc(base64); // 미리보기용
+          setImgSrc(base64);
 
           uploadImage(formData)
             .then((result) => {
