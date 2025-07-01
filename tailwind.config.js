@@ -179,6 +179,9 @@ module.exports = {
       screens: {
         custom601: '601px',
       },
+      animation: {
+        spinSlow: 'spin 4s linear infinite',
+      },
     },
   },
   plugins: [scrollbarHide],
