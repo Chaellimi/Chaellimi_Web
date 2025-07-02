@@ -40,6 +40,16 @@ const getChallengeById = async (id: number) => {
   return data;
 };
 
-const API = { getChallenge, postChallenge, getChallengeById };
+const getParticipatingChallenge = async () => {
+  const { data } = await axios.get(`/api/challenge/participating`);
+  return data;
+};
+
+const API = {
+  getChallenge,
+  postChallenge,
+  getChallengeById,
+  getParticipatingChallenge,
+};
 
 export default API;

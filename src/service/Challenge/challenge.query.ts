@@ -16,3 +16,10 @@ export const useGetChallengeById = (id: number) => {
     queryFn: () => API.getChallengeById(id),
   });
 };
+
+export const useGetParticipatingChallenge = () => {
+  return useQuery({
+    queryKey: [challengeKeys.useGetParticipatingChallenge],
+    queryFn: API.getParticipatingChallenge,
+  });
+};
