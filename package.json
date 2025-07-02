@@ -13,6 +13,7 @@
     "prepare": "husky install",
     "syncdb": "tsx scripts/syncdb.ts"
   },
+  "license": "MIT",
   "lint-staged": {
     "**/*.(ts|tsx)": [
       "eslint --fix",
