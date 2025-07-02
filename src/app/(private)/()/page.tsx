@@ -9,8 +9,8 @@ import HotChallenge from '@/components/Home/HotChallenge';
 import HotChallengeData from '@/data/Home/ChallengeHot.json';
 import Header from '@/components/shared/Header';
 import { ArrowIcon } from '@public/icons/shared';
-import { useRouter } from 'next/navigation';
 import { useGetParticipatingChallenge } from '@/service/Challenge/challenge.query';
+import Loading from '@/components/shared/Loading';
 
 interface ParticipatingChallenge {
   challengeId: number;
@@ -30,11 +30,11 @@ interface ParticipatingChallenge {
 }
 
 const Home = () => {
-  const router = useRouter();
   const [isSearchbarVisible, setIsSearchbarVisiable] = useState(false);
   const [searchText, setSearchText] = useState('');
 
-  const { data: ParticipatingChallengeData } = useGetParticipatingChallenge();
+  const { data: ParticipatingChallengeData, isPending } =
+    useGetParticipatingChallenge();
 
   function getCertificationProgress() {
     const total = ParticipatingChallengeData?.data?.length;
@@ -43,6 +43,10 @@ const Home = () => {
     ).length;
 
     return `${certifiedCount}/${total}`;
+  }
+
+  if (isPending) {
+    return <Loading />;
   }
 
   return (
@@ -61,15 +65,7 @@ const Home = () => {
 
         {/* Main Content */}
         <div>
-          <Image
-            src={Banner}
-            width={413}
-            alt=""
-            className="mt-[0.88rem]"
-            onClick={() => {
-              router.push('/challenge/21/certification');
-            }}
-          />
+          <Image src={Banner} width={413} alt="" className="mt-[0.88rem]" />
         </div>
 
         {/* Active Challenge */}
@@ -92,6 +88,7 @@ const Home = () => {
                     title={item.challenge.title}
                     time={'고정값'}
                     imgURL={item.challenge.imgURL}
+                    link={'/challenge/21/certification'}
                   />
                 );
               }
