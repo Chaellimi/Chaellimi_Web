@@ -16,7 +16,7 @@ interface CertificationLogModel
   userId: number;
   challengeId: number;
   imgURL: string;
-  certifiedAt: string; // YYYY-MM-DD 형식으로 저장
+  certifiedAt: string;
 }
 
 const CertificationLog = sequelize.define<CertificationLogModel>(
