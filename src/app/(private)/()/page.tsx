@@ -6,10 +6,12 @@ import React, { useState } from 'react';
 import Banner from '@public/images/HomeBanner.png';
 import ActiveChallenge from '@/components/Home/ActiveChallenge';
 import HotChallenge from '@/components/Home/HotChallenge';
-import HotChallengeData from '@/data/Home/ChallengeHot.json';
 import Header from '@/components/shared/Header';
 import { ArrowIcon } from '@public/icons/shared';
-import { useGetParticipatingChallenge } from '@/service/Challenge/challenge.query';
+import {
+  useGetParticipatingChallenge,
+  useGetPopularChallenge,
+} from '@/service/Challenge/challenge.query';
 import Loading from '@/components/shared/Loading';
 
 interface ParticipatingChallenge {
@@ -29,12 +31,31 @@ interface ParticipatingChallenge {
   isCertifiedToday: boolean;
 }
 
+export interface ChallengeWithParticipantCount {
+  id: number;
+  userId: number;
+  title: string;
+  description: string;
+  category: string;
+  difficulty: 'easy' | 'normal' | 'hard';
+  day: number;
+  imgURL: string;
+  participantCount: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+
 const Home = () => {
   const [isSearchbarVisible, setIsSearchbarVisiable] = useState(false);
   const [searchText, setSearchText] = useState('');
 
-  const { data: ParticipatingChallengeData, isPending } =
-    useGetParticipatingChallenge();
+  const {
+    data: ParticipatingChallengeData,
+    isPending: getParticipatingChallengePending,
+  } = useGetParticipatingChallenge();
+  const { data: PopularChallengeData, isPending: getPopularChallengePending } =
+    useGetPopularChallenge(3);
 
   function getCertificationProgress() {
     const total = ParticipatingChallengeData?.data?.length;
@@ -45,7 +66,7 @@ const Home = () => {
     return `${certifiedCount}/${total}`;
   }
 
-  if (isPending) {
+  if (getParticipatingChallengePending || getPopularChallengePending) {
     return <Loading />;
   }
 
@@ -103,15 +124,17 @@ const Home = () => {
             <ArrowIcon width="24" height="24" location="right" />
           </div>
           <div className="flex overflow-scroll gap-[0.62rem] scrollbar-hide">
-            {HotChallengeData.challenges.map((item, index) => (
-              <div key={index}>
+            {PopularChallengeData?.data.map(
+              (item: ChallengeWithParticipantCount) => (
                 <HotChallenge
-                  count={item.activePeopleCount}
+                  key={item.id}
+                  count={item.participantCount}
                   title={item.title}
-                  imgUrl={item.imgUrl}
+                  imgUrl={item.imgURL}
+                  link={`/challenge/${item.id}`}
                 />
-              </div>
-            ))}
+              )
+            )}
           </div>
         </div>
       </div>
