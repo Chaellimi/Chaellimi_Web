@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Image from 'next/image';
 import React from 'react';
 
@@ -5,7 +6,7 @@ interface OwnProps {
   isActive: boolean;
   progress: number;
   imgURL: string;
-  time: string;
+  time?: string;
   title: string;
 }
 
@@ -16,7 +17,6 @@ const ActiveChallenge = ({
   time,
   title,
 }: OwnProps) => {
-  console.log(time);
   return (
     <div className="flex flex-col w-[12.5rem] border-[1px] border-gray-100 rounded-lg p-[0.88rem] gap-[0.62rem] min-w-[12.5rem] max-w-[12.5rem]">
       <div
