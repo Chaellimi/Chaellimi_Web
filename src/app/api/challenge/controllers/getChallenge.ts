@@ -2,8 +2,8 @@ import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
 import { NextRequest } from 'next/server';
 import resUtil from '@/lib/utils/responseUtil';
-import { Op } from 'sequelize';
-import { Challenge, Users } from '@/database/models';
+import { col, fn, Op } from 'sequelize';
+import { Challenge, ChallengeParticipants, Users } from '@/database/models';
 
 async function getHandler(req: NextRequest) {
   try {
@@ -70,13 +70,26 @@ async function getHandler(req: NextRequest) {
 
     const challenges = await Challenge.findAll({
       ...queryOptions,
+      attributes: {
+        include: [
+          [fn('COUNT', col('ChallengeParticipants.id')), 'participantCount'],
+        ],
+      },
       include: [
         {
           model: Users,
           as: 'User',
           attributes: ['name', 'profileImg'],
         },
+        {
+          model: ChallengeParticipants,
+          as: 'ChallengeParticipants',
+          attributes: [],
+          required: false,
+        },
       ],
+      group: ['Challenge.id'],
+      subQuery: false,
     });
 
     return resUtil.successTrue({
