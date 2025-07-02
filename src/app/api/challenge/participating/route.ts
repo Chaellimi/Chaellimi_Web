@@ -71,6 +71,13 @@ async function getHandler() {
       };
     });
 
+    responseData.sort((a, b) => {
+      if (a.isCertifiedToday !== b.isCertifiedToday) {
+        return a.isCertifiedToday ? 1 : -1; // false 먼저
+      }
+      return new Date(a.joinedAt).getTime() - new Date(b.joinedAt).getTime();
+    });
+
     return resUtil.successTrue({
       status: 200,
       message: '참여 중인 챌린지 목록 조회 성공',
