@@ -3,10 +3,10 @@ import path from 'node:path';
 import { v4 as uuid } from 'uuid';
 import { promises as fs } from 'fs';
 import resUtil from '@/lib/utils/responseUtil';
-import File from '@/database/models/File';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
 import { withLogging } from '@/lib/middleware/withLogging';
 import { withAuth } from '@/lib/middleware/withAuth';
+import { File } from '@/database/models';
 
 async function ImageUploadHandler(req: NextRequest) {
   try {

@@ -1,16 +1,18 @@
 import { NextRequest } from 'next/server';
 import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
-import Challenge from '@/database/models/Challenge';
-import ChallengeParticipants from '@/database/models/ChallengeParticipants';
-import CertificationLog from '@/database/models/CertificationLog';
-import Point from '@/database/models/Point';
-import Transactions from '@/database/models/Transactions';
 import { validateRequiredFields } from '@/lib/utils/validateRequiredFields';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
 import resUtil from '@/lib/utils/responseUtil';
 import { AIHandler } from '@/service/Certification/customAxios';
 import dayjs from 'dayjs';
+import {
+  CertificationLog,
+  Challenge,
+  ChallengeParticipants,
+  Point,
+  Transactions,
+} from '@/database/models';
 
 interface CertificationChallengeData {
   challengeId: string;

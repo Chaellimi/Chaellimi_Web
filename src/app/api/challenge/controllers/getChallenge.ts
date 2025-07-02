@@ -1,10 +1,9 @@
 import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
 import { NextRequest } from 'next/server';
-import Challenge from '@/database/models/Challenge';
 import resUtil from '@/lib/utils/responseUtil';
 import { Op } from 'sequelize';
-import Users from '@/database/models/User';
+import { Challenge, Users } from '@/database/models';
 
 async function getHandler(req: NextRequest) {
   try {

@@ -1,11 +1,11 @@
 import { NextRequest } from 'next/server';
 import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
-import Challenge from '@/database/models/Challenge';
 import { validateRequiredFields } from '@/lib/utils/validateRequiredFields';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
 import resUtil from '@/lib/utils/responseUtil';
 import { ChallengeData } from '../Challenge';
+import { Challenge } from '@/database/models';
 
 async function postHandler(req: NextRequest) {
   try {

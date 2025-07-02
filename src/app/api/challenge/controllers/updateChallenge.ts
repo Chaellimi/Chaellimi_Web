@@ -1,10 +1,10 @@
-import Challenge from '@/database/models/Challenge';
 import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
 import resUtil from '@/lib/utils/responseUtil';
 import { NextRequest } from 'next/server';
 import { ChallengeData } from '../Challenge';
+import { Challenge } from '@/database/models';
 
 async function updateHandler(req: NextRequest) {
   try {

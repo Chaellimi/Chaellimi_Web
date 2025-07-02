@@ -1,10 +1,9 @@
 import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
 import { NextRequest } from 'next/server';
-import Challenge from '@/database/models/Challenge';
-import ChallengeParticipants from '@/database/models/ChallengeParticipants';
 import resUtil from '@/lib/utils/responseUtil';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
+import { Challenge, ChallengeParticipants } from '@/database/models';
 
 async function joinHandler(req: NextRequest) {
   try {

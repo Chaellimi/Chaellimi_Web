@@ -1,4 +1,4 @@
-import Transactions from '@/database/models/Transactions';
+import { Transactions } from '@/database/models';
 import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
