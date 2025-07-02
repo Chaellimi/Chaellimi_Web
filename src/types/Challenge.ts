@@ -23,6 +23,7 @@ export interface ChallengeType {
     name: string;
     profileImg: string;
   };
+  participantCount: number;
 }
 
 export interface ChallengeWriteType {

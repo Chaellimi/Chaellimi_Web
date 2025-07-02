@@ -159,7 +159,7 @@ const Challenge = () => {
             <ChallengeContent
               key={item.id}
               id={item.id}
-              count={20}
+              count={item.participantCount}
               title={item.title}
               imgUrl={item.imgURL}
               days={Number(item.day)}
