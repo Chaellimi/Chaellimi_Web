@@ -45,11 +45,17 @@ const getParticipatingChallenge = async () => {
   return data;
 };
 
+const getPopularChallenge = async (limit: number) => {
+  const { data } = await axios.get(`/api/challenge/hot?limit=${limit}`);
+  return data;
+};
+
 const API = {
   getChallenge,
   postChallenge,
   getChallengeById,
   getParticipatingChallenge,
+  getPopularChallenge,
 };
 
 export default API;

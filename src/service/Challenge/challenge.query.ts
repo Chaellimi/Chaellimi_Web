@@ -23,3 +23,10 @@ export const useGetParticipatingChallenge = () => {
     queryFn: API.getParticipatingChallenge,
   });
 };
+
+export const useGetPopularChallenge = (limit: number) => {
+  return useQuery({
+    queryKey: [challengeKeys.useGetPopularChallenge, limit],
+    queryFn: () => API.getPopularChallenge(limit),
+  });
+};
