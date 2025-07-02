@@ -6,16 +6,44 @@ import React, { useState } from 'react';
 import Banner from '@public/images/HomeBanner.png';
 import ActiveChallenge from '@/components/Home/ActiveChallenge';
 import HotChallenge from '@/components/Home/HotChallenge';
-import ActiveChallengeData from '@/data/Home/ChallengeState.json';
 import HotChallengeData from '@/data/Home/ChallengeHot.json';
 import Header from '@/components/shared/Header';
 import { ArrowIcon } from '@public/icons/shared';
 import { useRouter } from 'next/navigation';
+import { useGetParticipatingChallenge } from '@/service/Challenge/challenge.query';
+
+interface ParticipatingChallenge {
+  challengeId: number;
+  joinedAt: string;
+  streak: string;
+  status: string;
+  challenge: {
+    id: number;
+    title: string;
+    description: string;
+    difficulty: string;
+    day: number;
+    imgURL: string;
+  };
+  achievementRate: number;
+  isCertifiedToday: boolean;
+}
 
 const Home = () => {
   const router = useRouter();
   const [isSearchbarVisible, setIsSearchbarVisiable] = useState(false);
   const [searchText, setSearchText] = useState('');
+
+  const { data: ParticipatingChallengeData } = useGetParticipatingChallenge();
+
+  function getCertificationProgress() {
+    const total = ParticipatingChallengeData?.data?.length;
+    const certifiedCount = ParticipatingChallengeData?.data.filter(
+      (item: ParticipatingChallenge) => item.isCertifiedToday
+    ).length;
+
+    return `${certifiedCount}/${total}`;
+  }
 
   return (
     <div className="w-full h-full">
@@ -48,22 +76,26 @@ const Home = () => {
         <div className="flex flex-col gap-2 mt-5">
           <div className="flex items-center justify-between">
             <div className="text-he">참여중인 챌린지</div>
-            <div className="text-gray-300 text-fn">2/3 완료</div>
+            <div className="text-gray-300 text-fn">
+              {getCertificationProgress()} 완료
+            </div>
           </div>
 
           <div className="flex w-full overflow-scroll gap-[0.62rem] scrollbar-hide">
-            {ActiveChallengeData.challenges.map((item, index) => {
-              return (
-                <ActiveChallenge
-                  key={index}
-                  isActive={item.certificationState}
-                  progress={item.progress}
-                  title={item.title}
-                  time={item.certificationTime}
-                  imgURL={item.imgUrl}
-                />
-              );
-            })}
+            {ParticipatingChallengeData?.data.map(
+              (item: ParticipatingChallenge) => {
+                return (
+                  <ActiveChallenge
+                    key={item.challengeId}
+                    isActive={item.isCertifiedToday}
+                    progress={item.achievementRate}
+                    title={item.challenge.title}
+                    time={'고정값'}
+                    imgURL={item.challenge.imgURL}
+                  />
+                );
+              }
+            )}
           </div>
         </div>
 
