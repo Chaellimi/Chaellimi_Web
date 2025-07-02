@@ -6,12 +6,15 @@ import { ShapeQuestionIcon } from '@public/icons/Challenge/certification';
 import Header from '@/components/shared/Header';
 import BottomButton from '@/components/shared/BottomButton';
 import Image from 'next/image';
+import { useCertificationChallenge } from '@/service/Challenge/challenge.mutation';
+import { formatExifDate } from '@/lib/utils/formatExifDate';
 
 const CertificationDone = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const image = searchParams.get('image');
-  const challengeId = usePathname().split('/').slice(0, 4)[2];
+  const path = usePathname();
+  const challengeId = path.split('/').slice(0, 4)[2];
 
   const [takenTime, setTakenTime] = useState<string | null>(null);
 
@@ -20,24 +23,19 @@ const CertificationDone = () => {
     if (time) setTakenTime(time);
   }, []);
 
-  const formatExifDate = (exifDate: string): string => {
-    const [datePart, timePart] = exifDate.split(' ');
-    const [year, month, day] = datePart.split(':');
-    const [hour, minute] = timePart.split(':');
+  const { mutate: CertificationChallenge } = useCertificationChallenge();
 
-    let hourNum = parseInt(hour, 10);
-    const isPM = hourNum >= 12;
-
-    if (hourNum === 0) {
-      hourNum = 12;
-    } else if (hourNum > 12) {
-      hourNum -= 12;
+  const handleCertification = () => {
+    if (!image || !challengeId) {
+      console.log('No image or challengeId provided');
+      return;
     }
+    CertificationChallenge({
+      challengeId: challengeId,
+      imgURL: image,
+    });
 
-    const hourFormatted = hourNum.toString().padStart(2, '0');
-    const ampm = isPM ? 'PM' : 'AM';
-
-    return `${year}.${month}.${day} ${hourFormatted}:${minute} ${ampm}`;
+    router.push(`${path}/success`);
   };
 
   if (!image) {
@@ -99,7 +97,11 @@ const CertificationDone = () => {
         >
           취소
         </button>
-        <BottomButton title="인증하기" onClick={() => {}} disabled="false" />
+        <BottomButton
+          title="인증하기"
+          onClick={handleCertification}
+          disabled="false"
+        />
       </div>
     </div>
   );
