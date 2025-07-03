@@ -182,6 +182,13 @@ module.exports = {
       animation: {
         spinSlow: 'spin 4s linear infinite',
       },
+      boxShadow: {
+        'certification-special': `
+          inset -7.5px -4.286px 4.286px -7.5px #E8C2A8,
+          4.286px 5.357px 4.286px -2.143px rgba(88, 41, 5, 0.10),
+          inset 3.214px 4.286px 2.143px 0px rgba(248, 208, 180, 0.25)
+        `,
+      },
     },
   },
   plugins: [scrollbarHide],
