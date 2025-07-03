@@ -5,3 +5,4 @@ export { default as ShapeQuestionIcon } from './shapeQuestion';
 export { default as CloseIcon } from './close';
 export { default as WrongMarkIcon } from './wrongMark';
 export { default as WrongXIcon } from './wrongX';
+export { default as PointModalCheckIcon } from './pointModalCheck';
