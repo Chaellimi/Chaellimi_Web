@@ -2,16 +2,18 @@ import React from 'react';
 
 interface OwnProps {
   disabled?: boolean;
+  width?: number;
+  height?: number;
 }
 
-const CoinIcon = ({ disabled }: OwnProps) => {
+const CoinIcon = ({ disabled, width = 60, height = 60 }: OwnProps) => {
   return (
     <>
       {disabled == false ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="61"
-          height="60"
+          width={width}
+          height={height}
           viewBox="0 0 61 60"
           fill="none"
         >
