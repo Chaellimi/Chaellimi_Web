@@ -9,12 +9,15 @@ import {
   ShapeQuestionIcon,
 } from '@public/icons/Challenge/certification';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 const CertificationFailure = () => {
+  const router = useRouter();
   const path = usePathname();
   const challengeId = path.split('/').slice(0, 4)[2];
+  const searchParams = useSearchParams();
+  const image = searchParams.get('image');
 
   const [takenTime, setTakenTime] = useState<string | null>(null);
 
@@ -24,10 +27,18 @@ const CertificationFailure = () => {
   }, []);
 
   useStatusBarBridge({
-    backgroundColor: '#EBF5FF',
+    backgroundColor: '#FFEFEE',
     translucent: true,
-    bottomBackgroundColor: '#EBF5FF',
+    bottomBackgroundColor: '#FFEFEE',
   });
+
+  if (!image) {
+    return (
+      <div className="flex items-center justify-center w-full h-screen text-lg text-gray-500">
+        이미지 데이터가 없습니다.
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-between w-full h-full overflow-y-auto bg-red-100">
@@ -55,9 +66,7 @@ const CertificationFailure = () => {
               <Image
                 width={300}
                 height={300}
-                src={
-                  'https://img.freepik.com/free-photo/man-jump-through-gap-hill-man-jumping-cliff-blue-sky-business-concept-idea_1323-185.jpg?semt=ais_hybrid&w=740'
-                }
+                src={image}
                 alt="인증 사진"
                 className="object-cover object-top w-full h-full shadow-md rounded-2xl"
               />
@@ -75,14 +84,23 @@ const CertificationFailure = () => {
 
         <div className="flex flex-col items-center w-full bg-white">
           <div className="flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 bg-white custom601:mb-6">
-            <BottomButton
-              title="다시 인증"
-              onClick={() => {}}
-              disabled="progress"
-            />
+            <button
+              className={`flex items-center justify-center w-full h-[3.25rem] min-h-[3.25rem] rounded-xl text-bn1 bg-primary-light text-primary-default`}
+              onClick={() => {
+                router.push(`/challenge/${challengeId}/certification`);
+              }}
+            >
+              다시 인증
+            </button>
           </div>
           <div className="flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 bg-white custom601:mb-6">
-            <BottomButton title="홈으로" onClick={() => {}} disabled="false" />
+            <BottomButton
+              title="홈으로"
+              onClick={() => {
+                router.push('/');
+              }}
+              disabled="false"
+            />
           </div>
         </div>
       </div>
