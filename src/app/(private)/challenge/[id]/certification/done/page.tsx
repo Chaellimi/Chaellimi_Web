@@ -8,6 +8,9 @@ import BottomButton from '@/components/shared/BottomButton';
 import Image from 'next/image';
 import { useCertificationChallenge } from '@/service/Challenge/challenge.mutation';
 import { formatExifDate } from '@/lib/utils/formatExifDate';
+import PathUtil from '@/lib/utils/pathUtil';
+import Loading from '@/components/shared/Loading';
+import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 
 const CertificationDone = () => {
   const router = useRouter();
@@ -23,19 +26,44 @@ const CertificationDone = () => {
     if (time) setTakenTime(time);
   }, []);
 
-  const { mutate: CertificationChallenge } = useCertificationChallenge();
+  useStatusBarBridge({
+    backgroundColor: '#FFF',
+    translucent: true,
+    bottomBackgroundColor: '#FFF',
+  });
+
+  const { mutate: CertificationChallenge, isPending: CertificationPending } =
+    useCertificationChallenge();
 
   const handleCertification = () => {
     if (!image || !challengeId) {
       console.log('No image or challengeId provided');
       return;
     }
-    CertificationChallenge({
-      challengeId: challengeId,
-      imgURL: image,
-    });
-
-    router.push(`${path}/success`);
+    CertificationChallenge(
+      {
+        challengeId: challengeId,
+        imgURL: image,
+      },
+      {
+        onSuccess(data) {
+          if (data.is_match) {
+            router.push(
+              `/challenge/${PathUtil(path, 1)}/certification/done/success/?image=${image}`
+            );
+          } else {
+            router.push(
+              `/challenge/${PathUtil(path, 1)}/certification/done/failure/?image=${image}`
+            );
+          }
+        },
+        onError() {
+          router.push(
+            `/challenge/${PathUtil(path, 1)}/certification/done/failure/?image=${image}`
+          );
+        },
+      }
+    );
   };
 
   if (!image) {
@@ -43,6 +71,15 @@ const CertificationDone = () => {
       <div className="flex items-center justify-center w-full h-screen text-lg text-gray-500">
         이미지 데이터가 없습니다.
       </div>
+    );
+  }
+
+  if (CertificationPending) {
+    return (
+      <Loading
+        title="AI가 인증 사진을 분석하고 있어요!"
+        subTitle="잠시 기다려주세요..."
+      />
     );
   }
 
