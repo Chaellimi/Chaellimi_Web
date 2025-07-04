@@ -12,6 +12,7 @@ async function ImageUploadHandler(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get('image') as File;
+
     if (!file) {
       return resUtil.successFalse({
         status: 400,
@@ -46,7 +47,16 @@ async function ImageUploadHandler(req: NextRequest) {
       },
     });
   } catch (err) {
+    console.log(err);
     return resUtil.unknownError({ data: { err } });
   }
 }
+
 export const POST = withLogging(withAuth(ImageUploadHandler));
+
+export const config = {
+  api: {
+    bodyParser: false,
+    sizeLimit: '1G',
+  },
+};
