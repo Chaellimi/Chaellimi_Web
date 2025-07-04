@@ -14,6 +14,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import EXIF from 'exif-js';
+import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 
 const WrongCertificationExample = [
   {
@@ -32,6 +33,12 @@ const WrongCertificationExample = [
 
 const Certification = () => {
   const router = useRouter();
+
+  useStatusBarBridge({
+    backgroundColor: '#FFF',
+    translucent: true,
+    bottomBackgroundColor: '#FFF',
+  });
 
   const [imgSrc, setImgSrc] = useState<string | null>(null);
   console.log(imgSrc);
