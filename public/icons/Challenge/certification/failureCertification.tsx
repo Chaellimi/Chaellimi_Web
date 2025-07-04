@@ -80,7 +80,7 @@ const FailureCertificationIcon = () => {
           y2="22.999"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#A10D03" stopOpacity="0.8" />
+          <stop stopColor="#A10D03" stopOpacity="0.8" />
           <stop offset="0.8" stopColor="#FF483B" />
         </linearGradient>
         <linearGradient
@@ -91,7 +91,7 @@ const FailureCertificationIcon = () => {
           y2="22.999"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#A10D03" stopOpacity="0.8" />
+          <stop stopColor="#A10D03" stopOpacity="0.8" />
           <stop offset="0.8" stopColor="#FF483B" />
         </linearGradient>
       </defs>
