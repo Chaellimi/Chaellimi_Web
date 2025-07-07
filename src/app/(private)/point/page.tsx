@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import Header from '@/components/shared/Header';
 import { PointIcon } from '@public/icons/Challenge/point';
-import PointData from '@/data/Point/data.json';
-import { useGetPoint } from '@/service/Point/point.query';
+import { useGetPoint, useGetPointDetail } from '@/service/Point/point.query';
+// import { PointDetailType } from '@/types/Point';
 
 const PointCategory = [
   { id: 1, name: '전체' },
@@ -12,17 +12,33 @@ const PointCategory = [
   { id: 5, name: '획득' },
 ];
 
+interface PointResponseType {
+  id: number;
+  userId: number;
+  type: 'withdrawal' | 'deposit';
+  amount: string;
+  balance_after: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+
+export const formatDateToYMD = (isoString: string): string => {
+  const date = new Date(isoString);
+
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const day = `${date.getDate()}`.padStart(2, '0');
+
+  return `${year}.${month}.${day}`;
+};
+
 const Point = () => {
   const [activeCategory, setActiveCategory] = useState(1);
 
   const { data: totalPoint } = useGetPoint();
-
-  const filteredPoints = PointData.Point.filter((item) => {
-    if (activeCategory === 2) return item.point < 0;
-    if (activeCategory === 5) return item.point > 0;
-    return true;
-  });
-
+  const { data: pointDetail } = useGetPointDetail();
   return (
     <div className="flex flex-col items-center w-full h-full">
       <Header type="default" backClick="/" title="포인트" />
@@ -58,26 +74,31 @@ const Point = () => {
           </div>
         </div>
 
-        <div>
-          {filteredPoints.map((item) => (
+        <div className="flex flex-col w-full overflow-y-scroll h-[calc(100vh-16rem)] scrollbar-hide">
+          {pointDetail?.data?.map((item: PointResponseType) => (
             <div
               className="flex items-center justify-between w-full py-5"
               key={item.id}
             >
               <div className="flex items-center gap-[0.88rem]">
-                <div className="text-gray-400 text-fn">{item.date}</div>
-                <div className="text-b3">{item.title}</div>
+                <div className="text-gray-400 text-fn">
+                  {formatDateToYMD(item.createdAt)}
+                </div>
+                <div className="text-b3">{item.description}</div>
               </div>
               <div className="flex flex-col items-end justify-center gap-2">
                 <div
                   className={`text-bn2 ${
-                    item.point > 0 ? 'text-primary-default' : 'text-gray-black'
+                    item.type === 'deposit'
+                      ? 'text-primary-default'
+                      : 'text-gray-black'
                   }`}
                 >
-                  {item.point.toLocaleString()}P
+                  {item.type == 'deposit' ? '+' : '-'}
+                  {item.amount.toLocaleString()}P
                 </div>
                 <div className="text-gray-400 text-c1">
-                  {item.totalPoint.toLocaleString()}P
+                  {item.balance_after.toLocaleString()}P
                 </div>
               </div>
             </div>
