@@ -47,7 +47,7 @@ export interface ChallengeWithParticipantCount {
 }
 
 const Home = () => {
-  const [isSearchbarVisible, setIsSearchbarVisiable] = useState(false);
+  const [isSearchbarVisible, setIsSearchbarVisible] = useState(false);
   const [searchText, setSearchText] = useState('');
 
   const {
@@ -81,7 +81,7 @@ const Home = () => {
           searchText={searchText}
           setSearchText={setSearchText}
           isSearchbarVisible={isSearchbarVisible}
-          setIsSearchbarVisiable={setIsSearchbarVisiable}
+          setIsSearchbarVisiable={setIsSearchbarVisible}
         />
 
         {/* Main Content */}
@@ -109,7 +109,7 @@ const Home = () => {
                     title={item.challenge.title}
                     time={'고정값'}
                     imgURL={item.challenge.imgURL}
-                    link={'/challenge/21/certification'}
+                    link={`/challenge/${item.challengeId}/certification`}
                   />
                 );
               }

@@ -1,7 +1,7 @@
 import { sequelize } from '@/database/sequelize';
 import Point from '@/database/models/Point';
-import Transactions from '@/database/models/Transactions';
 import resUtil from './responseUtil';
+import { Transactions } from '@/database/models';
 
 export async function modifyPoint({
   userId,

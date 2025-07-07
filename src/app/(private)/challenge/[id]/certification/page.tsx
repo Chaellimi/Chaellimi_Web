@@ -11,10 +11,11 @@ import {
 } from '@public/icons/Challenge/certification';
 import ShapeQuestion from '@public/icons/Challenge/certification/shapeQuestion';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import EXIF from 'exif-js';
 import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
+import PathUtil from '@/lib/utils/pathUtil';
 
 const WrongCertificationExample = [
   {
@@ -33,6 +34,8 @@ const WrongCertificationExample = [
 
 const Certification = () => {
   const router = useRouter();
+  const path = usePathname();
+  const challengeId = PathUtil(path, 1);
 
   useStatusBarBridge({
     backgroundColor: '#FFF',
@@ -108,7 +111,7 @@ const Certification = () => {
               const fileUrl = result.data.fileUrl;
               if (fileUrl) {
                 router.push(
-                  `/challenge/21/certification/done?image=${fileUrl}`
+                  `/challenge/${challengeId}/certification/done?image=${fileUrl}`
                 );
               }
             })
@@ -123,7 +126,7 @@ const Certification = () => {
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [router, uploadImage]);
+  }, [router, uploadImage, challengeId]);
 
   if (isPending) {
     return <Loading subTitle="사진업로드 중입니다..." />;

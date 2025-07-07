@@ -15,10 +15,10 @@ export default function AuthLayout({
   const isLoading = status === 'loading';
 
   useEffect(() => {
-    if (!myInfo) {
+    if (!isLoading && !myInfo) {
       router.replace('/login');
     }
-  }, [myInfo, router]);
+  }, [myInfo, router, isLoading]);
 
   if (isLoading) {
     return <Loading />;
