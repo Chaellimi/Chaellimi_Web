@@ -109,7 +109,7 @@ const Home = () => {
                     title={item.challenge.title}
                     time={'고정값'}
                     imgURL={item.challenge.imgURL}
-                    link={'/challenge/21/certification'}
+                    link={`/challenge/${item.challengeId}/certification`}
                   />
                 );
               }

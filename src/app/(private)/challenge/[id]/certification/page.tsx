@@ -35,7 +35,7 @@ const WrongCertificationExample = [
 const Certification = () => {
   const router = useRouter();
   const path = usePathname();
-  const challengeId = PathUtil(path, 2);
+  const challengeId = PathUtil(path, 1);
 
   useStatusBarBridge({
     backgroundColor: '#FFF',
