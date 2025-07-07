@@ -28,6 +28,7 @@ const nextConfig: NextConfig = {
       'img1.kakaocdn.net',
       't1.kakaocdn.net',
     ],
+    unoptimized: true,
   },
   reactStrictMode: true,
   output: 'standalone',
