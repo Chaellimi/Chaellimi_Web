@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Header from '@/components/shared/Header';
 import { PointIcon } from '@public/icons/Challenge/point';
 import PointData from '@/data/Point/data.json';
+import { useGetPoint } from '@/service/Point/point.query';
 
 const PointCategory = [
   { id: 1, name: '전체' },
@@ -13,6 +14,8 @@ const PointCategory = [
 
 const Point = () => {
   const [activeCategory, setActiveCategory] = useState(1);
+
+  const { data: totalPoint } = useGetPoint();
 
   const filteredPoints = PointData.Point.filter((item) => {
     if (activeCategory === 2) return item.point < 0;
@@ -29,7 +32,7 @@ const Point = () => {
           <div className="text-b3">보유 포인트</div>
           <div className="flex items-center gap-4 text-Lg">
             <PointIcon />
-            9,999P
+            {totalPoint?.data?.totalPoint}P
           </div>
         </div>
       </div>
