@@ -31,7 +31,7 @@ export default function RootLayout({
             >
               <LayoutWithNav>
                 <ReactQueryProvider>
-                  {children} <ReactQueryDevtools initialIsOpen={false} />
+                  {children} <ReactQueryDevtools initialIsOpen={true} />
                 </ReactQueryProvider>
               </LayoutWithNav>
             </div>

@@ -10,9 +10,10 @@ export default function LayoutWithNav({
 }) {
   const pathname = usePathname();
 
-  // Nav를 보여야 하는 조건
+  // Nav를 안보여야 하는 조건
   const showNavbar =
     pathname !== '/login' &&
+    pathname !== '/point' &&
     pathname !== '/splash' &&
     !(pathname.startsWith('/challenge') && pathname !== '/challenge');
 
