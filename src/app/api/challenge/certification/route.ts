@@ -119,5 +119,5 @@ async function postHandler(req: NextRequest) {
   }
 }
 
-export const CertificationChallenge = withLogging(withAuth(postHandler));
+const CertificationChallenge = withLogging(withAuth(postHandler));
 export const POST = CertificationChallenge;

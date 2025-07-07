@@ -48,5 +48,5 @@ export async function getHandler(req: NextRequest) {
   }
 }
 
-export const GetHotChallenge = withLogging(withAuth(getHandler));
+const GetHotChallenge = withLogging(withAuth(getHandler));
 export const GET = GetHotChallenge;

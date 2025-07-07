@@ -89,5 +89,5 @@ async function getHandler() {
   }
 }
 
-export const GetParticipatingChallengeList = withLogging(withAuth(getHandler));
+const GetParticipatingChallengeList = withLogging(withAuth(getHandler));
 export const GET = GetParticipatingChallengeList;
