@@ -31,7 +31,7 @@ async function ImageUploadHandler(req: NextRequest) {
 
     await fs.writeFile(finalPath, buffer);
 
-    const fileUrl = `${process.env.NEXTAUTH_URL}/uploads/${safeFileName}`;
+    const fileUrl = `/uploads/${safeFileName}`;
 
     const user = await getUserFromRequest();
     await File.create({
