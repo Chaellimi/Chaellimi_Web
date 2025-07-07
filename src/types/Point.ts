@@ -1,3 +1,3 @@
 export interface PointDetailType {
-  type?: 'deposit' | 'withdrawal';
+  type?: 'deposit' | 'withdrawal' | '';
 }
