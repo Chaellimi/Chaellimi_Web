@@ -1,6 +1,6 @@
 FROM node:22-alpine AS builder
 
-WORKDIR /web
+WORKDIR /
 
 COPY package.json yarn.lock ./
 
