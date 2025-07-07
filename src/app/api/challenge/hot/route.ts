@@ -5,7 +5,7 @@ import { withLogging } from '@/lib/middleware/withLogging';
 import { withAuth } from '@/lib/middleware/withAuth';
 import { NextRequest } from 'next/server';
 
-export async function getHandler(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const limitParam = searchParams.get('limit');
