@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react';
 import EXIF from 'exif-js';
 import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 import PathUtil from '@/lib/utils/pathUtil';
+import isWebEnvironment from '@/lib/utils/isWebEnvironment';
 
 const WrongCertificationExample = [
   {
@@ -64,9 +65,13 @@ const Certification = () => {
 
   // 네이티브 카메라 요청
   const handleNativeCamera = () => {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({ type: 'OPEN_CAMERA' })
-    );
+    if (isWebEnvironment()) {
+      return alert('웹 환경에서는 인증 기능을 사용할 수 없습니다.');
+    } else {
+      window.ReactNativeWebView?.postMessage(
+        JSON.stringify({ type: 'OPEN_CAMERA' })
+      );
+    }
   };
 
   useEffect(() => {
