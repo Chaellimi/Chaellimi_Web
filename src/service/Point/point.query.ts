@@ -12,7 +12,7 @@ export const useGetPoint = () => {
 
 export const useGetPointDetail = (type?: PointDetailType) => {
   return useQuery({
-    queryKey: [pointKeys.useGetPointDetail],
+    queryKey: [pointKeys.useGetPointDetail, type],
     queryFn: () => API.getPointDetail(type),
   });
 };
