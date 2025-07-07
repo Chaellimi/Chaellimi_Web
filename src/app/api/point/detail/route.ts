@@ -15,7 +15,10 @@ async function getHandler(req: NextRequest): Promise<NextResponse> {
       ...(type === 'deposit' || type === 'withdrawal' ? { type } : {}),
     };
 
-    const transactions = await Transactions.findAll({ where });
+    const transactions = await Transactions.findAll({
+      where,
+      order: [['createdAt', 'DESC']],
+    });
 
     return resUtil.successTrue({ data: transactions });
   } catch (err) {

@@ -90,32 +90,34 @@ const Home = () => {
         </div>
 
         {/* Active Challenge */}
-        <div className="flex flex-col gap-2 mt-5">
-          <div className="flex items-center justify-between">
-            <div className="text-he">참여중인 챌린지</div>
-            <div className="text-gray-300 text-fn">
-              {getCertificationProgress()} 완료
+        {ParticipatingChallengeData?.data.length != 0 ? (
+          <div className="flex flex-col gap-2 mt-5">
+            <div className="flex items-center justify-between">
+              <div className="text-he">참여중인 챌린지</div>
+              <div className="text-gray-300 text-fn">
+                {getCertificationProgress()} 완료
+              </div>
+            </div>
+
+            <div className="flex w-full overflow-scroll gap-[0.62rem] scrollbar-hide">
+              {ParticipatingChallengeData?.data.map(
+                (item: ParticipatingChallenge) => {
+                  return (
+                    <ActiveChallenge
+                      key={item.challengeId}
+                      isActive={item.isCertifiedToday}
+                      progress={item.achievementRate}
+                      title={item.challenge.title}
+                      time={'고정값'}
+                      imgURL={item.challenge.imgURL}
+                      link={`/challenge/${item.challengeId}/certification`}
+                    />
+                  );
+                }
+              )}
             </div>
           </div>
-
-          <div className="flex w-full overflow-scroll gap-[0.62rem] scrollbar-hide">
-            {ParticipatingChallengeData?.data.map(
-              (item: ParticipatingChallenge) => {
-                return (
-                  <ActiveChallenge
-                    key={item.challengeId}
-                    isActive={item.isCertifiedToday}
-                    progress={item.achievementRate}
-                    title={item.challenge.title}
-                    time={'고정값'}
-                    imgURL={item.challenge.imgURL}
-                    link={`/challenge/${item.challengeId}/certification`}
-                  />
-                );
-              }
-            )}
-          </div>
-        </div>
+        ) : null}
 
         {/* Hot Challenge */}
         <div className="flex flex-col gap-2 mt-5">
