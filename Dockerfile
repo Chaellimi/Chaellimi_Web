@@ -10,6 +10,8 @@ COPY . .
 
 COPY .env .env
 
+COPY public ./public
+
 RUN yarn build
 
 RUN yarn install --production --frozen-lockfile
