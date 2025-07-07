@@ -13,12 +13,15 @@ const Input = ({
   onChange,
   placeholder = '입력해주세요',
 }: InputProps) => {
+  const baseClasses =
+    'w-full px-4 py-3 border border-gray-300 rounded-xl text-bn2 focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-blue-200';
+
   return type === 'textarea' ? (
     <textarea
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full px-4 py-3 border border-gray-300 h-36 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-200 text-bn2"
+      className={`${baseClasses} h-36`}
     />
   ) : (
     <input
@@ -26,7 +29,7 @@ const Input = ({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-200 text-bn2"
+      className={baseClasses}
     />
   );
 };

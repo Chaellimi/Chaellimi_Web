@@ -6,7 +6,6 @@ import {
   InferCreationAttributes,
 } from 'sequelize';
 import { sequelize } from '../sequelize';
-import Users from './User';
 
 interface TransactionsModel
   extends Model<
@@ -42,8 +41,5 @@ const Transactions = sequelize.define<TransactionsModel>(
     tableName: 'Transactions',
   }
 );
-
-Transactions.belongsTo(Users, { foreignKey: 'userId' });
-Users.hasMany(Transactions, { foreignKey: 'userId' });
 
 export default Transactions;

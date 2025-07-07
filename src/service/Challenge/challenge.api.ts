@@ -40,6 +40,37 @@ const getChallengeById = async (id: number) => {
   return data;
 };
 
-const API = { getChallenge, postChallenge, getChallengeById };
+const getParticipatingChallenge = async () => {
+  const { data } = await axios.get(`/api/challenge/participating`);
+  return data;
+};
+
+const getPopularChallenge = async (limit: number) => {
+  const { data } = await axios.get(`/api/challenge/hot?limit=${limit}`);
+  return data;
+};
+
+const postCertification = async ({
+  challengeId,
+  imgURL,
+}: {
+  challengeId: string;
+  imgURL: string;
+}) => {
+  const { data } = await axios.post(`/api/challenge/certification`, {
+    challengeId,
+    imgURL,
+  });
+  return data;
+};
+
+const API = {
+  getChallenge,
+  postChallenge,
+  getChallengeById,
+  getParticipatingChallenge,
+  getPopularChallenge,
+  postCertification,
+};
 
 export default API;

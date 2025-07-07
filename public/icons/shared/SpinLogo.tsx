@@ -18,6 +18,7 @@ const SpinLogo = ({ animationDuration, width, height }: SpinLogoProps) => {
         viewBox="0 0 105 94"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        className="origin-center"
       >
         <path
           fillRule="evenodd"

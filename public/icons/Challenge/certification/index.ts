@@ -1,0 +1,9 @@
+export { default as CameraIcon } from './camera';
+export { default as GalleryIcon } from './gallery';
+export { default as ChangeCameraIcon } from './changeCamera';
+export { default as ShapeQuestionIcon } from './shapeQuestion';
+export { default as CloseIcon } from './close';
+export { default as WrongMarkIcon } from './wrongMark';
+export { default as WrongXIcon } from './wrongX';
+export { default as PointModalCheckIcon } from './pointModalCheck';
+export { default as FailureCertificationIcon } from './failureCertification';

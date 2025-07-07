@@ -6,3 +6,9 @@ export const useCreateChallenge = () => {
     mutationFn: API.postChallenge,
   });
 };
+
+export const useCertificationChallenge = () => {
+  return useMutation({
+    mutationFn: API.postCertification,
+  });
+};

@@ -5,9 +5,16 @@ import Image from 'next/image';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import FinishCheckImage from '@public/images/FinishCheckImage.png';
+import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 
 const Finish = () => {
   const router = useRouter();
+
+  useStatusBarBridge({
+    backgroundColor: '#FFF',
+    translucent: true,
+    bottomBackgroundColor: '#FFF',
+  });
 
   return (
     <div className="flex flex-col w-full h-full px-6">

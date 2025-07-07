@@ -3,15 +3,16 @@ import path from 'node:path';
 import { v4 as uuid } from 'uuid';
 import { promises as fs } from 'fs';
 import resUtil from '@/lib/utils/responseUtil';
-import File from '@/database/models/File';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
 import { withLogging } from '@/lib/middleware/withLogging';
 import { withAuth } from '@/lib/middleware/withAuth';
+import { File } from '@/database/models';
 
 async function ImageUploadHandler(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get('image') as File;
+
     if (!file) {
       return resUtil.successFalse({
         status: 400,
@@ -30,7 +31,7 @@ async function ImageUploadHandler(req: NextRequest) {
 
     await fs.writeFile(finalPath, buffer);
 
-    const fileUrl = `${process.env.NEXTAUTH_URL}/uploads/${safeFileName}`;
+    const fileUrl = `/uploads/${safeFileName}`;
 
     const user = await getUserFromRequest();
     await File.create({
@@ -46,7 +47,16 @@ async function ImageUploadHandler(req: NextRequest) {
       },
     });
   } catch (err) {
+    console.log(err);
     return resUtil.unknownError({ data: { err } });
   }
 }
+
 export const POST = withLogging(withAuth(ImageUploadHandler));
+
+export const config = {
+  api: {
+    bodyParser: false,
+    sizeLimit: '1G',
+  },
+};

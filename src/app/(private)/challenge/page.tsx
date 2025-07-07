@@ -74,7 +74,7 @@ const Challenge = () => {
     dayEnd,
   };
 
-  const { data: ChallengeData, isLoading } = useGetChallenge(filterParams);
+  const { data: ChallengeData, isPending } = useGetChallenge(filterParams);
 
   const hasActiveFilters = Object.values(filters).some(
     (v) => v !== '전체' && v !== '인기순'
@@ -89,7 +89,7 @@ const Challenge = () => {
     setFilters({ 기간: '전체', 난이도: '전체', 정렬: '인기순' });
   };
 
-  if (isLoading) {
+  if (isPending) {
     return <Loading />;
   }
 
@@ -159,7 +159,7 @@ const Challenge = () => {
             <ChallengeContent
               key={item.id}
               id={item.id}
-              count={20}
+              count={item.participantCount}
               title={item.title}
               imgUrl={item.imgURL}
               days={Number(item.day)}

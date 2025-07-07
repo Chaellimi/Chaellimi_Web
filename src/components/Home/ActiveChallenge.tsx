@@ -1,12 +1,18 @@
+'use client';
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 interface OwnProps {
   isActive: boolean;
   progress: number;
   imgURL: string;
-  time: string;
+  time?: string;
   title: string;
+  link: string;
 }
 
 const ActiveChallenge = ({
@@ -15,7 +21,10 @@ const ActiveChallenge = ({
   imgURL,
   time,
   title,
+  link,
 }: OwnProps) => {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col w-[12.5rem] border-[1px] border-gray-100 rounded-lg p-[0.88rem] gap-[0.62rem] min-w-[12.5rem] max-w-[12.5rem]">
       <div
@@ -36,17 +45,22 @@ const ActiveChallenge = ({
           />
         </div>
         <div>
-          <div className="text-c2 text-gray-black">{time}</div>
+          {/* <div className="text-c2 text-gray-black">{time}</div> */}
           <div className="text-b2 text-gray-black">{title}</div>
         </div>
       </div>
 
-      <div
+      <button
         className={`flex items-center justify-center w-full p-[0.62rem] text-bn3 text-white rounded-lg
           ${isActive ? 'bg-gray-300' : 'bg-primary-default'}`}
+        onClick={() => {
+          if (!isActive) {
+            router.push(link);
+          }
+        }}
       >
         {isActive ? '오늘 인증 완료!' : '인증하러 가기'}
-      </div>
+      </button>
     </div>
   );
 };

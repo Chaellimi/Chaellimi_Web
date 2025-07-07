@@ -1,6 +1,5 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../sequelize';
-import Users from './User';
 
 const File = sequelize.define(
   'File',
@@ -27,8 +26,5 @@ const File = sequelize.define(
     tableName: 'Files',
   }
 );
-
-File.belongsTo(Users, { foreignKey: 'userId', as: 'user' });
-Users.hasMany(File, { foreignKey: 'userId', as: 'files' });
 
 export default File;
