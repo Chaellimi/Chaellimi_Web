@@ -111,10 +111,19 @@ pipeline {
                     EOF
                 '''
 
+                sh 'mkdir -p public/uploads'
+
                 sh 'docker build -t chaellimi .'
                 sh 'docker stop chaellimi || true'
                 sh 'docker rm chaellimi || true'
-                sh 'docker run -d --name chaellimi -p 4001:3000 chaellimi'
+
+                sh '''
+                    docker run -d \
+                    --name chaellimi \
+                    -p 4001:3000 \
+                    -v $(pwd)/public/uploads:/root/public/uploads \
+                    chaellimi
+                '''
                 sh 'sudo systemctl restart nginx'
             }
         }
