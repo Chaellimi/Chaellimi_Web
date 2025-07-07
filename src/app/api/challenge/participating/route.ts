@@ -58,7 +58,8 @@ async function getHandler() {
       const challenge = item.challenge;
       const streak = parseInt(item.streak, 10) || 0;
       const day = challenge?.day || 1;
-      const achievementRate = Math.min(Math.round((streak / day) * 100), 100);
+      const achievementRate =
+        day > 0 ? Math.min(Math.round((streak / day) * 100), 100) : 0;
 
       return {
         challengeId: item.challengeId,
