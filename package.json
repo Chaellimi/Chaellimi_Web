@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:local": "yarn next dev -H 10.150.149.172 -p 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint && yarn eslint ./src --ext .js,.jsx,.ts,.tsx",
