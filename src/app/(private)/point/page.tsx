@@ -86,7 +86,7 @@ const Point = () => {
         </div>
 
         {/* 리스트 */}
-        <div className="flex flex-col w-full overflow-y-scroll h-[calc(100vh-16rem)] scrollbar-hide">
+        <div className="flex flex-col w-full overflow-scroll h-[70%] scrollbar-hide">
           {pointDetail?.data?.map((item: PointResponseType) => (
             <div
               className="flex items-center justify-between w-full py-5 border-b border-gray-100"

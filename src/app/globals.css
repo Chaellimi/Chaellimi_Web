@@ -31,6 +31,7 @@
     background-image: url('https://cloud.jamkris.kro.kr/apps/files_sharing/publicpreview/r3jWenFY8c524WT?file=/&fileId=31947&x=3420&y=2214&a=true&etag=7a5ede5526cff9dcbaeb744dd0225acc');
     background-position: center;
     pointer-events: none !important;
+    background-repeat: no-repeat;
   }
 }
 @media (max-width: 600px) {

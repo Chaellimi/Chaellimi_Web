@@ -19,7 +19,7 @@ export default function RootLayout({
       <AuthProviders>
         <body
           suppressHydrationWarning
-          className="relative bg-primary-light w-[100vw] h-[100vh] overflow-hidden flex justify-center items-center custom601:pt-14 custom601:pb-6"
+          className="relative bg-primary-light w-[100vw] h-[100vh] overflow-hidden flex justify-center items-center custom601:pt-28 custom601:pb-20"
         >
           <div className="absolute z-[100] w-[500px] h-full top-4 pc-mockup-bg" />
           <div className="w-full h-full flex justify-center items-cente custom601:w-[430px]">
@@ -31,7 +31,7 @@ export default function RootLayout({
             >
               <LayoutWithNav>
                 <ReactQueryProvider>
-                  {children} <ReactQueryDevtools initialIsOpen={true} />
+                  {children} <ReactQueryDevtools initialIsOpen={false} />
                 </ReactQueryProvider>
               </LayoutWithNav>
             </div>
