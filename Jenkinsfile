@@ -121,7 +121,7 @@ pipeline {
                     docker run -d \
                     --name chaellimi \
                     -p 4001:3000 \
-                    -v $(pwd)/public/uploads:/root/public/uploads \
+                    -v /var/www/chaellimi/public/uploads:/root/public/uploads \
                     chaellimi
                 '''
                 sh 'sudo systemctl restart nginx'
