@@ -6,7 +6,7 @@ import {
   PointModalCheckIcon,
   ShapeQuestionIcon,
 } from '@public/icons/Challenge/certification';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
@@ -18,6 +18,7 @@ import BottomButton from '@/components/shared/BottomButton';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const CertificationSuccess = () => {
+  const router = useRouter();
   const path = usePathname();
   const challengeId = path.split('/').slice(0, 4)[2];
   const searchParams = useSearchParams();
@@ -138,7 +139,13 @@ const CertificationSuccess = () => {
           </AnimatePresence>
 
           <div className="flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 bg-blue-100 border-t border-gray-50 custom601:mb-6">
-            <BottomButton title="홈으로" onClick={() => {}} disabled="false" />
+            <BottomButton
+              title="홈으로"
+              onClick={() => {
+                router.push('/');
+              }}
+              disabled="false"
+            />
           </div>
         </div>
       </div>
