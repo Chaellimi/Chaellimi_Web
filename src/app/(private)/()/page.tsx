@@ -47,7 +47,7 @@ export interface ChallengeWithParticipantCount {
 }
 
 const Home = () => {
-  const [isSearchbarVisible, setIsSearchbarVisiable] = useState(false);
+  const [isSearchbarVisible, setIsSearchbarVisible] = useState(false);
   const [searchText, setSearchText] = useState('');
 
   const {
@@ -81,7 +81,7 @@ const Home = () => {
           searchText={searchText}
           setSearchText={setSearchText}
           isSearchbarVisible={isSearchbarVisible}
-          setIsSearchbarVisiable={setIsSearchbarVisiable}
+          setIsSearchbarVisiable={setIsSearchbarVisible}
         />
 
         {/* Main Content */}
