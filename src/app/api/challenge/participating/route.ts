@@ -35,7 +35,8 @@ async function getHandler() {
     });
 
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setHours(23, 59, 59, 59);
+    today.setDate(today.getDate() - 1);
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
 
