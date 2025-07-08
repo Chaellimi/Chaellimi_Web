@@ -14,5 +14,6 @@ export const sequelize = new Sequelize(
       process.env.DEV_TYPE === 'development'
         ? (msg) => console.log(msg)
         : false,
+    timezone: '+09:00',
   }
 );
