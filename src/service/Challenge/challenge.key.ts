@@ -3,4 +3,5 @@ export const challengeKeys = {
   useGetChallengeById: 'challenge.query.useGetChallengeById',
   useGetParticipatingChallenge: 'challenge.query.useGetParticipatingChallenge',
   useGetPopularChallenge: 'challenge.query.useGetPopularChallenge',
+  useGetChallengeProgressLog: 'challenge.query.useGetChallengeProgressLog',
 };

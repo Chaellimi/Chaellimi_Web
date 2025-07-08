@@ -64,6 +64,13 @@ const postCertification = async ({
   return data;
 };
 
+const getChallengeProgressLog = async (challengeId: string) => {
+  const { data } = await axios.get(
+    `/api/challenge/participating/${challengeId}`
+  );
+  return data;
+};
+
 const API = {
   getChallenge,
   postChallenge,
@@ -71,6 +78,7 @@ const API = {
   getParticipatingChallenge,
   getPopularChallenge,
   postCertification,
+  getChallengeProgressLog,
 };
 
 export default API;
