@@ -6,6 +6,7 @@ import { PointIcon } from '@public/icons/Challenge/point';
 import { useGetPoint, useGetPointDetail } from '@/service/Point/point.query';
 import { PointDetailType } from '@/types/Point';
 import Loading from '@/components/shared/Loading';
+import { formatDateToYMD } from '@/lib/utils/formatDateToYMD';
 
 const PointCategory = [
   { id: 1, name: '전체', type: '' },
@@ -24,14 +25,6 @@ interface PointResponseType {
   updatedAt: string;
   deletedAt: string | null;
 }
-
-const formatDateToYMD = (isoString: string): string => {
-  const date = new Date(isoString);
-  const year = date.getFullYear();
-  const month = `${date.getMonth() + 1}`.padStart(2, '0');
-  const day = `${date.getDate()}`.padStart(2, '0');
-  return `${year}.${month}.${day}`;
-};
 
 const Point = () => {
   const [activeCategory, setActiveCategory] = useState<number>(1);
