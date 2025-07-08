@@ -2,7 +2,6 @@
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
@@ -12,7 +11,8 @@ interface OwnProps {
   imgURL: string;
   time?: string;
   title: string;
-  link: string;
+  certificationLink: string;
+  progressLink: string;
 }
 
 const ActiveChallenge = ({
@@ -21,12 +21,18 @@ const ActiveChallenge = ({
   imgURL,
   time,
   title,
-  link,
+  certificationLink,
+  progressLink,
 }: OwnProps) => {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col w-[12.5rem] border-[1px] border-gray-100 rounded-lg p-[0.88rem] gap-[0.62rem] min-w-[12.5rem] max-w-[12.5rem]">
+    <div
+      className="flex flex-col w-[12.5rem] border-[1px] border-gray-100 rounded-lg p-[0.88rem] gap-[0.62rem] min-w-[12.5rem] max-w-[12.5rem] cursor-pointer"
+      onClick={() => {
+        router.push(progressLink);
+      }}
+    >
       <div
         className={`text-c1 w-fit pr-[0.38rem] pl-[0.38rem] pt-[0.19rem] pb-[0.19rem] rounded
           ${isActive ? 'text-gray-400 bg-gray-100' : 'text-primary-default bg-primary-light'}`}
@@ -55,7 +61,7 @@ const ActiveChallenge = ({
           ${isActive ? 'bg-gray-300' : 'bg-primary-default'}`}
         onClick={() => {
           if (!isActive) {
-            router.push(link);
+            router.push(certificationLink);
           }
         }}
       >
