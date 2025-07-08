@@ -3,13 +3,24 @@
 import React from 'react';
 import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 import Header from '@/components/shared/Header';
-import RangeSlider from 'react-range-slider-input';
-import 'react-range-slider-input/dist/style.css';
 import { CoinIcon, InfoIcon } from '@public/icons/Challenge/progress';
-import '@/style/ProgressSlider.css';
 import { ArrowIcon } from '@public/icons/shared';
 import BottomButton from '@/components/shared/BottomButton';
 import { useParams, useRouter } from 'next/navigation';
+import { useGetChallengeProgressLog } from '@/service/Challenge/challenge.query';
+import progressUtil from '@/lib/utils/progressUtil';
+import ProgressHand from '@public/images/ProgressHand.png';
+import Image from 'next/image';
+import { formatDateToYMD } from '@/lib/utils/formatDateToYMD';
+
+interface pointSavingLogType {
+  id: number;
+  type: string;
+  amount: number;
+  description: string;
+  balance_after: string;
+  createdAt: string;
+}
 
 const Progress = () => {
   const router = useRouter();
@@ -20,6 +31,19 @@ const Progress = () => {
     translucent: true,
     bottomBackgroundColor: '#FFF',
   });
+
+  const { data: data } = useGetChallengeProgressLog(id as string);
+  const progressLog = data?.data;
+  const { joinedDate, endDate } = progressUtil.formatJoinedAndEndDate(
+    progressLog?.joinedAt,
+    progressLog?.totalDay
+  );
+  const progressRate = progressUtil.getDateProgressRate(
+    progressLog?.joinedAt,
+    progressLog?.totalDay
+  );
+
+  console.log(progressRate);
 
   return (
     <div className="flex flex-col w-full h-full overflow-y-auto">
@@ -33,23 +57,42 @@ const Progress = () => {
 
         <div className="flex flex-col w-full gap-5 px-6 pt-[0.62rem] pb-5 mt-4 bg-primary-light">
           <div>
-            <div className="text-gray-600 text-b3">챌린지 진행 10일차</div>
-            <div className="text-gray-black text-h1">하루 물 2L 마시기</div>
+            <div className="text-gray-600 text-b3">
+              챌린지 진행
+              {progressUtil.isChallengeExpired(
+                progressLog?.joinedAt,
+                progressLog?.totalDay
+              )
+                ? ' 만료됨'
+                : progressUtil.getChallengeProgressDay(progressLog?.joinedAt) +
+                  '일차'}
+            </div>
+            <div className="text-gray-black text-h1">{progressLog?.title}</div>
           </div>
 
           <div className="flex flex-col gap-[0.62rem] w-full">
-            <RangeSlider
-              min={30}
-              max={90}
-              step={1}
-              value={[30, 80]}
-              thumbsDisabled={[true, false]}
-              rangeSlideDisabled={false}
-            />
+            <div className="relative flex w-full h-[8px] bg-white rounded-full">
+              <div
+                className={`absolute top-0 bottom-0 rounded-full bg-primary-default`}
+                style={{ width: `${progressRate || 0}%` }}
+              />
+              <div
+                className={`absolute w-[30px] h-[30px] top-[-12px]`}
+                style={{ left: `${(progressRate || 0) - 5}%` }}
+              >
+                <Image
+                  src={ProgressHand}
+                  width={30}
+                  height={30}
+                  alt=""
+                  className="object-cover object-top w-full h-full"
+                />
+              </div>
+            </div>
 
             <div className="flex justify-between text-gray-400 text-c2">
-              <span>2024.01.22</span>
-              <span>2024.03.22</span>
+              <span>{joinedDate}</span>
+              <span>{endDate}</span>
             </div>
           </div>
 
@@ -62,8 +105,12 @@ const Progress = () => {
                       key={index}
                       className="flex flex-col items-center justify-between gap-2"
                     >
-                      <div className="bg-primary-light w-fit h-fit p-[0.45rem] rounded-full">
+                      {/* <div className="w-fit h-fit p-[0.45rem] rounded-full bg-primary-light shadow-Coin-Primary">
                         <CoinIcon disabled={false} />
+                      </div> */}
+
+                      <div className="w-fit h-fit p-[0.45rem] rounded-full bg-gray-100 shadow-Coin-Gray">
+                        <CoinIcon disabled={true} />
                       </div>
                       <div className="text-gray-500 text-c1">
                         {index + 1}일차
@@ -95,27 +142,52 @@ const Progress = () => {
       <div className="px-6 py-5">
         <div className="text-gray-black text-b2">적립내역</div>
         <div className="flex flex-col">
-          <div className="flex items-center justify-between w-full py-5 border-b border-gray-50">
-            <div className="flex items-center gap-[0.88rem]">
-              <div className="text-gray-400 text-fn">24.01.01</div>
-              <div className="text-gray-black text-b3">10일차</div>
-            </div>
+          {progressLog?.pointSavingLog.map((item: pointSavingLogType) => (
+            <div
+              className="flex items-center justify-between w-full py-5 border-b border-gray-50"
+              key={item.id}
+            >
+              <div className="flex items-center gap-[0.88rem]">
+                <div className="text-gray-400 text-fn">
+                  {formatDateToYMD(item.createdAt)}
+                </div>
+                <div className="text-gray-black text-b3">
+                  {item.description}
+                </div>
+              </div>
 
-            <div className="flex flex-col items-end gap-2">
-              <div className="text-primary-hover text-bn2">+2000P</div>
-              <div className="text-gray-400 text-c1">99,999P</div>
+              <div className="flex flex-col items-end justify-center gap-2">
+                <div
+                  className={`text-bn2 ${
+                    item.type === 'deposit'
+                      ? 'text-primary-default'
+                      : 'text-gray-black'
+                  }`}
+                >
+                  {item.type === 'deposit' ? '+' : '-'}
+                  {Number(item.amount).toLocaleString()}P
+                </div>
+                <div className="text-gray-400 text-c1">
+                  {Number(item.balance_after).toLocaleString()}P
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
 
-      <div className="fixed bottom-0 w-full px-6 pt-3 bg-white border-t border-gray-50">
-        <BottomButton
-          title="인증하러 가기"
-          onClick={() => {}}
-          disabled="false"
-        />
-      </div>
+      {progressUtil.isChallengeExpired(
+        progressLog?.joinedAt,
+        progressLog?.totalDay
+      ) ? null : (
+        <div className="fixed bottom-0 w-full px-6 pt-3 bg-white border-t border-gray-50">
+          <BottomButton
+            title="인증하러 가기"
+            onClick={() => {}}
+            disabled="false"
+          />
+        </div>
+      )}
     </div>
   );
 };
