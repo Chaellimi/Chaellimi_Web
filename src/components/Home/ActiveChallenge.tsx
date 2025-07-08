@@ -59,7 +59,8 @@ const ActiveChallenge = ({
       <button
         className={`flex items-center justify-center w-full p-[0.62rem] text-bn3 text-white rounded-lg
           ${isActive ? 'bg-gray-300' : 'bg-primary-default'}`}
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           if (!isActive) {
             router.push(certificationLink);
           }
