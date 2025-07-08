@@ -34,6 +34,8 @@ const Progress = () => {
 
   const { data: data } = useGetChallengeProgressLog(id as string);
   const progressLog = data?.data;
+
+  // 챌린지 진행률 계산
   const { joinedDate, endDate } = progressUtil.formatJoinedAndEndDate(
     progressLog?.joinedAt,
     progressLog?.totalDay
@@ -43,7 +45,20 @@ const Progress = () => {
     progressLog?.totalDay
   );
 
-  console.log(progressRate);
+  // 코인 표기하는 날짜 계산
+  const getChallengeDates = (joinedAt: string, totalDay: number): string[] => {
+    const startDate = new Date(joinedAt);
+    return Array.from({ length: totalDay }).map((_, i) => {
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
+      return date.toISOString().split('T')[0];
+    });
+  };
+  const progressDates = getChallengeDates(
+    progressLog?.joinedAt,
+    progressLog?.totalDay
+  ).slice(0, 6);
+  const certifiedSet = new Set(progressLog?.certifiedDays || []);
 
   return (
     <div className="flex flex-col w-full h-full overflow-y-auto">
@@ -52,7 +67,7 @@ const Progress = () => {
           type="default"
           title="진행사항"
           icon={<InfoIcon />}
-          backClick={`/challenge/${id}`}
+          backClick={`/`}
         />
 
         <div className="flex flex-col w-full gap-5 px-6 pt-[0.62rem] pb-5 mt-4 bg-primary-light">
@@ -100,23 +115,35 @@ const Progress = () => {
             <div className="flex flex-col gap-[0.62rem] w-full items-center">
               <div className="w-full px-[0.62rem] py-5 bg-gray-white rounded-[1.25rem]">
                 <div className="grid grid-cols-3 gap-y-4 gap-x-2 justify-items-center">
-                  {Array.from({ length: 6 }).map((_, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-col items-center justify-between gap-2"
-                    >
-                      {/* <div className="w-fit h-fit p-[0.45rem] rounded-full bg-primary-light shadow-Coin-Primary">
-                        <CoinIcon disabled={false} />
-                      </div> */}
+                  {progressDates.map((dateStr, index) => {
+                    const today = new Date().toISOString().split('T')[0];
+                    const isPassed = new Date(dateStr) <= new Date(today);
+                    const isCertified = certifiedSet.has(dateStr);
 
-                      <div className="w-fit h-fit p-[0.45rem] rounded-full bg-gray-100 shadow-Coin-Gray">
-                        <CoinIcon disabled={true} />
+                    return (
+                      <div
+                        key={index}
+                        className="flex flex-col items-center justify-between gap-2"
+                      >
+                        {isPassed ? (
+                          isCertified ? (
+                            <div className="w-fit h-fit p-[0.45rem] rounded-full bg-primary-light shadow-Coin-Primary">
+                              <CoinIcon disabled={false} />
+                            </div>
+                          ) : (
+                            <div className="w-fit h-fit p-[0.45rem] rounded-full bg-gray-100 shadow-Coin-Gray">
+                              <CoinIcon disabled={true} />
+                            </div>
+                          )
+                        ) : (
+                          <div className="w-[44px] h-[44px]" />
+                        )}
+                        <div className="text-gray-500 text-c1">
+                          {index + 1}일차
+                        </div>
                       </div>
-                      <div className="text-gray-500 text-c1">
-                        {index + 1}일차
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>
