@@ -74,7 +74,7 @@ async function getHandler() {
 
     responseData.sort((a, b) => {
       if (a.isCertifiedToday !== b.isCertifiedToday) {
-        return a.isCertifiedToday ? 1 : -1; // false 먼저
+        return a.isCertifiedToday ? 1 : -1;
       }
       return new Date(a.joinedAt).getTime() - new Date(b.joinedAt).getTime();
     });
