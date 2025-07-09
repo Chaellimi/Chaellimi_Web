@@ -25,6 +25,7 @@ import { timeAgo } from '@/lib/utils/timeAgo';
 import { useSession } from 'next-auth/react';
 import html2canvas from 'html2canvas';
 import { useDeleteChallenge } from '@/service/Challenge/challenge.mutation';
+import { ChallengeWriteType } from '@/types/Challenge';
 
 interface recentChallengesType {
   id: number;
@@ -55,10 +56,22 @@ const ChallengeSingle = () => {
     id ? Number(id) : 0
   );
 
-  const challenge = ChallengeData?.data?.challenge;
-  const recentChallenges = ChallengeData?.data?.recentChallenges ?? [];
-  const totalChallenges = ChallengeData?.data?.totalChallenges ?? [];
-  const isJoinedChallenge = ChallengeData?.data?.joinStatus ?? false;
+  type ChallengeByIdResponse = {
+    data: {
+      challenge: ChallengeWriteType;
+      recentChallenges: recentChallengesType[];
+      totalChallenges: number;
+      joinStatus: string;
+    };
+  };
+
+  const typedEditData = ChallengeData as ChallengeByIdResponse | undefined;
+  const challengeData = typedEditData?.data;
+
+  const challenge = challengeData?.challenge;
+  const recentChallenges = challengeData?.recentChallenges ?? [];
+  const totalChallenges = challengeData?.totalChallenges ?? [];
+  const isJoinedChallenge = challengeData?.joinStatus ?? false;
 
   useStatusBarBridge(
     {
@@ -159,7 +172,7 @@ const ChallengeSingle = () => {
         {/* Main Image */}
         <div className="relative w-full h-[12.5rem] ">
           <Image
-            src={challenge?.imgURL}
+            src={challenge?.imgURL ?? '/images/default-challenge.png'}
             alt=""
             width={200}
             height={200}
@@ -176,22 +189,22 @@ const ChallengeSingle = () => {
                 <div
                   className={`text-center text-c2 px-[0.38rem] py-[0.15rem] rounded-[0.25rem] w-16
                 ${
-                  challenge.difficulty === 'hard'
+                  challenge?.difficulty === 'hard'
                     ? 'bg-red-100 text-red-200'
-                    : challenge.difficulty === 'normal'
+                    : challenge?.difficulty === 'normal'
                       ? 'bg-primary-light text-primary-default'
                       : 'bg-green-100 text-green-200'
                 }
                 `}
                 >
-                  {challenge.difficulty === 'hard'
+                  {challenge?.difficulty === 'hard'
                     ? '난이도 상'
-                    : challenge.difficulty === 'normal'
+                    : challenge?.difficulty === 'normal'
                       ? '난이도 중'
                       : '난이도 하'}
                 </div>
                 <div className="text-center text-c2 first-line px-[0.38rem] py-[0.15rem] bg-gray-50 rounded-[0.25rem] w-16 text-gray-500">
-                  {challenge.day}일 도전
+                  {challenge?.day}일 도전
                 </div>
               </div>
               <div
@@ -210,12 +223,12 @@ const ChallengeSingle = () => {
               )}
             </div>
 
-            <div className="text-h2">{challenge.title}</div>
+            <div className="text-h2">{challenge?.title}</div>
 
             <div className="flex items-center gap-1 text-gray-500 text-c1">
-              <div>{ChangeKOR(challenge.category)}</div>
+              <div>{ChangeKOR(challenge?.category ?? '')}</div>
               <div>·</div>
-              <div>{timeAgo(challenge.createdAt)}</div>
+              <div>{timeAgo(challenge?.createdAt ?? '')}</div>
             </div>
           </div>
 
@@ -228,7 +241,7 @@ const ChallengeSingle = () => {
 
             <div className="text-h3">챌린지 소개</div>
 
-            <div className="text-b2">{challenge.description}</div>
+            <div className="text-b2">{challenge?.description}</div>
           </div>
         </div>
 
@@ -240,7 +253,7 @@ const ChallengeSingle = () => {
           <div className="flex items-center gap-[0.62rem]">
             <div className="relative rounded-full w-9 h-9">
               <Image
-                src={challenge.User.profileImg}
+                src={challenge?.imgURL ?? '/images/default-challenge.png'}
                 alt=""
                 width={36}
                 height={36}
@@ -248,7 +261,7 @@ const ChallengeSingle = () => {
               />
             </div>
             <div>
-              <div className="text-b3">{challenge.User.name}</div>
+              <div className="text-b3">{challenge?.User?.name}</div>
               <div className="text-c1">챌린지 개설 {totalChallenges}개</div>
             </div>
           </div>
