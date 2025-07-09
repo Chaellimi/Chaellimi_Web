@@ -12,6 +12,8 @@ import progressUtil from '@/lib/utils/progressUtil';
 import ProgressHand from '@public/images/ProgressHand.png';
 import Image from 'next/image';
 import { formatDateToYMD } from '@/lib/utils/formatDateToYMD';
+import Loading from '@/components/shared/Loading';
+import dayjs from 'dayjs';
 
 interface pointSavingLogType {
   id: number;
@@ -32,7 +34,7 @@ const Progress = () => {
     bottomBackgroundColor: '#FFF',
   });
 
-  const { data: data } = useGetChallengeProgressLog(id as string);
+  const { data: data, isLoading } = useGetChallengeProgressLog(id as string);
   const progressLog = data?.data;
 
   // 챌린지 진행률 계산
@@ -59,6 +61,13 @@ const Progress = () => {
     progressLog?.totalDay
   ).slice(0, 6);
   const certifiedSet = new Set(progressLog?.certifiedDays || []);
+
+  const today = dayjs().format('YYYY-MM-DD');
+  const todayCertified = progressLog?.certifiedDays.includes(today);
+
+  if (isLoading || !progressLog) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex flex-col w-full h-full overflow-y-auto">
@@ -203,10 +212,7 @@ const Progress = () => {
         </div>
       </div>
 
-      {progressUtil.isChallengeExpired(
-        progressLog?.joinedAt,
-        progressLog?.totalDay
-      ) ? null : (
+      {todayCertified ? null : (
         <div className="fixed bottom-0 w-full px-6 pt-3 bg-white border-t border-gray-50">
           <BottomButton
             title="인증하러 가기"
