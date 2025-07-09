@@ -36,7 +36,7 @@ const SelectModal = ({ title, description, cancel, confirm }: OwnPorps) => {
         <div className="flex w-full h-[3.6875rem]">
           {cancel && (
             <button
-              className={`w-full h-full px-16 text-gray-500 bg-white border-r border-gray-200 rounded-bl-2xl ${!confirm ? 'rounded-br-2xl' : ''}`}
+              className={`w-full h-full px-14 text-gray-500 bg-white border-r border-gray-200 rounded-bl-2xl ${!confirm ? 'rounded-br-2xl' : ''}`}
               onClick={cancel}
             >
               취소
@@ -44,7 +44,7 @@ const SelectModal = ({ title, description, cancel, confirm }: OwnPorps) => {
           )}
           {confirm && (
             <button
-              className={`w-full h-full px-16 text-white bg-primary-default text-bn2 rounded-br-2xl ${!cancel ? 'rounded-bl-2xl' : ''}`}
+              className={`w-full h-full px-14 text-white bg-primary-default text-bn2 rounded-br-2xl ${!cancel ? 'rounded-bl-2xl' : ''}`}
               onClick={confirm}
             >
               확인
