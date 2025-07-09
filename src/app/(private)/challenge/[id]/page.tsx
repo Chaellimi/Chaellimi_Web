@@ -139,13 +139,16 @@ const ChallengeSingle = () => {
   const { mutate: deleteChallengeMutation, isPending } = useDeleteChallenge();
 
   const deleteChallenge = () => {
-    setIsOpenDeleteModal(false);
-
-    deleteChallengeMutation(Number(id));
-
-    if (!isPending) {
-      router.push('/challenge');
-    }
+    deleteChallengeMutation(Number(id), {
+      onSuccess: () => {
+        setIsOpenDeleteModal(false);
+        router.push('/challenge');
+      },
+      onError: (error) => {
+        console.error('챌린지 삭제 실패:', error);
+        setIsOpenDeleteModal(false);
+      },
+    });
   };
 
   if (isLoading || isPending) {
