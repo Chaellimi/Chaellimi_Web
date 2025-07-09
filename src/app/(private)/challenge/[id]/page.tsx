@@ -282,7 +282,9 @@ const ChallengeSingle = () => {
           <div className="flex items-center gap-[0.62rem]">
             <div className="relative rounded-full w-9 h-9">
               <Image
-                src={challenge?.imgURL ?? '/images/default-challenge.png'}
+                src={
+                  challenge?.User?.profileImg ?? '/images/default-challenge.png'
+                }
                 alt=""
                 width={36}
                 height={36}
