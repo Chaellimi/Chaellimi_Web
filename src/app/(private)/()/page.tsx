@@ -66,6 +66,12 @@ const Home = () => {
     return `${certifiedCount}/${total}`;
   }
 
+  function getCompletedChallengeCount() {
+    return ParticipatingChallengeData?.data.filter(
+      (item: ParticipatingChallenge) => item.achievementRate >= 100
+    ).length;
+  }
+
   if (getParticipatingChallengePending || getPopularChallengePending) {
     return <Loading />;
   }
@@ -74,7 +80,10 @@ const Home = () => {
     <div className="w-full h-full">
       <Header type="logo" icon={<PointIcon />} iconClick="/point" />
 
-      <div className="px-6">
+      <div
+        className="flex-1 flex flex-col gap-2 px-6 mt-2 pb-[5rem] overflow-y-scroll scrollbar-hide overscroll-contain"
+        style={{ height: 'calc(100% - 3rem)' }}
+      >
         {/* Search Bar */}
         <Header
           type="searchNoBack"
@@ -102,20 +111,60 @@ const Home = () => {
             <div className="flex w-full overflow-scroll gap-[0.62rem] scrollbar-hide">
               {ParticipatingChallengeData?.data.map(
                 (item: ParticipatingChallenge) => {
-                  return (
-                    <ActiveChallenge
-                      key={item.challengeId}
-                      isActive={
-                        item.isCertifiedToday || item.achievementRate >= 100
-                      }
-                      progress={item.achievementRate}
-                      title={item.challenge.title}
-                      time={'고정값'}
-                      imgURL={item.challenge.imgURL}
-                      certificationLink={`/challenge/${item.challengeId}/certification`}
-                      progressLink={`/challenge/${item.challengeId}/progress`}
-                    />
-                  );
+                  if (item.achievementRate >= 100) {
+                    return '';
+                  } else {
+                    return (
+                      <ActiveChallenge
+                        key={item.challengeId}
+                        isActive={
+                          item.isCertifiedToday || item.achievementRate >= 100
+                        }
+                        progress={item.achievementRate}
+                        title={item.challenge.title}
+                        time={'고정값'}
+                        imgURL={item.challenge.imgURL}
+                        certificationLink={`/challenge/${item.challengeId}/certification`}
+                        progressLink={`/challenge/${item.challengeId}/progress`}
+                      />
+                    );
+                  }
+                }
+              )}
+            </div>
+          </div>
+        ) : null}
+
+        {/* Complete Challenge */}
+        {ParticipatingChallengeData?.data.length != 0 ? (
+          <div className="flex flex-col gap-2 mt-5">
+            <div className="flex items-center justify-between">
+              <div className="text-he">완료한 챌린지</div>
+              <div className="text-gray-300 text-fn">
+                총 {getCompletedChallengeCount()}개 완료
+              </div>
+            </div>
+
+            <div className="flex w-full overflow-scroll gap-[0.62rem] scrollbar-hide">
+              {ParticipatingChallengeData?.data.map(
+                (item: ParticipatingChallenge) => {
+                  if (item.achievementRate >= 100) {
+                    return (
+                      <ActiveChallenge
+                        key={item.challengeId}
+                        isActive={
+                          item.isCertifiedToday || item.achievementRate >= 100
+                        }
+                        title={item.challenge.title}
+                        time={'고정값'}
+                        imgURL={item.challenge.imgURL}
+                        certificationLink={`/challenge/${item.challengeId}/certification`}
+                        progressLink={`/challenge/${item.challengeId}/progress`}
+                      />
+                    );
+                  } else {
+                    return '';
+                  }
                 }
               )}
             </div>
