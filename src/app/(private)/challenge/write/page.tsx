@@ -33,11 +33,16 @@ const categoryOptions = [
   { name: '학습', apiValue: 'Learning' },
 ];
 
+type ChallengeByIdResponse = {
+  data: {
+    challenge: ChallengeWriteType;
+  };
+};
+
 const Write = () => {
   const router = useRouter();
   const editMode = useSearchParams().get('mode') === 'edit';
   const id = useSearchParams().get('id');
-  console.log(id);
 
   const { data: EditData, isLoading: ChallengeLoading } = useGetChallengeById(
     Number(id),
@@ -46,12 +51,6 @@ const Write = () => {
       queryKey: [],
     }
   );
-
-  type ChallengeByIdResponse = {
-    data: {
-      challenge: ChallengeWriteType;
-    };
-  };
 
   const typedEditData = EditData as ChallengeByIdResponse | undefined;
   const editData = typedEditData?.data?.challenge;
