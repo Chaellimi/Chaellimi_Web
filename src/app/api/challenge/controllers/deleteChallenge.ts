@@ -44,7 +44,7 @@ async function deleteHandler(req: NextRequest) {
 
     if (challengeParticipants.length > 0) {
       return resUtil.successFalse({
-        status: 400,
+        status: 403,
         message: '챌린지 참여자가 존재하여 삭제할 수 없습니다.',
       });
     }

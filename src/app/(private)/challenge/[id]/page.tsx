@@ -54,6 +54,7 @@ const ChallengeSingle = () => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [isOpenRefusalModal, setIsOpenRefusalModal] = useState(false);
 
   const myInfo = useSession();
   const { data: ChallengeData, isLoading } = useGetChallengeById(
@@ -156,7 +157,21 @@ const ChallengeSingle = () => {
         router.push(backPath ? backPath : '/challenge');
       },
       onError: (error) => {
-        console.error('챌린지 삭제 실패:', error);
+        type ErrorWithResponse = {
+          response?: {
+            status?: number;
+          };
+        };
+        if (
+          typeof error === 'object' &&
+          error !== null &&
+          'response' in error &&
+          (error as ErrorWithResponse).response?.status === 403
+        ) {
+          setIsOpenDeleteModal(false);
+          setIsOpenRefusalModal(true);
+          return;
+        }
         setIsOpenDeleteModal(false);
       },
     });
@@ -390,11 +405,21 @@ const ChallengeSingle = () => {
       {isOpenDeleteModal && (
         <SelectModal
           title="이 챌린지를 삭제하시겠습니까?"
-          description="삭제 후에는 되돌릴 수 없습니다."
+          description="누군가 참여중인 챌린지는 삭제가 불가능합니다."
           cancel={() => {
             setIsOpenDeleteModal(false);
           }}
           confirm={deleteChallenge}
+        />
+      )}
+
+      {isOpenRefusalModal && (
+        <SelectModal
+          title="챌린지 삭제가 불가능합니다."
+          description="누군가 참여중인 챌린지는 삭제가 불가능합니다."
+          confirm={() => {
+            setIsOpenRefusalModal(false);
+          }}
         />
       )}
     </div>
