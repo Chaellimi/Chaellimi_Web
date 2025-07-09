@@ -24,7 +24,10 @@ import { ChangeKOR } from '@/lib/utils/getChangeCategory';
 import { timeAgo } from '@/lib/utils/timeAgo';
 import { useSession } from 'next-auth/react';
 import html2canvas from 'html2canvas';
-import { useDeleteChallenge } from '@/service/Challenge/challenge.mutation';
+import {
+  useDeleteChallenge,
+  useJoinChallenge,
+} from '@/service/Challenge/challenge.mutation';
 import { ChallengeWriteType } from '@/types/Challenge';
 import { useGetUserRole } from '@/service/shared/shared.query';
 
@@ -143,6 +146,8 @@ const ChallengeSingle = () => {
   ];
 
   const { mutate: deleteChallengeMutation, isPending } = useDeleteChallenge();
+  const { mutate: joinChallengeMutation, isPending: isJoiningChallenge } =
+    useJoinChallenge();
 
   const deleteChallenge = () => {
     deleteChallengeMutation(Number(id), {
@@ -157,7 +162,7 @@ const ChallengeSingle = () => {
     });
   };
 
-  if (isLoading || isPending || getUserRoleLoading) {
+  if (isLoading || isPending || getUserRoleLoading || isJoiningChallenge) {
     return <Loading />;
   }
 
@@ -369,7 +374,15 @@ const ChallengeSingle = () => {
             setIsOpenConfirmModal(false);
           }}
           confirm={() => {
-            router.push('/challenge/finish');
+            joinChallengeMutation(id as string, {
+              onSuccess: () => {
+                setIsOpenConfirmModal(false);
+                router.push(`/`);
+              },
+              onError: (error) => {
+                console.error('챌린지 참여 실패:', error);
+              },
+            });
           }}
         />
       )}
