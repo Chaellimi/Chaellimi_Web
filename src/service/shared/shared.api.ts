@@ -5,6 +5,11 @@ const postUploadImg = async (formData: FormData) => {
   return data;
 };
 
-const API = { postUploadImg };
+const getUserRole = async () => {
+  const { data } = await axios.get('/api/user');
+  return data;
+};
+
+const API = { postUploadImg, getUserRole };
 
 export default API;
