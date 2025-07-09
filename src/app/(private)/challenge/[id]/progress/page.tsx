@@ -79,19 +79,21 @@ const Progress = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-full overflow-y-auto">
-      <div className="bg-primary-light">
+    <div className="flex flex-col w-full h-full custom601:mt-[-40px]">
+      <div className="bg-primary-light custom601:pt-[40px] min-h-fit">
         <Header
           type="default"
           title="진행사항"
           icon={<InfoIcon />}
           backClick={`/`}
         />
+      </div>
 
-        <div className="flex flex-col w-full gap-5 px-6 pt-[0.62rem] pb-5 mt-4 bg-primary-light">
+      <div className="pt-[0.62rem] bg-primary-light overflow-y-scroll h-full">
+        <div className="flex flex-col w-full gap-5 px-6">
           <div>
             <div className="text-gray-600 text-b3">
-              챌린지 진행
+              챌린지 진행{' '}
               {progressUtil.isChallengeExpired(
                 progressLog?.joinedAt,
                 progressLog?.totalDay
@@ -129,7 +131,7 @@ const Progress = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-[0.62rem] w-full items-center">
+          <div className="flex flex-col gap-[0.62rem] w-full items-center pb-5">
             <div className="flex flex-col gap-[0.62rem] w-full items-center">
               <div className="w-full px-[0.62rem] py-5 bg-gray-white rounded-[1.25rem]">
                 <div className="grid grid-cols-3 gap-y-4 gap-x-2 justify-items-center">
@@ -182,47 +184,51 @@ const Progress = () => {
             </button>
           </div>
         </div>
-      </div>
 
-      <div className="px-6 py-5">
-        <div className="text-gray-black text-b2">적립내역</div>
-        <div className="flex flex-col">
-          {progressLog?.pointSavingLog.map((item: pointSavingLogType) => (
-            <div
-              className="flex items-center justify-between w-full py-5 border-b border-gray-50"
-              key={item.id}
-            >
-              <div className="flex items-center gap-[0.88rem]">
-                <div className="text-gray-400 text-fn">
-                  {formatDateToDot(item.createdAt)}
-                </div>
-                <div className="text-gray-black text-b3">
-                  {item.description}
-                </div>
-              </div>
+        <div className="w-full px-6 py-5 bg-white">
+          <div className="text-gray-black text-b2">적립내역</div>
 
-              <div className="flex flex-col items-end justify-center gap-2">
+          {progressLog?.pointSavingLog.length === 0 ? (
+            <div> 텅 </div>
+          ) : (
+            <div className="flex flex-col">
+              {progressLog?.pointSavingLog.map((item: pointSavingLogType) => (
                 <div
-                  className={`text-bn2 ${
-                    item.type === 'deposit'
-                      ? 'text-primary-default'
-                      : 'text-gray-black'
-                  }`}
+                  className="flex items-center justify-between w-full py-5 border-b border-gray-50"
+                  key={item.id}
                 >
-                  {item.type === 'deposit' ? '+' : '-'}
-                  {Number(item.amount).toLocaleString()}P
+                  <div className="flex items-center gap-[0.88rem]">
+                    <div className="text-gray-400 text-fn">
+                      {formatDateToDot(item.createdAt)}
+                    </div>
+                    <div className="text-gray-black text-b3">
+                      {item.description}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-end justify-center gap-2">
+                    <div
+                      className={`text-bn2 ${
+                        item.type === 'deposit'
+                          ? 'text-primary-default'
+                          : 'text-gray-black'
+                      }`}
+                    >
+                      {item.type === 'deposit' ? '+' : '-'}
+                      {Number(item.amount).toLocaleString()}P
+                    </div>
+                    <div className="text-gray-400 text-c1">
+                      {Number(item.balance_after).toLocaleString()}P
+                    </div>
+                  </div>
                 </div>
-                <div className="text-gray-400 text-c1">
-                  {Number(item.balance_after).toLocaleString()}P
-                </div>
-              </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
       </div>
-
       {todayCertified ? null : (
-        <div className="fixed bottom-0 w-full px-6 pt-3 bg-white border-t border-gray-50">
+        <div className="bottom-0 flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 border-t bg-gray-white border-gray-50">
           <BottomButton
             title="인증하러 가기"
             onClick={() => {}}

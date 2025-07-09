@@ -43,13 +43,15 @@ const ALL = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-full pb-4 overflow-y-auto bg-primary-light gap-[0.62rem]">
-      <Header
-        type="default"
-        title="진행사항"
-        icon={<InfoIcon />}
-        backClick={`/challenge/${id}/progress`}
-      />
+    <div className="flex flex-col w-full h-full pb-4 overflow-y-auto bg-primary-light gap-[0.62rem] custom601:mt-[-40px]">
+      <div className="bg-primary-light custom601:pt-[40px] min-h-fit">
+        <Header
+          type="default"
+          title="진행사항"
+          icon={<InfoIcon />}
+          backClick={`/challenge/${id}/progress`}
+        />
+      </div>
 
       <div className="flex flex-col gap-[0.62rem] w-full items-center px-6">
         <div className="w-full px-[0.62rem] py-5 bg-gray-white rounded-[1.25rem]">
