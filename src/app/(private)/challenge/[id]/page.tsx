@@ -23,13 +23,13 @@ import Loading from '@/components/shared/Loading';
 import { ChangeKOR } from '@/lib/utils/getChangeCategory';
 import { timeAgo } from '@/lib/utils/timeAgo';
 import { useSession } from 'next-auth/react';
-import html2canvas from 'html2canvas';
 import {
   useDeleteChallenge,
   useJoinChallenge,
 } from '@/service/Challenge/challenge.mutation';
 import { ChallengeWriteType } from '@/types/Challenge';
 import { useGetUserRole } from '@/service/shared/shared.query';
+import useShareBridge from '@/lib/hooks/useShareBridge';
 
 interface recentChallengesType {
   id: number;
@@ -94,25 +94,13 @@ const ChallengeSingle = () => {
     myInfo?.data?.user.userId == challenge?.userId ||
     userRoleData?.data?.UserData?.role === 'admin';
 
+  const share = useShareBridge();
+
   const handleShare = async () => {
     try {
-      setActionSheet(false);
-      const element = document.getElementById('challenge-single-root');
-      if (!element) return;
-      const canvas = await html2canvas(element);
-      canvas.toBlob(async (blob) => {
-        if (!blob) return;
-        const file = new File([blob], 'screenshot.png', { type: blob.type });
-        if (navigator.canShare?.({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: challenge?.title,
-            text: challenge?.description || '',
-          });
-        } else {
-          const url = URL.createObjectURL(blob);
-          window.open(url, '_blank');
-        }
+      share({
+        url: window.location.href,
+        title: '챌린지를 공유하고 함께 도전해요!',
       });
     } catch (error) {
       console.error('Share failed', error);
@@ -373,7 +361,10 @@ const ChallengeSingle = () => {
         <BottomButton
           title="참여하기"
           onClick={() => {
-            setIsOpenConfirmModal(true);
+            if (isJoinedChallenge == 'not_joined') {
+              setIsOpenConfirmModal(true);
+              return;
+            }
           }}
           disabled={
             isJoinedChallenge == 'not_joined'
@@ -396,7 +387,7 @@ const ChallengeSingle = () => {
             joinChallengeMutation(id as string, {
               onSuccess: () => {
                 setIsOpenConfirmModal(false);
-                router.push(`/`);
+                router.push(`/challenge/finish`);
               },
               onError: (error) => {
                 console.error('챌린지 참여 실패:', error);
