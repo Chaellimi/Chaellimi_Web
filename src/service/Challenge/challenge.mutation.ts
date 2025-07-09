@@ -26,3 +26,9 @@ export const useUpdateChallenge = () => {
       API.updateChallenge(id, data),
   });
 };
+
+export const useJoinChallenge = () => {
+  return useMutation({
+    mutationFn: API.postJoinChallenge,
+  });
+};
