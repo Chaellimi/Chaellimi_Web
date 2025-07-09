@@ -37,7 +37,7 @@ const ActiveChallenge = ({
         className={`text-c1 w-fit pr-[0.38rem] pl-[0.38rem] pt-[0.19rem] pb-[0.19rem] rounded
           ${isActive ? 'text-gray-400 bg-gray-100' : 'text-primary-default bg-primary-light'}`}
       >
-        진행률 {progress}%
+        {progress >= 100 ? '챌린지 완료!' : `진행률 ${progress}%`}
       </div>
 
       <div className="flex items-center gap-[0.62rem] w-full">
@@ -66,7 +66,11 @@ const ActiveChallenge = ({
           }
         }}
       >
-        {isActive ? '오늘 인증 완료!' : '인증하러 가기'}
+        {progress >= 100
+          ? '챌린지 완료'
+          : isActive
+            ? '오늘 인증 완료!'
+            : '인증하러 가기'}
       </button>
     </div>
   );

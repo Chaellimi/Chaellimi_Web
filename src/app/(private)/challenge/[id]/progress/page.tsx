@@ -92,7 +92,7 @@ const Progress = () => {
                 progressLog?.joinedAt,
                 progressLog?.totalDay
               )
-                ? ' 만료됨'
+                ? ' 완료!'
                 : progressUtil.getChallengeProgressDay(progressLog?.joinedAt) +
                   '일차'}
             </div>

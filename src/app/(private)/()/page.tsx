@@ -105,7 +105,9 @@ const Home = () => {
                   return (
                     <ActiveChallenge
                       key={item.challengeId}
-                      isActive={item.isCertifiedToday}
+                      isActive={
+                        item.isCertifiedToday || item.achievementRate >= 100
+                      }
                       progress={item.achievementRate}
                       title={item.challenge.title}
                       time={'고정값'}
