@@ -89,8 +89,8 @@ const Progress = () => {
         />
       </div>
 
-      <div className="pt-[0.62rem] bg-primary-light overflow-y-scroll h-full">
-        <div className="flex flex-col w-full gap-5 px-6">
+      <div className="h-full overflow-y-scroll">
+        <div className="flex flex-col w-full gap-5 px-6 bg-primary-light pt-[0.62rem]">
           <div>
             <div className="text-gray-600 text-b3">
               챌린지 진행{' '}
