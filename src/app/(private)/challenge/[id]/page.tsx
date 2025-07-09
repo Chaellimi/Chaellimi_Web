@@ -24,6 +24,7 @@ import { ChangeKOR } from '@/lib/utils/getChangeCategory';
 import { timeAgo } from '@/lib/utils/timeAgo';
 import { useSession } from 'next-auth/react';
 import html2canvas from 'html2canvas';
+import { useDeleteChallenge } from '@/service/Challenge/challenge.mutation';
 
 interface recentChallengesType {
   id: number;
@@ -47,6 +48,7 @@ const ChallengeSingle = () => {
   const [actionSheet, setActionSheet] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
   const myInfo = useSession();
   const { data: ChallengeData, isLoading } = useGetChallengeById(
@@ -67,11 +69,7 @@ const ChallengeSingle = () => {
     [isOpenConfirmModal]
   );
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  const isOwner = myInfo?.data?.user.userId == challenge.userId;
+  const isOwner = myInfo?.data?.user.userId == challenge?.userId;
 
   const handleShare = async () => {
     try {
@@ -115,11 +113,29 @@ const ChallengeSingle = () => {
             icons: <TrashIcon />,
             text: '삭제',
             textColor: 'red-200',
-            onClick: () => {},
+            onClick: () => {
+              setIsOpenDeleteModal(true);
+            },
           },
         ]
       : []),
   ];
+
+  const { mutate: deleteChallengeMutation, isPending } = useDeleteChallenge();
+
+  const deleteChallenge = () => {
+    setIsOpenDeleteModal(false);
+
+    deleteChallengeMutation(Number(id));
+
+    if (!isPending) {
+      router.push('/challenge');
+    }
+  };
+
+  if (isLoading || isPending) {
+    return <Loading />;
+  }
 
   return (
     <div className="relative flex flex-col w-full h-full text-gray-black">
@@ -186,7 +202,7 @@ const ChallengeSingle = () => {
               </div>
 
               {actionSheet && (
-                <div className="absolute z-10 right-6 top-6">
+                <div className="absolute z-10 cursor-pointer right-6 top-6">
                   <ActionSheet buttons={actionButtons} />
                 </div>
               )}
@@ -331,6 +347,17 @@ const ChallengeSingle = () => {
           confirm={() => {
             router.push('/challenge/finish');
           }}
+        />
+      )}
+
+      {isOpenDeleteModal && (
+        <SelectModal
+          title="이 챌린지를 삭제하시겠습니까?"
+          description="삭제 후에는 되돌릴 수 없습니다."
+          cancel={() => {
+            setIsOpenDeleteModal(false);
+          }}
+          confirm={deleteChallenge}
         />
       )}
     </div>
