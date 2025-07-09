@@ -64,11 +64,9 @@ const getDateProgressRate = (
   return Math.min(100, Math.round(rate));
 };
 
-const progressUtil = {
+export const progressUtil = {
   getChallengeProgressDay,
   isChallengeExpired,
   formatJoinedAndEndDate,
   getDateProgressRate,
 };
-
-export default progressUtil;
