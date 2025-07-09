@@ -1,4 +1,4 @@
-import { Challenge, Users } from '@/database/models';
+import { Challenge, ChallengeParticipants, Users } from '@/database/models';
 import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
@@ -30,10 +30,22 @@ async function deleteHandler(req: NextRequest) {
 
     if (userRole?.dataValues.role === 'admin') {
       await Challenge.destroy({ where: { id: challengeId } });
+      await ChallengeParticipants.destroy({ where: { challengeId } });
 
       return resUtil.successFalse({
         status: 200,
         message: '어드민 권한으로 제거',
+      });
+    }
+
+    const challengeParticipants = await ChallengeParticipants.findAll({
+      where: { challengeId },
+    });
+
+    if (challengeParticipants.length > 0) {
+      return resUtil.successFalse({
+        status: 400,
+        message: '챌린지 참여자가 존재하여 삭제할 수 없습니다.',
       });
     }
 
