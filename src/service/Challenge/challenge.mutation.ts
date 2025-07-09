@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import API from './challenge.api';
+import { ChallengeWriteType } from '@/types/Challenge';
 
 export const useCreateChallenge = () => {
   return useMutation({
@@ -16,5 +17,12 @@ export const useCertificationChallenge = () => {
 export const useDeleteChallenge = () => {
   return useMutation({
     mutationFn: API.deleteChallenge,
+  });
+};
+
+export const useUpdateChallenge = () => {
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: ChallengeWriteType }) =>
+      API.updateChallenge(id, data),
   });
 };
