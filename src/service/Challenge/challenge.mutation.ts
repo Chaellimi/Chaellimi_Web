@@ -12,3 +12,9 @@ export const useCertificationChallenge = () => {
     mutationFn: API.postCertification,
   });
 };
+
+export const useDeleteChallenge = () => {
+  return useMutation({
+    mutationFn: API.deleteChallenge,
+  });
+};

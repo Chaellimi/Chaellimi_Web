@@ -35,6 +35,11 @@ const postChallenge = async ({
   return data;
 };
 
+const deleteChallenge = async (id: number) => {
+  const { data } = await axios.delete(`/api/challenge?id=${id}`);
+  return data;
+};
+
 const getChallengeById = async (id: number) => {
   const { data } = await axios.get(`/api/challenge/${id}`);
   return data;
@@ -74,6 +79,7 @@ const getChallengeProgressLog = async (challengeId: string) => {
 const API = {
   getChallenge,
   postChallenge,
+  deleteChallenge,
   getChallengeById,
   getParticipatingChallenge,
   getPopularChallenge,
