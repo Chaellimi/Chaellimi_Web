@@ -1,7 +1,7 @@
 import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
 import { NextRequest } from 'next/server';
-import { Op } from 'sequelize';
+import { Op, fn, col } from 'sequelize';
 import resUtil from '@/lib/utils/responseUtil';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
 import { Challenge, ChallengeParticipants, Users } from '@/database/models';
@@ -18,13 +18,26 @@ async function getHandler(req: NextRequest) {
 
     const challenge = await Challenge.findOne({
       where: { id: challengeId },
+      attributes: {
+        include: [
+          [fn('COUNT', col('ChallengeParticipants.id')), 'participantCount'],
+        ],
+      },
       include: [
         {
           model: Users,
           as: 'User',
-          attributes: ['name', 'profileImg'],
+          attributes: ['name', 'profileImg', 'userId'],
+        },
+        {
+          model: ChallengeParticipants,
+          as: 'ChallengeParticipants',
+          attributes: [],
+          required: false,
         },
       ],
+      group: ['Challenge.id', 'User.userId'],
+      subQuery: false,
     });
 
     if (!challenge) {
@@ -63,13 +76,9 @@ async function getHandler(req: NextRequest) {
       });
 
       if (participant) {
-        if (participant.status === 'completed') {
-          joinStatus = 'completed';
-        } else if (participant.status === 'failed') {
-          joinStatus = 'failed';
-        } else {
-          joinStatus = 'in_progress';
-        }
+        if (participant.status === 'completed') joinStatus = 'completed';
+        else if (participant.status === 'failed') joinStatus = 'failed';
+        else joinStatus = 'in_progress';
       }
     }
 

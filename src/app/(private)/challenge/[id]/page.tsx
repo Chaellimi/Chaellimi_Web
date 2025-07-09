@@ -265,7 +265,9 @@ const ChallengeSingle = () => {
           <div className="flex flex-col w-full px-6 gap-[0.622rem] mt-6">
             <div className="flex items-center gap-1">
               <FireIcon />
-              <div className="text-gray-500 text-b3">300명 도전중</div>
+              <div className="text-gray-500 text-b3">
+                {challenge?.participantCount}명 도전중
+              </div>
             </div>
 
             <div className="text-h3">챌린지 소개</div>

@@ -34,6 +34,7 @@ export interface ChallengeWriteType {
   day: string;
   difficulty: 'hard' | 'normal' | 'easy';
   description: string;
+  participantCount: number;
   User?: {
     name?: string;
     profileImg?: string;
