@@ -34,7 +34,7 @@ const Finish = () => {
       <BottomButton
         title="확인"
         onClick={() => {
-          router.back();
+          router.push('/');
         }}
         disabled="false"
       />
