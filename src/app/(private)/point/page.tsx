@@ -58,7 +58,7 @@ const Point = () => {
       </div>
 
       {/* 필터 카테고리 */}
-      <div className="flex flex-col w-full px-6 mt-5">
+      <div className="flex flex-col w-full h-full gap-3 px-6 mt-5">
         <div className="flex items-center justify-between w-full h-8">
           <div className="flex items-center h-full text-b2">적립내역</div>
           <div className="flex h-full gap-2">
@@ -79,7 +79,7 @@ const Point = () => {
         </div>
 
         {/* 리스트 */}
-        <div className="flex flex-col w-full overflow-scroll h-[70%] scrollbar-hide">
+        <div className="flex flex-col w-full h-full overflow-scroll scrollbar-hide custom601:h-[70%]">
           {pointDetail?.data?.map((item: PointResponseType) => (
             <div
               className="flex items-center justify-between w-full py-5 border-b border-gray-100"

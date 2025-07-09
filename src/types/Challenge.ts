@@ -27,10 +27,17 @@ export interface ChallengeType {
 }
 
 export interface ChallengeWriteType {
+  userId?: number;
   imgURL: string;
   category: 'health' | 'productivity' | 'creativity' | 'learning';
   title: string;
   day: string;
   difficulty: 'hard' | 'normal' | 'easy';
   description: string;
+  participantCount: number;
+  User?: {
+    name?: string;
+    profileImg?: string;
+  };
+  createdAt?: string;
 }

@@ -4,7 +4,7 @@ import getUserFromRequest from '@/lib/utils/getUserFromRequest';
 import resUtil from '@/lib/utils/responseUtil';
 import { NextRequest } from 'next/server';
 import { ChallengeData } from '../Challenge';
-import { Challenge } from '@/database/models';
+import { Challenge, Users } from '@/database/models';
 
 async function updateHandler(req: NextRequest) {
   try {
@@ -36,6 +36,20 @@ async function updateHandler(req: NextRequest) {
     }
 
     const user = await getUserFromRequest();
+    const userRole = await Users.findOne({ where: { userId: user?.id } });
+
+    if (userRole?.dataValues.role === 'admin') {
+      await Challenge.update(
+        { title, description, category, difficulty, day, imgURL },
+        { where: { id: challengeId } }
+      );
+
+      return resUtil.successTrue({
+        status: 200,
+        message: '어드민 권한으로 챌린지 수정 성공',
+      });
+    }
+
     if (challenge.userId !== user?.id) {
       return resUtil.successFalse({
         status: 403,

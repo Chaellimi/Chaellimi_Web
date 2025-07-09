@@ -5,8 +5,8 @@ import React, { useEffect } from 'react';
 interface OwnPorps {
   title: string;
   description: string;
-  cancel: () => void;
-  confirm: () => void;
+  cancel?: () => void;
+  confirm?: () => void;
 }
 
 const SelectModal = ({ title, description, cancel, confirm }: OwnPorps) => {
@@ -34,18 +34,22 @@ const SelectModal = ({ title, description, cancel, confirm }: OwnPorps) => {
         </div>
 
         <div className="flex w-full h-[3.6875rem]">
-          <button
-            className="w-full h-full px-16 text-white bg-gray-400 text-bn2 rounded-bl-2xl"
-            onClick={cancel}
-          >
-            취소
-          </button>
-          <button
-            className="w-full h-full px-16 text-white bg-primary-default text-bn2 rounded-br-2xl"
-            onClick={confirm}
-          >
-            확인
-          </button>
+          {cancel && (
+            <button
+              className={`w-full h-full px-14 text-gray-500 bg-white border-r border-gray-200 rounded-bl-2xl ${!confirm ? 'rounded-br-2xl' : ''}`}
+              onClick={cancel}
+            >
+              취소
+            </button>
+          )}
+          {confirm && (
+            <button
+              className={`w-full h-full px-14 text-white bg-primary-default text-bn2 rounded-br-2xl ${!cancel ? 'rounded-bl-2xl' : ''}`}
+              onClick={confirm}
+            >
+              확인
+            </button>
+          )}
         </div>
       </div>
     </div>

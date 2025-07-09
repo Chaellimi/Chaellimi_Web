@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { challengeKeys } from './challenge.key';
 import API from './challenge.api';
 import { ChallengeFilter } from '@/types/Challenge';
@@ -10,10 +10,11 @@ export const useGetChallenge = (filter?: ChallengeFilter) => {
   });
 };
 
-export const useGetChallengeById = (id: number) => {
+export const useGetChallengeById = (id: number, options?: UseQueryOptions) => {
   return useQuery({
     queryKey: [challengeKeys.useGetChallengeById, id],
     queryFn: () => API.getChallengeById(id),
+    ...options,
   });
 };
 

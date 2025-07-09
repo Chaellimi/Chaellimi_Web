@@ -2,6 +2,7 @@
   "name": "chaellimi",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,7 +13,6 @@
     "prepare": "husky install",
     "syncdb": "tsx scripts/syncdb.ts"
   },
-  "license": "MIT",
   "lint-staged": {
     "**/*.(ts|tsx)": [
       "eslint --fix",

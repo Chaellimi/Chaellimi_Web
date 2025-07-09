@@ -23,7 +23,13 @@ import Loading from '@/components/shared/Loading';
 import { ChangeKOR } from '@/lib/utils/getChangeCategory';
 import { timeAgo } from '@/lib/utils/timeAgo';
 import { useSession } from 'next-auth/react';
-import html2canvas from 'html2canvas';
+import {
+  useDeleteChallenge,
+  useJoinChallenge,
+} from '@/service/Challenge/challenge.mutation';
+import { ChallengeWriteType } from '@/types/Challenge';
+import { useGetUserRole } from '@/service/shared/shared.query';
+import useShareBridge from '@/lib/hooks/useShareBridge';
 
 interface recentChallengesType {
   id: number;
@@ -47,16 +53,30 @@ const ChallengeSingle = () => {
   const [actionSheet, setActionSheet] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [isOpenRefusalModal, setIsOpenRefusalModal] = useState(false);
 
   const myInfo = useSession();
   const { data: ChallengeData, isLoading } = useGetChallengeById(
     id ? Number(id) : 0
   );
 
-  const challenge = ChallengeData?.data?.challenge;
-  const recentChallenges = ChallengeData?.data?.recentChallenges ?? [];
-  const totalChallenges = ChallengeData?.data?.totalChallenges ?? [];
-  const isJoinedChallenge = ChallengeData?.data?.joinStatus ?? false;
+  type ChallengeByIdResponse = {
+    data: {
+      challenge: ChallengeWriteType;
+      recentChallenges: recentChallengesType[];
+      totalChallenges: number;
+      joinStatus: string;
+    };
+  };
+
+  const typedEditData = ChallengeData as ChallengeByIdResponse | undefined;
+  const challengeData = typedEditData?.data;
+
+  const challenge = challengeData?.challenge;
+  const recentChallenges = challengeData?.recentChallenges ?? [];
+  const totalChallenges = challengeData?.totalChallenges ?? [];
+  const isJoinedChallenge = challengeData?.joinStatus ?? false;
 
   useStatusBarBridge(
     {
@@ -67,31 +87,20 @@ const ChallengeSingle = () => {
     [isOpenConfirmModal]
   );
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  const { data: userRoleData, isLoading: getUserRoleLoading } =
+    useGetUserRole();
 
-  const isOwner = myInfo?.data?.user.userId == challenge.userId;
+  const isOwner =
+    myInfo?.data?.user.userId == challenge?.userId ||
+    userRoleData?.data?.UserData?.role === 'admin';
+
+  const share = useShareBridge();
 
   const handleShare = async () => {
     try {
-      setActionSheet(false);
-      const element = document.getElementById('challenge-single-root');
-      if (!element) return;
-      const canvas = await html2canvas(element);
-      canvas.toBlob(async (blob) => {
-        if (!blob) return;
-        const file = new File([blob], 'screenshot.png', { type: blob.type });
-        if (navigator.canShare?.({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: challenge?.title,
-            text: challenge?.description || '',
-          });
-        } else {
-          const url = URL.createObjectURL(blob);
-          window.open(url, '_blank');
-        }
+      share({
+        url: window.location.href,
+        title: '챌린지를 공유하고 함께 도전해요!',
       });
     } catch (error) {
       console.error('Share failed', error);
@@ -109,17 +118,56 @@ const ChallengeSingle = () => {
           {
             icons: <EditIcon />,
             text: '수정',
-            onClick: () => {},
+            onClick: () => {
+              router.push(`/challenge/write?mode=edit&id=${id}`);
+            },
           },
           {
             icons: <TrashIcon />,
             text: '삭제',
             textColor: 'red-200',
-            onClick: () => {},
+            onClick: () => {
+              setIsOpenDeleteModal(true);
+            },
           },
         ]
       : []),
   ];
+
+  const { mutate: deleteChallengeMutation, isPending } = useDeleteChallenge();
+  const { mutate: joinChallengeMutation, isPending: isJoiningChallenge } =
+    useJoinChallenge();
+
+  const deleteChallenge = () => {
+    deleteChallengeMutation(Number(id), {
+      onSuccess: () => {
+        setIsOpenDeleteModal(false);
+        router.push(backPath ? backPath : '/challenge');
+      },
+      onError: (error) => {
+        type ErrorWithResponse = {
+          response?: {
+            status?: number;
+          };
+        };
+        if (
+          typeof error === 'object' &&
+          error !== null &&
+          'response' in error &&
+          (error as ErrorWithResponse).response?.status === 403
+        ) {
+          setIsOpenDeleteModal(false);
+          setIsOpenRefusalModal(true);
+          return;
+        }
+        setIsOpenDeleteModal(false);
+      },
+    });
+  };
+
+  if (isLoading || isPending || getUserRoleLoading || isJoiningChallenge) {
+    return <Loading />;
+  }
 
   return (
     <div className="relative flex flex-col w-full h-full text-gray-black">
@@ -141,7 +189,7 @@ const ChallengeSingle = () => {
         {/* Main Image */}
         <div className="relative w-full h-[12.5rem] ">
           <Image
-            src={challenge?.imgURL}
+            src={challenge?.imgURL ?? '/images/default-challenge.png'}
             alt=""
             width={200}
             height={200}
@@ -158,22 +206,22 @@ const ChallengeSingle = () => {
                 <div
                   className={`text-center text-c2 px-[0.38rem] py-[0.15rem] rounded-[0.25rem] w-16
                 ${
-                  challenge.difficulty === 'hard'
+                  challenge?.difficulty === 'hard'
                     ? 'bg-red-100 text-red-200'
-                    : challenge.difficulty === 'normal'
+                    : challenge?.difficulty === 'normal'
                       ? 'bg-primary-light text-primary-default'
                       : 'bg-green-100 text-green-200'
                 }
                 `}
                 >
-                  {challenge.difficulty === 'hard'
+                  {challenge?.difficulty === 'hard'
                     ? '난이도 상'
-                    : challenge.difficulty === 'normal'
+                    : challenge?.difficulty === 'normal'
                       ? '난이도 중'
                       : '난이도 하'}
                 </div>
                 <div className="text-center text-c2 first-line px-[0.38rem] py-[0.15rem] bg-gray-50 rounded-[0.25rem] w-16 text-gray-500">
-                  {challenge.day}일 도전
+                  {challenge?.day}일 도전
                 </div>
               </div>
               <div
@@ -186,18 +234,18 @@ const ChallengeSingle = () => {
               </div>
 
               {actionSheet && (
-                <div className="absolute z-10 right-6 top-6">
+                <div className="absolute z-10 cursor-pointer right-6 top-6">
                   <ActionSheet buttons={actionButtons} />
                 </div>
               )}
             </div>
 
-            <div className="text-h2">{challenge.title}</div>
+            <div className="text-h2">{challenge?.title}</div>
 
             <div className="flex items-center gap-1 text-gray-500 text-c1">
-              <div>{ChangeKOR(challenge.category)}</div>
+              <div>{ChangeKOR(challenge?.category ?? '')}</div>
               <div>·</div>
-              <div>{timeAgo(challenge.createdAt)}</div>
+              <div>{timeAgo(challenge?.createdAt ?? '')}</div>
             </div>
           </div>
 
@@ -205,12 +253,14 @@ const ChallengeSingle = () => {
           <div className="flex flex-col w-full px-6 gap-[0.622rem] mt-6">
             <div className="flex items-center gap-1">
               <FireIcon />
-              <div className="text-gray-500 text-b3">300명 도전중</div>
+              <div className="text-gray-500 text-b3">
+                {challenge?.participantCount}명 도전중
+              </div>
             </div>
 
             <div className="text-h3">챌린지 소개</div>
 
-            <div className="text-b2">{challenge.description}</div>
+            <div className="text-b2">{challenge?.description}</div>
           </div>
         </div>
 
@@ -222,7 +272,9 @@ const ChallengeSingle = () => {
           <div className="flex items-center gap-[0.62rem]">
             <div className="relative rounded-full w-9 h-9">
               <Image
-                src={challenge.User.profileImg}
+                src={
+                  challenge?.User?.profileImg ?? '/images/default-challenge.png'
+                }
                 alt=""
                 width={36}
                 height={36}
@@ -230,7 +282,7 @@ const ChallengeSingle = () => {
               />
             </div>
             <div>
-              <div className="text-b3">{challenge.User.name}</div>
+              <div className="text-b3">{challenge?.User?.name}</div>
               <div className="text-c1">챌린지 개설 {totalChallenges}개</div>
             </div>
           </div>
@@ -309,7 +361,10 @@ const ChallengeSingle = () => {
         <BottomButton
           title="참여하기"
           onClick={() => {
-            setIsOpenConfirmModal(true);
+            if (isJoinedChallenge == 'not_joined') {
+              setIsOpenConfirmModal(true);
+              return;
+            }
           }}
           disabled={
             isJoinedChallenge == 'not_joined'
@@ -329,7 +384,36 @@ const ChallengeSingle = () => {
             setIsOpenConfirmModal(false);
           }}
           confirm={() => {
-            router.push('/challenge/finish');
+            joinChallengeMutation(id as string, {
+              onSuccess: () => {
+                setIsOpenConfirmModal(false);
+                router.push(`/challenge/finish`);
+              },
+              onError: (error) => {
+                console.error('챌린지 참여 실패:', error);
+              },
+            });
+          }}
+        />
+      )}
+
+      {isOpenDeleteModal && (
+        <SelectModal
+          title="이 챌린지를 삭제하시겠습니까?"
+          description="누군가 참여중인 챌린지는 삭제가 불가능합니다."
+          cancel={() => {
+            setIsOpenDeleteModal(false);
+          }}
+          confirm={deleteChallenge}
+        />
+      )}
+
+      {isOpenRefusalModal && (
+        <SelectModal
+          title="챌린지 삭제가 불가능합니다."
+          description="누군가 참여중인 챌린지는 삭제가 불가능합니다."
+          confirm={() => {
+            setIsOpenRefusalModal(false);
           }}
         />
       )}

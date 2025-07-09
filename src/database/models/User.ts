@@ -23,6 +23,7 @@ interface UsersModel
   refreshToken: string | null;
   profileImg: string;
   provider: string;
+  role: string;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
@@ -75,6 +76,14 @@ const Users = sequelize.define<UsersModel>(
       allowNull: false,
       validate: {
         isIn: [['kakao', 'google']],
+      },
+    },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'user',
+      validate: {
+        isIn: [['user', 'admin']],
       },
     },
   },

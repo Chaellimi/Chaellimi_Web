@@ -41,6 +41,7 @@ export const authOptions: AuthOptions = {
             refreshToken: account.refresh_token ?? null,
             profileImg: image ?? '',
             provider,
+            role: 'user',
           });
         }
         return true;

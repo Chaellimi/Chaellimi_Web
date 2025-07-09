@@ -139,7 +139,10 @@ const Home = () => {
         ) : null}
 
         {/* Complete Challenge */}
-        {ParticipatingChallengeData?.data.length != 0 ? (
+        {ParticipatingChallengeData?.data.length != 0 &&
+        ParticipatingChallengeData?.data.some(
+          (item: ParticipatingChallenge) => item.achievementRate === 100
+        ) ? (
           <div className="flex flex-col gap-2 mt-5">
             <div className="flex items-center justify-between">
               <div className="text-he">완료한 챌린지</div>

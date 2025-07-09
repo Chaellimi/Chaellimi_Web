@@ -35,6 +35,24 @@ const postChallenge = async ({
   return data;
 };
 
+export const updateChallenge = async (
+  id: number,
+  payload: ChallengeWriteType
+) => {
+  const { data } = await axios.put(`/api/challenge?id=${id}`, payload);
+  return data;
+};
+
+const deleteChallenge = async (id: number) => {
+  const { data } = await axios.delete(`/api/challenge?id=${id}`);
+  return data;
+};
+
+const postJoinChallenge = async (id: string) => {
+  const { data } = await axios.post(`/api/challenge/${id}/join`);
+  return data;
+};
+
 const getChallengeById = async (id: number) => {
   const { data } = await axios.get(`/api/challenge/${id}`);
   return data;
@@ -74,6 +92,9 @@ const getChallengeProgressLog = async (challengeId: string) => {
 const API = {
   getChallenge,
   postChallenge,
+  updateChallenge,
+  deleteChallenge,
+  postJoinChallenge,
   getChallengeById,
   getParticipatingChallenge,
   getPopularChallenge,
