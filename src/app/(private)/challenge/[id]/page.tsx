@@ -26,6 +26,7 @@ import { useSession } from 'next-auth/react';
 import html2canvas from 'html2canvas';
 import { useDeleteChallenge } from '@/service/Challenge/challenge.mutation';
 import { ChallengeWriteType } from '@/types/Challenge';
+import { useGetUserRole } from '@/service/shared/shared.query';
 
 interface recentChallengesType {
   id: number;
@@ -82,7 +83,12 @@ const ChallengeSingle = () => {
     [isOpenConfirmModal]
   );
 
-  const isOwner = myInfo?.data?.user.userId == challenge?.userId;
+  const { data: userRoleData, isLoading: getUserRoleLoading } =
+    useGetUserRole();
+
+  const isOwner =
+    myInfo?.data?.user.userId == challenge?.userId ||
+    userRoleData?.data?.UserData?.role === 'admin';
 
   const handleShare = async () => {
     try {
@@ -151,7 +157,7 @@ const ChallengeSingle = () => {
     });
   };
 
-  if (isLoading || isPending) {
+  if (isLoading || isPending || getUserRoleLoading) {
     return <Loading />;
   }
 
