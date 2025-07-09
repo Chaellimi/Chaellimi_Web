@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 import Header from '@/components/shared/Header';
 import { CoinIcon, InfoIcon } from '@public/icons/Challenge/progress';
@@ -48,14 +48,18 @@ const Progress = () => {
   );
 
   // 코인 표기하는 날짜 계산
-  const getChallengeDates = (joinedAt: string, totalDay: number): string[] => {
-    const startDate = new Date(joinedAt);
-    return Array.from({ length: totalDay }).map((_, i) => {
-      const date = new Date(startDate);
-      date.setDate(startDate.getDate() + i);
-      return date.toISOString().split('T')[0];
-    });
-  };
+  const getChallengeDates = useCallback(
+    (joinedAt: string, totalDay: number): string[] => {
+      const startDate = new Date(joinedAt);
+      return Array.from({ length: totalDay }).map((_, i) => {
+        const date = new Date(startDate);
+        date.setDate(startDate.getDate() + i);
+        return date.toISOString().split('T')[0];
+      });
+    },
+    []
+  );
+
   const progressDates = getChallengeDates(
     progressLog?.joinedAt,
     progressLog?.totalDay
