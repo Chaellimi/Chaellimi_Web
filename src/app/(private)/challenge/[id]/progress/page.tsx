@@ -63,7 +63,12 @@ const Progress = () => {
   const certifiedSet = new Set(progressLog?.certifiedDays || []);
 
   const today = dayjs().format('YYYY-MM-DD');
-  const todayCertified = progressLog?.certifiedDays.includes(today);
+  const todayCertified =
+    progressLog?.certifiedDays.includes(today) ||
+    progressUtil.isChallengeExpired(
+      progressLog?.joinedAt,
+      progressLog?.totalDay
+    );
 
   if (isLoading || !progressLog) {
     return <Loading />;
