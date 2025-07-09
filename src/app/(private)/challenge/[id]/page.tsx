@@ -107,7 +107,9 @@ const ChallengeSingle = () => {
           {
             icons: <EditIcon />,
             text: '수정',
-            onClick: () => {},
+            onClick: () => {
+              router.push(`/challenge/write?mode=edit&id=${id}`);
+            },
           },
           {
             icons: <TrashIcon />,

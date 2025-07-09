@@ -1,19 +1,24 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DropdownSelector from '@/components/Challenge/DropdownSelector';
 import Header from '@/components/shared/Header';
 import { CameraIcon, CancelIcon } from '@public/icons/Challenge/write';
 import Input from '@/components/Challenge/Input';
 import Image from 'next/image';
 import BottomButton from '@/components/shared/BottomButton';
-import { useCreateChallenge } from '@/service/Challenge/challenge.mutation';
+import {
+  useCreateChallenge,
+  useUpdateChallenge,
+} from '@/service/Challenge/challenge.mutation';
 import { ChallengeWriteType } from '@/types/Challenge';
 import { useUploadImg } from '@/service/shared/shared.mutation';
 import { SpinLogo } from '@public/icons/shared';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { challengeKeys } from '@/service/Challenge/challenge.key';
+import { useGetChallengeById } from '@/service/Challenge/challenge.query';
+import Loading from '@/components/shared/Loading';
 
 const difficultyOptions = [
   { label: '상', value: 'hard' },
@@ -30,14 +35,35 @@ const categoryOptions = [
 
 const Write = () => {
   const router = useRouter();
+  const editMode = useSearchParams().get('mode') === 'edit';
+  const id = useSearchParams().get('id');
+
+  const { data, isLoading: ChallengeLoading } = useGetChallengeById(Number(id));
+  const editData = data?.data?.challenge;
 
   const [inputs, setInputs] = useState<Partial<ChallengeWriteType>>({});
-  const [uploadedImgUrl, setUploadedImgUrl] = useState<string>('');
+  const [uploadedImgUrl, setUploadedImgUrl] = useState<string>(
+    editData?.imgURL
+  );
+
+  useEffect(() => {
+    if (editMode && editData) {
+      setInputs({
+        title: editData.title,
+        category: editData.category,
+        day: editData.day.toString(),
+        difficulty: editData.difficulty,
+        description: editData.description,
+      });
+      setUploadedImgUrl(editData.imgURL);
+    }
+  }, [editMode, editData]);
 
   const queryClient = useQueryClient();
   const { mutateAsync: uploadImage, isPending: isPendingUploadImg } =
     useUploadImg();
   const { mutate: createChallenge } = useCreateChallenge();
+  const { mutate: updateChallenge } = useUpdateChallenge();
 
   const handleChange = (key: keyof ChallengeWriteType, value: string) => {
     setInputs((prev) => ({ ...prev, [key]: value }));
@@ -85,20 +111,34 @@ const Write = () => {
 
     setIsSubmitting(true);
 
-    createChallenge(
-      {
-        imgURL: uploadedImgUrl,
-        category: inputs.category as
-          | 'health'
-          | 'productivity'
-          | 'creativity'
-          | 'learning',
-        title: inputs.title!,
-        day: inputs.day!,
-        difficulty: inputs.difficulty as 'hard' | 'normal' | 'easy',
-        description: inputs.description!,
-      },
-      {
+    const payload = {
+      imgURL: uploadedImgUrl,
+      category: inputs.category as
+        | 'health'
+        | 'productivity'
+        | 'creativity'
+        | 'learning',
+      title: inputs.title!,
+      day: inputs.day!,
+      difficulty: inputs.difficulty as 'hard' | 'normal' | 'easy',
+      description: inputs.description!,
+    } as ChallengeWriteType;
+
+    if (editMode && id) {
+      updateChallenge(
+        { id: Number(id), data: payload },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries({
+              predicate: (query) =>
+                query.queryKey[0] === challengeKeys.useGetChallenge,
+            });
+            router.push('/challenge');
+          },
+        }
+      );
+    } else {
+      createChallenge(payload, {
         onSuccess: () => {
           queryClient.invalidateQueries({
             predicate: (query) =>
@@ -106,15 +146,19 @@ const Write = () => {
           });
           router.push('/challenge');
         },
-      }
-    );
+      });
+    }
   };
+
+  if (ChallengeLoading || isSubmitting) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex flex-col w-full h-full overflow-scroll">
       <Header
         type="default"
-        title="챌린지 생성"
+        title={`챌린지 ${editMode ? '수정' : '생성'}`}
         backIcon={<CancelIcon />}
         backClick="/challenge"
       />
@@ -233,7 +277,7 @@ const Write = () => {
 
       <div className="w-full px-6 pt-3 border-t h-fit border-gray-50 mt-[0.62rem] custom601:mb-6">
         <BottomButton
-          title="등록"
+          title={editMode ? '수정' : '등록'}
           onClick={handleSubmit}
           disabled={isSubmitting ? 'progress' : isValid() ? 'false' : 'true'}
         />
