@@ -231,7 +231,11 @@ const Progress = () => {
         <div className="bottom-0 flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 border-t bg-gray-white border-gray-50">
           <BottomButton
             title="인증하러 가기"
-            onClick={() => {}}
+            onClick={() => {
+              router.push(
+                `/challenge/${id}/certification?back=/challenge/${id}/progress`
+              );
+            }}
             disabled="false"
           />
         </div>
