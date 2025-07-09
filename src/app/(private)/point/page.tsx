@@ -6,7 +6,7 @@ import { PointIcon } from '@public/icons/Challenge/point';
 import { useGetPoint, useGetPointDetail } from '@/service/Point/point.query';
 import { PointDetailType } from '@/types/Point';
 import Loading from '@/components/shared/Loading';
-import { formatDateToYMD } from '@/lib/utils/formatDateToYMD';
+import { formatDateToDot } from '@/lib/utils/formatDateToDot';
 
 const PointCategory = [
   { id: 1, name: '전체', type: '' },
@@ -87,7 +87,7 @@ const Point = () => {
             >
               <div className="flex items-center gap-[0.88rem]">
                 <div className="text-gray-400 text-fn">
-                  {formatDateToYMD(item.createdAt)}
+                  {formatDateToDot(item.createdAt)}
                 </div>
                 <div className="text-b3">{item.description}</div>
               </div>

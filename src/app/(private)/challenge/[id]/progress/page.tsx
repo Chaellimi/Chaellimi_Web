@@ -8,10 +8,10 @@ import { ArrowIcon } from '@public/icons/shared';
 import BottomButton from '@/components/shared/BottomButton';
 import { useParams, useRouter } from 'next/navigation';
 import { useGetChallengeProgressLog } from '@/service/Challenge/challenge.query';
-import progressUtil from '@/lib/utils/progressUtil';
+import { progressUtil } from '@/lib/utils/progressUtil';
 import ProgressHand from '@public/images/ProgressHand.png';
 import Image from 'next/image';
-import { formatDateToYMD } from '@/lib/utils/formatDateToYMD';
+import { formatDateToDot } from '@/lib/utils/formatDateToDot';
 import Loading from '@/components/shared/Loading';
 import dayjs from 'dayjs';
 
@@ -185,7 +185,7 @@ const Progress = () => {
             >
               <div className="flex items-center gap-[0.88rem]">
                 <div className="text-gray-400 text-fn">
-                  {formatDateToYMD(item.createdAt)}
+                  {formatDateToDot(item.createdAt)}
                 </div>
                 <div className="text-gray-black text-b3">
                   {item.description}

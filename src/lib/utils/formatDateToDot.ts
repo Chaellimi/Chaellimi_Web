@@ -1,4 +1,4 @@
-export const formatDateToYMD = (isoString: string): string => {
+export const formatDateToDot = (isoString: string): string => {
   const date = new Date(isoString);
   const year = date.getFullYear();
   const month = `${date.getMonth() + 1}`.padStart(2, '0');

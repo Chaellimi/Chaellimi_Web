@@ -1,3 +1,5 @@
+import { formatDateToDot } from './formatDateToDot';
+
 const getChallengeProgressDay = (joinedAt: Date | string): number => {
   const start = new Date(joinedAt);
   const today = new Date();
@@ -29,21 +31,13 @@ const formatJoinedAndEndDate = (
   joinedAt: Date | string,
   totalDay: number
 ): { joinedDate: string; endDate: string } => {
-  const formatDateToDot = (date: Date | string): string => {
-    const d = new Date(date);
-    const year = d.getFullYear();
-    const month = `${d.getMonth() + 1}`.padStart(2, '0');
-    const day = `${d.getDate()}`.padStart(2, '0');
-    return `${year}.${month}.${day}`;
-  };
-
   const joined = new Date(joinedAt);
   const end = new Date(joined);
   end.setDate(end.getDate() + totalDay);
 
   return {
-    joinedDate: formatDateToDot(joined),
-    endDate: formatDateToDot(end),
+    joinedDate: formatDateToDot(joined.toISOString()),
+    endDate: formatDateToDot(end.toISOString()),
   };
 };
 
