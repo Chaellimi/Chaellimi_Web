@@ -127,14 +127,10 @@ const Write = () => {
 
     const payload = {
       imgURL: uploadedImgUrl,
-      category: inputs.category as
-        | 'health'
-        | 'productivity'
-        | 'creativity'
-        | 'learning',
+      category: inputs.category,
       title: inputs.title!,
       day: inputs.day!,
-      difficulty: inputs.difficulty as 'hard' | 'normal' | 'easy',
+      difficulty: inputs.difficulty,
       description: inputs.description!,
     } as ChallengeWriteType;
 
