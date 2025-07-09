@@ -13,6 +13,7 @@ import {
   useGetPopularChallenge,
 } from '@/service/Challenge/challenge.query';
 import Loading from '@/components/shared/Loading';
+import { useRouter } from 'next/navigation';
 
 interface ParticipatingChallenge {
   challengeId: number;
@@ -47,6 +48,8 @@ export interface ChallengeWithParticipantCount {
 }
 
 const Home = () => {
+  const router = useRouter();
+
   const [isSearchbarVisible, setIsSearchbarVisible] = useState(false);
   const [searchText, setSearchText] = useState('');
 
@@ -77,7 +80,7 @@ const Home = () => {
   }
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full cursor-pointer">
       <Header type="logo" icon={<PointIcon />} iconClick="/point" />
 
       <div
@@ -173,7 +176,12 @@ const Home = () => {
 
         {/* Hot Challenge */}
         <div className="flex flex-col gap-2 mt-5">
-          <div className="flex items-center justify-between">
+          <div
+            className="flex items-center justify-between"
+            onClick={() => {
+              router.push('/challenge');
+            }}
+          >
             <div className="text-he">요즘 뜨는 챌린지</div>
             <ArrowIcon width="24" height="24" location="right" />
           </div>
@@ -185,7 +193,7 @@ const Home = () => {
                   count={item.participantCount}
                   title={item.title}
                   imgUrl={item.imgURL}
-                  link={`/challenge/${item.id}`}
+                  link={`/challenge/${item.id}?back=/`}
                 />
               )
             )}
