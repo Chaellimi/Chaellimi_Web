@@ -39,7 +39,7 @@ async function getHandler(req: NextRequest) {
 
     const certifiedDays = certLogs.map((log) => {
       const date = new Date(log.certifiedAt);
-      date.setHours(0, 0, 0, 0);
+      date.setHours(23, 59, 59, 59);
       return date.toISOString().split('T')[0];
     });
 
