@@ -74,9 +74,19 @@ async function getHandler() {
     });
 
     responseData.sort((a, b) => {
-      if (a.isCertifiedToday !== b.isCertifiedToday) {
-        return a.isCertifiedToday ? 1 : -1;
+      const getPriority = (item: (typeof responseData)[0]) => {
+        if (item.achievementRate === 100) return 2;
+        if (item.isCertifiedToday) return 1;
+        return 0;
+      };
+
+      const priorityA = getPriority(a);
+      const priorityB = getPriority(b);
+
+      if (priorityA !== priorityB) {
+        return priorityA - priorityB;
       }
+
       return new Date(a.joinedAt).getTime() - new Date(b.joinedAt).getTime();
     });
 
