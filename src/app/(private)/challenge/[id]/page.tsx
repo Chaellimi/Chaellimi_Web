@@ -148,7 +148,7 @@ const ChallengeSingle = () => {
     deleteChallengeMutation(Number(id), {
       onSuccess: () => {
         setIsOpenDeleteModal(false);
-        router.push('/challenge');
+        router.push(backPath ? backPath : '/challenge');
       },
       onError: (error) => {
         console.error('챌린지 삭제 실패:', error);
