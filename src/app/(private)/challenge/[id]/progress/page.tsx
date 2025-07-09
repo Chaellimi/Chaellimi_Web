@@ -102,7 +102,7 @@ const Progress = () => {
               />
               <div
                 className={`absolute w-[30px] h-[30px] top-[-12px]`}
-                style={{ left: `${(progressRate || 0) - 5}%` }}
+                style={{ left: `${Math.max(0, (progressRate || 0) - 5)}%` }}
               >
                 <Image
                   src={ProgressHand}
