@@ -37,13 +37,28 @@ const Write = () => {
   const router = useRouter();
   const editMode = useSearchParams().get('mode') === 'edit';
   const id = useSearchParams().get('id');
+  console.log(id);
 
-  const { data, isLoading: ChallengeLoading } = useGetChallengeById(Number(id));
-  const editData = data?.data?.challenge;
+  const { data: EditData, isLoading: ChallengeLoading } = useGetChallengeById(
+    Number(id),
+    {
+      enabled: editMode && !!id,
+      queryKey: [],
+    }
+  );
+
+  type ChallengeByIdResponse = {
+    data: {
+      challenge: ChallengeWriteType;
+    };
+  };
+
+  const typedEditData = EditData as ChallengeByIdResponse | undefined;
+  const editData = typedEditData?.data?.challenge;
 
   const [inputs, setInputs] = useState<Partial<ChallengeWriteType>>({});
   const [uploadedImgUrl, setUploadedImgUrl] = useState<string>(
-    editData?.imgURL
+    editData?.imgURL ?? ''
   );
 
   useEffect(() => {
