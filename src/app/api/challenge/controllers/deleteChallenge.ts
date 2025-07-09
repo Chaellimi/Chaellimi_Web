@@ -32,7 +32,7 @@ async function deleteHandler(req: NextRequest) {
       await Challenge.destroy({ where: { id: challengeId } });
       await ChallengeParticipants.destroy({ where: { challengeId } });
 
-      return resUtil.successFalse({
+      return resUtil.successTrue({
         status: 200,
         message: '어드민 권한으로 제거',
       });
