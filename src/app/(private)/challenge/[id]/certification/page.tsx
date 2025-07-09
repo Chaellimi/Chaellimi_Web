@@ -11,7 +11,7 @@ import {
 } from '@public/icons/Challenge/certification';
 import ShapeQuestion from '@public/icons/Challenge/certification/shapeQuestion';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import EXIF from 'exif-js';
 import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
@@ -37,6 +37,8 @@ const Certification = () => {
   const router = useRouter();
   const path = usePathname();
   const challengeId = PathUtil(path, 1);
+  const backPath = useSearchParams().get('back');
+  console.log(backPath);
 
   useStatusBarBridge({
     backgroundColor: '#FFF',
@@ -142,6 +144,7 @@ const Certification = () => {
       <Header
         type="default"
         title="인증하기"
+        backClick={`${backPath ? backPath : '/'}`}
         icon={<ShapeQuestion color="#000" />}
       />
 

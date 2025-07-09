@@ -9,8 +9,14 @@ import { sequelize } from '../sequelize';
 
 interface TransactionsModel
   extends Model<
-    InferAttributes<TransactionsModel>,
-    InferCreationAttributes<TransactionsModel>
+    InferAttributes<
+      TransactionsModel,
+      { omit: 'createdAt' | 'updatedAt' | 'deletedAt' }
+    >,
+    InferCreationAttributes<
+      TransactionsModel,
+      { omit: 'createdAt' | 'updatedAt' | 'deletedAt' }
+    >
   > {
   id: CreationOptional<number>;
   userId: number;
@@ -18,6 +24,11 @@ interface TransactionsModel
   amount: string;
   balance_after: string;
   description: string;
+  challengeId: number | null;
+
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
 }
 
 const Transactions = sequelize.define<TransactionsModel>(
@@ -29,6 +40,7 @@ const Transactions = sequelize.define<TransactionsModel>(
       type: DataTypes.ENUM('withdrawal', 'deposit'),
       allowNull: false,
     },
+    challengeId: { type: DataTypes.INTEGER, allowNull: true },
     amount: { type: DataTypes.STRING, allowNull: false },
     balance_after: { type: DataTypes.STRING, allowNull: false },
     description: { type: DataTypes.STRING, allowNull: true },

@@ -14,7 +14,7 @@ import {
   TrashIcon,
 } from '@public/icons/shared';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
@@ -42,6 +42,7 @@ interface recentChallengesType {
 const ChallengeSingle = () => {
   const router = useRouter();
   const { id } = useParams();
+  const backPath = useSearchParams().get('back');
 
   const [actionSheet, setActionSheet] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -130,7 +131,11 @@ const ChallengeSingle = () => {
           }}
         />
       )}
-      <Header type="default" title="챌린지 상세" backClick="/challenge" />
+      <Header
+        type="default"
+        title="챌린지 상세"
+        backClick={backPath ? backPath : '/challenge'}
+      />
 
       <div className="flex flex-col w-full h-full overflow-y-scroll">
         {/* Main Image */}

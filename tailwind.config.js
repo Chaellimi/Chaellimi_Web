@@ -183,6 +183,12 @@ module.exports = {
         spinSlow: 'spin 4s linear infinite',
       },
       boxShadow: {
+        'Coin-Gray':
+          'inset -6px -3.429px 3.429px -6px rgba(0, 0, 0, 0.25), 4.286px 3.429px 3.429px -1.714px rgba(0, 0, 0, 0.10), inset 3.429px 3.429px 1.8px -0.857px rgba(205, 205, 205, 0.25)',
+        'Coin-Primary': `
+          inset -6px -3.429px 3.429px -6px #E8C2A8,
+          3.429px 4.286px 3.429px -1.714px rgba(88, 41, 5, 0.10),
+          inset 2.571px 3.429px 1.714px 0px rgba(248, 208, 180, 0.25)`,
         'certification-special': `
           inset -7.5px -4.286px 4.286px -7.5px #E8C2A8,
           4.286px 5.357px 4.286px -2.143px rgba(88, 41, 5, 0.10),

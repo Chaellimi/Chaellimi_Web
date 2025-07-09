@@ -99,6 +99,7 @@ async function postHandler(req: NextRequest) {
         type: 'deposit',
         amount: earnedPoints.toString(),
         balance_after: newPoint.toString(),
+        challengeId: challenge.id,
         description: `챌린지 인증 보상`,
       }),
     ]);

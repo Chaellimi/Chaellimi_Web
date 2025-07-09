@@ -30,3 +30,10 @@ export const useGetPopularChallenge = (limit: number) => {
     queryFn: () => API.getPopularChallenge(limit),
   });
 };
+
+export const useGetChallengeProgressLog = (challengeId: string) => {
+  return useQuery({
+    queryKey: [challengeKeys.useGetChallengeProgressLog, challengeId],
+    queryFn: () => API.getChallengeProgressLog(challengeId),
+  });
+};
