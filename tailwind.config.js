@@ -43,6 +43,11 @@ module.exports = {
           200: '#3396F9',
           100: '#EBF5FF',
         },
+        yellow: {
+          300: '#FBCD14',
+          200: '#FFDC27',
+          100: '#FFFADF',
+        },
       },
       fontSize: {
         Lg: [
