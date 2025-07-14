@@ -14,6 +14,7 @@ export default function LayoutWithNav({
   const showNavbar =
     pathname !== '/login' &&
     pathname !== '/point' &&
+    pathname !== '/point/shop' &&
     pathname !== '/splash' &&
     !(pathname.startsWith('/challenge') && pathname !== '/challenge');
 
