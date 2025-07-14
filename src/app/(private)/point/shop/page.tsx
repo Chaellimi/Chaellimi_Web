@@ -13,6 +13,7 @@ import {
   StoreIcon,
 } from '@public/icons/PointShop';
 import { MagnifyingGlassIcon } from '@public/icons/shared';
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 const PointShopFilter = [
@@ -55,7 +56,7 @@ const Shop = () => {
             }`}
             onClick={() => setActiveCategory(item.id)}
           >
-            {item.name}
+            {item.name} 22개
           </div>
         ))}
       </div>
@@ -86,24 +87,38 @@ const Shop = () => {
 
             <div className="grid grid-cols-2 gap-x-5 gap-y-5">
               {Array.from({ length: 8 }, (item, index) => (
-                <div
-                  className="flex flex-col items-start justify-start gap-2"
-                  key={index}
-                >
-                  <div className="w-[9.875rem] h-[9.875rem] bg-black rounded-xl"></div>
+                <Link key={index} href={`/point/shop/${index}`}>
+                  <div className="flex flex-col items-start justify-start gap-2">
+                    <div className="w-[9.875rem] h-[9.875rem] bg-black rounded-xl"></div>
 
-                  <div>
-                    <div className="text-c1">스타벅스</div>
-                    <div className="text-h3">2000P</div>
-                    <div className="text-b3">(ICE)아메리카노</div>
+                    <div>
+                      <div className="text-c1">스타벅스</div>
+                      <div className="text-h3">2000P</div>
+                      <div className="text-b3">(ICE)아메리카노</div>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
         </div>
       ) : (
         <div className="flex flex-col w-full gap-4 mt-4 overflow-y-scroll scrollbar-hide">
+          {/* <div className="flex flex-col items-center justify-center h-[calc(100vh-12rem)] gap-4">
+            <NothingItemIcon />
+            <div className="text-gray-600 text-b1">
+              구매한 기프티콘이 없어요
+            </div>
+            <button
+              className="text-white bg-primary-default px-6 py-[0.62rem] rounded-lg"
+              onClick={() => {
+                setActiveCategory(1);
+              }}
+            >
+              사러가기
+            </button>
+          </div> */}
+
           <div className="flex flex-col items-start justify-start w-full gap-4 px-6">
             <span className="text-h3">보유 33개</span>
 
