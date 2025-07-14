@@ -2,10 +2,13 @@
 
 import BottomButton from '@/components/shared/BottomButton';
 import Header from '@/components/shared/Header';
+import SelectModal from '@/components/shared/SelectModal';
 import { MagnifyingGlassIcon } from '@public/icons/shared';
 import React from 'react';
 
 const ShopDetail = () => {
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = React.useState(false);
+
   return (
     <div className="flex flex-col w-full h-full text-gray-black rounded-xl">
       <Header
@@ -50,8 +53,27 @@ const ShopDetail = () => {
       </div>
 
       <div className="flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 border-t bg-gray-white border-gray-50 custom601:mb-6">
-        <BottomButton title="참여하기" onClick={() => {}} disabled={'false'} />
+        <BottomButton
+          title="참여하기"
+          onClick={() => {
+            setIsOpenConfirmModal(true);
+          }}
+          disabled={'false'}
+        />
       </div>
+
+      {isOpenConfirmModal && (
+        <SelectModal
+          title="상품을 구매하시겠습니까?"
+          description="구매 후 취소가 불가능합니다."
+          cancel={() => {
+            setIsOpenConfirmModal(false);
+          }}
+          confirm={() => {}}
+          usePoint={2000}
+          totalPoint={5000}
+        />
+      )}
     </div>
   );
 };
