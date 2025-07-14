@@ -13,10 +13,9 @@ export default function LayoutWithNav({
   // Nav를 안보여야 하는 조건
   const showNavbar =
     pathname !== '/login' &&
-    pathname !== '/point' &&
-    pathname !== '/point/shop' &&
     pathname !== '/splash' &&
-    !(pathname.startsWith('/challenge') && pathname !== '/challenge');
+    !(pathname.startsWith('/challenge') && pathname !== '/challenge') &&
+    !(pathname.startsWith('/point') && pathname !== '/point');
 
   // activeNav 설정
   let activeNav: 'home' | 'challenge' | 'community' | 'profile' = 'home';
