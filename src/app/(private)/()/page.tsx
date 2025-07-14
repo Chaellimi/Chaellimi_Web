@@ -14,6 +14,7 @@ import {
 } from '@/service/Challenge/challenge.query';
 import Loading from '@/components/shared/Loading';
 import { useRouter } from 'next/navigation';
+import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 
 interface ParticipatingChallenge {
   challengeId: number;
@@ -74,6 +75,12 @@ const Home = () => {
       (item: ParticipatingChallenge) => item.achievementRate >= 100
     ).length;
   }
+
+  useStatusBarBridge({
+    backgroundColor: '#FFF',
+    translucent: true,
+    bottomBackgroundColor: '#FFF',
+  });
 
   if (getParticipatingChallengePending || getPopularChallengePending) {
     return <Loading />;

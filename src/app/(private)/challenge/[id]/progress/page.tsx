@@ -6,7 +6,7 @@ import Header from '@/components/shared/Header';
 import { CoinIcon, InfoIcon } from '@public/icons/Challenge/progress';
 import { ArrowIcon } from '@public/icons/shared';
 import BottomButton from '@/components/shared/BottomButton';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useGetChallengeProgressLog } from '@/service/Challenge/challenge.query';
 import { progressUtil } from '@/lib/utils/progressUtil';
 import ProgressHand from '@public/images/ProgressHand.png';
@@ -27,6 +27,7 @@ interface pointSavingLogType {
 const Progress = () => {
   const router = useRouter();
   const { id } = useParams();
+  const backPath = useSearchParams().get('back');
 
   useStatusBarBridge({
     backgroundColor: '#FFF0E5',
@@ -85,7 +86,7 @@ const Progress = () => {
           type="default"
           title="진행사항"
           icon={<InfoIcon />}
-          backClick={`/`}
+          backClick={backPath ? backPath : '/'}
         />
       </div>
 
