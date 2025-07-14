@@ -1,6 +1,6 @@
 'use client';
 
-import { PointIcon } from '@public/icons/Home';
+import { PointIcon, ShopIcon } from '@public/icons/Home';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import Banner from '@public/images/HomeBanner.png';
@@ -81,7 +81,13 @@ const Home = () => {
 
   return (
     <div className="w-full h-full cursor-pointer">
-      <Header type="logo" icon={<PointIcon />} iconClick="/point" />
+      <Header
+        type="logo"
+        icon={<ShopIcon />}
+        iconClick="/point/shop"
+        icon2={<PointIcon />}
+        iconClick2="/point"
+      />
 
       <div
         className="flex-1 flex flex-col gap-2 px-6 mt-2 pb-[5rem] overflow-y-scroll scrollbar-hide overscroll-contain"
