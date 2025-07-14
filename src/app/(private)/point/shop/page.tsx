@@ -61,7 +61,7 @@ const Shop = () => {
       </div>
 
       {activeCategory === 1 ? (
-        <div className="flex flex-col w-full gap-4 px-6 mt-4 overflow-y-scroll">
+        <div className="flex flex-col w-full gap-4 px-6 mt-4 overflow-y-scroll scrollbar-hide">
           <div className="flex items-center justify-start w-full h-12 gap-[0.62rem] bg-yellow-100 px-5 py-3 rounded-xl text-b3">
             <PointIcon />
             현재 보유 포인트 9, 999P
@@ -81,7 +81,7 @@ const Shop = () => {
             ))}
           </div>
 
-          <div className="flex flex-col items-start justify-start w-full gap-4 scrollbar-hide">
+          <div className="flex flex-col items-start justify-start w-full gap-4">
             <span className="text-h3">상품 233개</span>
 
             <div className="grid grid-cols-2 gap-x-5 gap-y-5">
@@ -103,8 +103,8 @@ const Shop = () => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col w-full gap-4 mt-4 overflow-y-scroll">
-          <div className="flex flex-col items-start justify-start w-full gap-4 px-6 scrollbar-hide">
+        <div className="flex flex-col w-full gap-4 mt-4 overflow-y-scroll scrollbar-hide">
+          <div className="flex flex-col items-start justify-start w-full gap-4 px-6">
             <span className="text-h3">보유 33개</span>
 
             <div className="grid grid-cols-2 gap-x-5 gap-y-5">
