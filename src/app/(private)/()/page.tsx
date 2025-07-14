@@ -124,9 +124,9 @@ const Home = () => {
                           item.isCertifiedToday || item.achievementRate >= 100
                         }
                         progress={item.achievementRate}
-                        title={item.challenge.title}
+                        title={item.challenge?.title}
                         time={'고정값'}
-                        imgURL={item.challenge.imgURL}
+                        imgURL={item.challenge?.imgURL}
                         certificationLink={`/challenge/${item.challengeId}/certification`}
                         progressLink={`/challenge/${item.challengeId}/progress`}
                       />
