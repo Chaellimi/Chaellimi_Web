@@ -24,6 +24,7 @@ const nextConfig: NextConfig = {
       'localhost',
       '10.150.2.54',
       '10.150.149.172',
+      '10.150.150.131',
       '172.30.1.59',
       'img1.kakaocdn.net',
       't1.kakaocdn.net',
