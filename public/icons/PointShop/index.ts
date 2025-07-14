@@ -7,3 +7,4 @@ export { default as CouponIcon } from './Coupon';
 export { default as DessertIcon } from './Dessert';
 export { default as PizzaIcon } from './Pizza';
 export { default as StoreIcon } from './Store';
+export { default as NothingItemIcon } from './NothingItem';
