@@ -1,1 +1,9 @@
 export { default as PointIcon } from './Point';
+export { default as AllIcon } from './All';
+export { default as BurgerIcon } from './Burger';
+export { default as CafeIcon } from './Cafe';
+export { default as ChickenIcon } from './Chicken';
+export { default as CouponIcon } from './Coupon';
+export { default as DessertIcon } from './Dessert';
+export { default as PizzaIcon } from './Pizza';
+export { default as StoreIcon } from './Store';
