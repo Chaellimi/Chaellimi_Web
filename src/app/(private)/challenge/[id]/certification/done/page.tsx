@@ -47,13 +47,9 @@ const CertificationDone = () => {
       },
       {
         onSuccess(data) {
-          if (data.is_match) {
+          if (data.data.aiResponse.is_match) {
             router.push(
-              `/challenge/${PathUtil(path, 1)}/certification/done/success/?image=${image}`
-            );
-          } else {
-            router.push(
-              `/challenge/${PathUtil(path, 1)}/certification/done/failure/?image=${image}`
+              `/challenge/${PathUtil(path, 1)}/certification/done/success/?image=${image}&earnedPoints=${data.data.earnedPoints}`
             );
           }
         },
