@@ -35,7 +35,10 @@ async function postHandler(req: NextRequest) {
 
     const challenge = await Challenge.findOne({ where: { id: challengeId } });
     if (!challenge) {
-      return resUtil.successFalse({ message: '챌린지를 찾을 수 없습니다.' });
+      return resUtil.successFalse({
+        status: 400,
+        message: '챌린지를 찾을 수 없습니다.',
+      });
     }
 
     const participation = await ChallengeParticipants.findOne({
@@ -43,7 +46,10 @@ async function postHandler(req: NextRequest) {
     });
 
     if (!participation) {
-      return resUtil.successFalse({ message: '챌린지에 참여하지 않았습니다.' });
+      return resUtil.successFalse({
+        status: 400,
+        message: '챌린지에 참여하지 않았습니다.',
+      });
     }
 
     const aiResponse = await AIHandler({
@@ -51,10 +57,22 @@ async function postHandler(req: NextRequest) {
       description: challenge.description,
     });
 
-    if (!aiResponse || !aiResponse.is_match) {
+    console.log(aiResponse);
+
+    if (!aiResponse) {
+      console.log('AI response is null or undefined');
       return resUtil.successFalse({
         status: 400,
         message: '챌린지 인증 실패',
+        data: { aiResponse },
+      });
+    }
+
+    if (!aiResponse.is_match) {
+      console.log('AI response does not match the challenge');
+      return resUtil.successFalse({
+        status: 400,
+        message: '인증 사진이 챌린지와 일치하지 않습니다.',
         data: { aiResponse },
       });
     }
@@ -69,7 +87,11 @@ async function postHandler(req: NextRequest) {
     });
 
     if (alreadyCertified) {
-      return resUtil.successFalse({ message: '오늘 이미 인증했습니다.' });
+      console.log('User has already certified today');
+      return resUtil.successFalse({
+        status: 400,
+        message: '오늘 이미 인증했습니다.',
+      });
     }
 
     const currentStreak = parseInt(participation.streak || '0', 10);
@@ -105,7 +127,7 @@ async function postHandler(req: NextRequest) {
     ]);
 
     return resUtil.successTrue({
-      status: 201,
+      status: 200,
       message: `챌린지 인증 성공 (+${earnedPoints}점)`,
       data: {
         aiResponse,

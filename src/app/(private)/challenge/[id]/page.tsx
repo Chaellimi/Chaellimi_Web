@@ -347,7 +347,6 @@ const ChallengeSingle = () => {
         <div
           onClick={() => {
             setIsBookmarked(!isBookmarked);
-            router.push(`/challenge/${id}/progress`);
           }}
         >
           <BookmarkIcon
@@ -363,6 +362,9 @@ const ChallengeSingle = () => {
           onClick={() => {
             if (isJoinedChallenge == 'not_joined') {
               setIsOpenConfirmModal(true);
+              return;
+            } else {
+              router.push(`/challenge/${id}/progress?back=/challenge/${id}`);
               return;
             }
           }}

@@ -6,7 +6,7 @@ import Header from '@/components/shared/Header';
 import { CoinIcon, InfoIcon } from '@public/icons/Challenge/progress';
 import { ArrowIcon } from '@public/icons/shared';
 import BottomButton from '@/components/shared/BottomButton';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useGetChallengeProgressLog } from '@/service/Challenge/challenge.query';
 import { progressUtil } from '@/lib/utils/progressUtil';
 import ProgressHand from '@public/images/ProgressHand.png';
@@ -27,6 +27,7 @@ interface pointSavingLogType {
 const Progress = () => {
   const router = useRouter();
   const { id } = useParams();
+  const backPath = useSearchParams().get('back');
 
   useStatusBarBridge({
     backgroundColor: '#FFF0E5',
@@ -85,7 +86,7 @@ const Progress = () => {
           type="default"
           title="진행사항"
           icon={<InfoIcon />}
-          backClick={`/`}
+          backClick={backPath ? backPath : '/'}
         />
       </div>
 
@@ -136,8 +137,8 @@ const Progress = () => {
               <div className="w-full px-[0.62rem] py-5 bg-gray-white rounded-[1.25rem]">
                 <div className="grid grid-cols-3 gap-y-4 gap-x-2 justify-items-center">
                   {progressDates.map((dateStr, index) => {
-                    const today = new Date().toISOString().split('T')[0];
-                    const isPassed = new Date(dateStr) <= new Date(today);
+                    const today = dayjs().format('YYYY-MM-DD');
+                    const isFeature = new Date(dateStr) <= new Date(today);
                     const isCertified = certifiedSet.has(dateStr);
 
                     return (
@@ -145,7 +146,7 @@ const Progress = () => {
                         key={index}
                         className="flex flex-col items-center justify-between gap-2"
                       >
-                        {isPassed ? (
+                        {isFeature ? (
                           isCertified ? (
                             <div className="w-fit h-fit p-[0.45rem] rounded-full bg-primary-light shadow-Coin-Primary">
                               <CoinIcon disabled={false} />
@@ -158,9 +159,12 @@ const Progress = () => {
                         ) : (
                           <div className="w-[44px] h-[44px]" />
                         )}
-                        <div className="text-gray-500 text-c1">
-                          {index + 1}일차
-                        </div>
+
+                        {isFeature && (
+                          <div className="text-gray-500 text-c1">
+                            {index + 1}일차
+                          </div>
+                        )}
                       </div>
                     );
                   })}

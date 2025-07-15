@@ -6,9 +6,13 @@ import {
   PointModalCheckIcon,
   ShapeQuestionIcon,
 } from '@public/icons/Challenge/certification';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import '@/style/ProgressSlider.css';
 import Image from 'next/image';
@@ -16,6 +20,10 @@ import { formatExifDate } from '@/lib/utils/formatExifDate';
 import { CoinIcon } from '@public/icons/Challenge/progress';
 import BottomButton from '@/components/shared/BottomButton';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useGetChallengeProgressLog } from '@/service/Challenge/challenge.query';
+import Loading from '@/components/shared/Loading';
+import { progressUtil } from '@/lib/utils/progressUtil';
+import ProgressHand from '@public/images/ProgressHand.png';
 
 const CertificationSuccess = () => {
   const router = useRouter();
@@ -23,6 +31,17 @@ const CertificationSuccess = () => {
   const challengeId = path.split('/').slice(0, 4)[2];
   const searchParams = useSearchParams();
   const image = searchParams.get('image');
+  const earnedPoints = searchParams.get('earnedPoints');
+  const { id } = useParams();
+
+  useStatusBarBridge({
+    backgroundColor: '#EBF5FF',
+    translucent: true,
+    bottomBackgroundColor: '#EBF5FF',
+  });
+
+  const { data: data, isLoading } = useGetChallengeProgressLog(id as string);
+  const progressLog = data?.data;
 
   const [takenTime, setTakenTime] = useState<string | null>(null);
 
@@ -47,11 +66,14 @@ const CertificationSuccess = () => {
     };
   }, []);
 
-  useStatusBarBridge({
-    backgroundColor: '#EBF5FF',
-    translucent: true,
-    bottomBackgroundColor: '#EBF5FF',
-  });
+  const { joinedDate, endDate } = progressUtil.formatJoinedAndEndDate(
+    progressLog?.joinedAt,
+    progressLog?.totalDay
+  );
+  const progressRate = progressUtil.getDateProgressRate(
+    progressLog?.joinedAt,
+    progressLog?.totalDay
+  );
 
   if (!image) {
     return (
@@ -59,6 +81,10 @@ const CertificationSuccess = () => {
         이미지 데이터가 없습니다.
       </div>
     );
+  }
+
+  if (isLoading || !progressLog) {
+    return <Loading />;
   }
 
   return (
@@ -75,24 +101,42 @@ const CertificationSuccess = () => {
           <div className="flex flex-col justify-center gap-5">
             <div>
               <div className="text-gray-600 text-b3">
-                챌린지 진행 10일차 인증 완료!
+                챌린지 진행{' '}
+                {progressUtil.isChallengeExpired(
+                  progressLog?.joinedAt,
+                  progressLog?.totalDay
+                )
+                  ? ' 완료!'
+                  : progressUtil.getChallengeProgressDay(
+                      progressLog?.joinedAt
+                    ) + '일차'}
               </div>
-              <div className="text-h1">하루 물 2L 마시기</div>
+              <div className="text-h1">{progressLog?.title}</div>
             </div>
 
             <div className="flex flex-col gap-[0.62rem] w-full">
-              <RangeSlider
-                min={30}
-                max={90}
-                step={1}
-                value={[30, 80]}
-                thumbsDisabled={[true, false]}
-                rangeSlideDisabled={false}
-              />
+              <div className="relative flex w-full h-[8px] bg-white rounded-full">
+                <div
+                  className={`absolute top-0 bottom-0 rounded-full bg-primary-default`}
+                  style={{ width: `${progressRate || 0}%` }}
+                />
+                <div
+                  className={`absolute w-[30px] h-[30px] top-[-12px]`}
+                  style={{ left: `${Math.max(0, (progressRate || 0) - 5)}%` }}
+                >
+                  <Image
+                    src={ProgressHand}
+                    width={30}
+                    height={30}
+                    alt=""
+                    className="object-cover object-top w-full h-full"
+                  />
+                </div>
+              </div>
 
               <div className="flex justify-between text-gray-400 text-c2">
-                <span>2024.01.22</span>
-                <span>2024.03.22</span>
+                <span>{joinedDate}</span>
+                <span>{endDate}</span>
               </div>
             </div>
           </div>
@@ -133,7 +177,7 @@ const CertificationSuccess = () => {
                 className="flex items-center justify-center gap-[0.31rem] px-6 py-[0.62rem] bg-gray-600 w-fit rounded-full text-white text-bn3"
               >
                 <PointModalCheckIcon />
-                <div>2000 포인트가 적립되었어요!</div>
+                <div>{earnedPoints} 포인트가 적립되었어요!</div>
               </motion.div>
             )}
           </AnimatePresence>
