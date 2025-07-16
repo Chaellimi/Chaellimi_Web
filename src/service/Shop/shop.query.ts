@@ -22,3 +22,10 @@ export const useGetCustody = () => {
     queryFn: () => API.getCustody(),
   });
 };
+
+export const useGetCustodyById = (id: string) => {
+  return useQuery({
+    queryKey: [shopKeys.useGetCustodyById, id],
+    queryFn: () => API.getCustodyById(id),
+  });
+};
