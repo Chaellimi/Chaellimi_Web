@@ -28,11 +28,7 @@ async function postHandler(req: NextRequest) {
       'imgURL',
     ]);
 
-    if (!validationResponse?.bodyUsed)
-      return resUtil.successTrue({
-        status: 400,
-        message: '필수 필드가 누락되었습니다.',
-      });
+    if (validationResponse) return validationResponse;
 
     const user = await getUserFromRequest();
     if (!user) {
