@@ -96,7 +96,7 @@ const CertificationSuccess = () => {
         icon={<ShapeQuestionIcon color="black" />}
       />
 
-      <div className="flex flex-col items-center justify-between w-full h-full">
+      <div className="flex flex-col items-center justify-between w-full h-full mt-2">
         <div className="relative flex flex-col justify-center gap-8 px-6">
           <div className="flex flex-col justify-center gap-5">
             <div>
