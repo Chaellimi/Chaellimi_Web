@@ -37,17 +37,23 @@ const SelectModal = ({
       <div className="absolute inset-0 z-10 bg-black/30" />
 
       <div className="z-20 w-full bg-white rounded-2xl">
-        <div className="flex flex-col items-center justify-center gap-2 p-10 rounded-t-2xl">
+        <div className="flex flex-col items-center justify-center gap-2 pt-8 pb-4 rounded-t-2xl">
           <div className="text-h3">{title}</div>
           <div className="text-gray-500 text-b3">{description}</div>
-
-          {usePoint && totalPoint && (
-            <div className="flex items-center justify-between w-full p-4">
-              <span>사용 포인트</span>
-              <span className="text-primary-default">{usePoint}P</span>
-            </div>
-          )}
         </div>
+
+        {usePoint && totalPoint && (
+          <div className="flex flex-col gap-[0.62rem] p-4 mx-6 mb-8 bg-gray-50 rounded-xl">
+            <div className="flex items-center justify-between w-full">
+              <span className="text-b3">사용 포인트</span>
+              <span className="text-he text-primary-default">{usePoint}P</span>
+            </div>
+            <div className="flex items-center justify-between w-full">
+              <span className="text-b3">사용 후 포인트</span>
+              <span className="text-black text-he">{totalPoint}P</span>
+            </div>
+          </div>
+        )}
 
         <div className="flex w-full h-[3.6875rem]">
           {cancel && (
