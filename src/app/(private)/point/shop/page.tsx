@@ -1,6 +1,10 @@
 'use client';
 
+import { ProductType } from '@/app/api/shop/Product.type';
 import Header from '@/components/shared/Header';
+import Loading from '@/components/shared/Loading';
+import { useGetPoint } from '@/service/Point/point.query';
+import { useGetProduct } from '@/service/Shop/shop.query';
 import {
   AllIcon,
   BurgerIcon,
@@ -13,6 +17,7 @@ import {
   StoreIcon,
 } from '@public/icons/PointShop';
 import { MagnifyingGlassIcon } from '@public/icons/shared';
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 
@@ -35,7 +40,13 @@ const PointShopCategories = [
 const Shop = () => {
   const [activeCategory, setActiveCategory] = useState(1);
 
-  console.log(activeCategory);
+  const { data, isLoading } = useGetProduct();
+  const productData = data?.data;
+  const { data: pointData, isLoading: isGetPointLoading } = useGetPoint();
+
+  if (isLoading || isGetPointLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex flex-col w-full h-full text-gray-black">
@@ -56,7 +67,7 @@ const Shop = () => {
             }`}
             onClick={() => setActiveCategory(item.id)}
           >
-            {item.name} 22개
+            {item.name} {item.id === 1 ? productData?.length : 'X'}개
           </div>
         ))}
       </div>
@@ -65,7 +76,7 @@ const Shop = () => {
         <div className="flex flex-col w-full gap-4 px-6 mt-4 overflow-y-scroll scrollbar-hide">
           <div className="flex items-center justify-start w-full h-12 gap-[0.62rem] bg-yellow-100 px-5 py-3 rounded-xl text-b3">
             <PointIcon />
-            현재 보유 포인트 9, 999P
+            현재 보유 포인트 {pointData?.data?.totalPoint}P
           </div>
 
           <div className="grid grid-cols-4 gap-x-5 gap-y-5">
@@ -83,18 +94,26 @@ const Shop = () => {
           </div>
 
           <div className="flex flex-col items-start justify-start w-full gap-4">
-            <span className="text-h3">상품 233개</span>
+            <span className="text-h3">상품 {productData?.length}개</span>
 
             <div className="grid grid-cols-2 gap-x-5 gap-y-5">
-              {Array.from({ length: 8 }, (item, index) => (
-                <Link key={index} href={`/point/shop/${index}`}>
+              {productData?.map((item: ProductType, index: number) => (
+                <Link key={index} href={`/point/shop/${item.id}`}>
                   <div className="flex flex-col items-start justify-start gap-2">
-                    <div className="w-[9.875rem] h-[9.875rem] bg-black rounded-xl"></div>
+                    <div className="relative rounded-full w-[9.875rem] h-[9.875rem]">
+                      <Image
+                        src={item.imgURL}
+                        alt={item.title}
+                        width={158}
+                        height={158}
+                        className="object-cover object-top w-full h-full rounded-xl"
+                      />
+                    </div>
 
                     <div>
-                      <div className="text-c1">스타벅스</div>
-                      <div className="text-h3">2000P</div>
-                      <div className="text-b3">(ICE)아메리카노</div>
+                      <div className="text-c1">{item.brand}</div>
+                      <div className="text-h3">{item.price}P</div>
+                      <div className="text-b3">{item.title}</div>
                     </div>
                   </div>
                 </Link>
