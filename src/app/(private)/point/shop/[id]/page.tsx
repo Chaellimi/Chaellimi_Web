@@ -46,7 +46,7 @@ const ShopDetail = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-full text-gray-black rounded-xl">
+    <div className="flex flex-col items-center w-full h-full text-gray-black rounded-xl">
       <Header
         type="default"
         icon={<MagnifyingGlassIcon width="24" height="24" fill="#1F1F1F" />}
@@ -56,13 +56,14 @@ const ShopDetail = () => {
       <div className="relative flex flex-col justify-between pb-[1.38rem] overflow-y-scroll scrollbar-hide w-full">
         <div className="flex flex-col w-full gap-4 px-6">
           <div className="relative rounded-full min-h-[20.5rem] max-h-[20.5rem] min-w[20.5rem] max-w-[20.5rem]">
-            <Image
-              src={productData?.imgURL}
-              alt={productData?.title}
-              width={328}
-              height={328}
-              className="object-cover object-top w-full h-full rounded-xl"
-            />
+            <div className="relative w-[328px] h-[328px] mx-auto">
+              <Image
+                src={productData?.imgURL}
+                alt={productData?.title}
+                fill
+                className="object-cover object-top rounded-xl"
+              />
+            </div>
           </div>
 
           <div>
