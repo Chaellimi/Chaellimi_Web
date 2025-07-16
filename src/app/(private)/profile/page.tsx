@@ -4,7 +4,13 @@ import Header from '@/components/shared/Header';
 import Loading from '@/components/shared/Loading';
 import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 import { useGetUserRole } from '@/service/shared/shared.query';
-import { AlarmIcon, CameraIcon } from '@public/icons/Profile';
+import {
+  AlarmIcon,
+  BookmarkIcon,
+  CameraIcon,
+  ShopIcon,
+  PointIcon,
+} from '@public/icons/Profile';
 import { ArrowIcon, FireIcon } from '@public/icons/shared';
 import Image from 'next/image';
 import React from 'react';
@@ -29,6 +35,7 @@ const Profile = () => {
       <Header type="title" title="마이페이지" icon={<AlarmIcon />} />
 
       <div className="flex flex-col items-center justify-center gap-4 mt-4">
+        {/* 프로필 */}
         <div className="flex items-center justify-between w-full p-4 bg-white rounded-2xl">
           <div className="flex items-center gap-4">
             <div className="relative w-[72px] h-[72px] rounded-full">
@@ -58,6 +65,7 @@ const Profile = () => {
           </div>
         </div>
 
+        {/* 챌린지 */}
         <div className="flex flex-col w-full p-4 bg-white rounded-2xl gap-[0.62rem]">
           <div className="text-he">챌린지</div>
 
@@ -76,6 +84,33 @@ const Profile = () => {
               <div className="text-h3">0</div>
               <div className="text-gray-500 text-b3">개설</div>
             </div>
+          </div>
+        </div>
+
+        {/* 상점 */}
+        <div className="flex flex-col w-full p-4 bg-white rounded-2xl">
+          <div className="flex items-center justify-between w-full py-3">
+            <div className="flex items-center gap-[0.62rem]">
+              <ShopIcon />
+              <div className="text-b2">구매내역</div>
+            </div>
+            <ArrowIcon location="right" width="20" height="20" fill="#A5A5A5" />
+          </div>
+
+          <div className="flex items-center justify-between w-full py-3">
+            <div className="flex items-center gap-[0.62rem]">
+              <PointIcon />
+              <div className="text-b2">적립내역</div>
+            </div>
+            <ArrowIcon location="right" width="20" height="20" fill="#A5A5A5" />
+          </div>
+
+          <div className="flex items-center justify-between w-full py-3">
+            <div className="flex items-center gap-[0.62rem]">
+              <BookmarkIcon />
+              <div className="text-b2">저장됨</div>
+            </div>
+            <ArrowIcon location="right" width="20" height="20" fill="#A5A5A5" />
           </div>
         </div>
       </div>
