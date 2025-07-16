@@ -160,25 +160,30 @@ const Shop = () => {
                 <div className="grid grid-cols-2 gap-x-5 gap-y-5">
                   {activeCustodyData?.map(
                     (item: CustodyType, index: number) => (
-                      <div
-                        className="flex flex-col items-start justify-start gap-2"
+                      <Link
                         key={index}
+                        href={`/point/shop/${item.id}/use?custodyId=${item.id}`}
                       >
-                        <div className="relative rounded-full w-[9.875rem] h-[9.875rem]">
-                          <Image
-                            src={item.product.imgURL}
-                            alt={item.product.title}
-                            width={158}
-                            height={158}
-                            className="object-cover object-top w-full h-full rounded-xl"
-                          />
+                        <div
+                          className="flex flex-col items-start justify-start gap-2"
+                          key={index}
+                        >
+                          <div className="relative rounded-full w-[9.875rem] h-[9.875rem]">
+                            <Image
+                              src={item.product.imgURL}
+                              alt={item.product.title}
+                              width={158}
+                              height={158}
+                              className="object-cover object-top w-full h-full rounded-xl"
+                            />
+                          </div>
+                          <div>
+                            <div className="text-c1">{item.product.brand}</div>
+                            <div className="text-h3">{item.product.price}P</div>
+                            <div className="text-b3">{item.product.title}</div>
+                          </div>
                         </div>
-                        <div>
-                          <div className="text-c1">{item.product.brand}</div>
-                          <div className="text-h3">{item.product.price}P</div>
-                          <div className="text-b3">{item.product.title}</div>
-                        </div>
-                      </div>
+                      </Link>
                     )
                   )}
                 </div>
@@ -193,26 +198,31 @@ const Shop = () => {
 
                 <div className="grid grid-cols-2 gap-x-5 gap-y-5">
                   {usedCustodyData?.map((item: CustodyType, index: number) => (
-                    <div
-                      className="flex flex-col items-start justify-start gap-2"
+                    <Link
                       key={index}
+                      href={`/point/shop/${item.id}/use?custodyId=${item.id}`}
                     >
-                      <div className="relative rounded-full w-[9.875rem] h-[9.875rem]">
-                        <Image
-                          src={item.product.imgURL}
-                          alt={item.product.title}
-                          width={158}
-                          height={158}
-                          className="object-cover object-top w-full h-full rounded-xl"
-                        />
-                      </div>
+                      <div
+                        className="flex flex-col items-start justify-start gap-2"
+                        key={index}
+                      >
+                        <div className="relative rounded-full w-[9.875rem] h-[9.875rem]">
+                          <Image
+                            src={item.product.imgURL}
+                            alt={item.product.title}
+                            width={158}
+                            height={158}
+                            className="object-cover object-top w-full h-full rounded-xl"
+                          />
+                        </div>
 
-                      <div>
-                        <div className="text-c1">{item.product.brand}</div>
-                        <div className="text-h3">{item.product.price}P</div>
-                        <div className="text-b3">{item.product.title}</div>
+                        <div>
+                          <div className="text-c1">{item.product.brand}</div>
+                          <div className="text-h3">{item.product.price}P</div>
+                          <div className="text-b3">{item.product.title}</div>
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>
