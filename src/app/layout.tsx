@@ -17,14 +17,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <AuthProviders>
-        <LayoutWithNav>
-          <ReactQueryProvider>
-            <GoogleAnalytics />
-            {children} <ReactQueryDevtools initialIsOpen={false} />
-          </ReactQueryProvider>
-        </LayoutWithNav>
-      </AuthProviders>
+      <>
+        <AuthProviders>
+          <LayoutWithNav>
+            <ReactQueryProvider>
+              <GoogleAnalytics />
+              {children} <ReactQueryDevtools initialIsOpen={false} />
+            </ReactQueryProvider>
+          </LayoutWithNav>
+        </AuthProviders>
+      </>
     </html>
   );
 }
