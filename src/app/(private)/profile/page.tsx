@@ -58,7 +58,26 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="flex justify-between w-full p-4 bg-white">asddf</div>
+        <div className="flex flex-col w-full p-4 bg-white rounded-2xl gap-[0.62rem]">
+          <div className="text-he">챌린지</div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col items-center w-full">
+              <div className="text-h3">0</div>
+              <div className="text-gray-500 text-b3">참가중</div>
+            </div>
+
+            <div className="flex flex-col items-center w-full">
+              <div className="text-h3">0</div>
+              <div className="text-gray-500 text-b3">완료</div>
+            </div>
+
+            <div className="flex flex-col items-center w-full">
+              <div className="text-h3">0</div>
+              <div className="text-gray-500 text-b3">개설</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
