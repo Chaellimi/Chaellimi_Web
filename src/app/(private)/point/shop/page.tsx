@@ -50,7 +50,6 @@ const Shop = () => {
   const activeCustodyData = custodies?.data?.activeCustody;
   const usedCustodyData = custodies?.data?.usedCustody;
 
-  console.log(activeCustodyData, usedCustodyData);
   const { data: pointData, isLoading: isGetPointLoading } = useGetPoint();
 
   if (isLoading || isGetPointLoading || isCustodyLoading) {
