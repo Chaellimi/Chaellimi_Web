@@ -35,7 +35,7 @@ const ActiveChallenge = ({
     >
       {progress !== undefined &&
         progress < 100 &&
-        (progress || progress != 0) && (
+        (progress || progress >= 0) && (
           <div
             className={`text-c1 w-fit pr-[0.38rem] pl-[0.38rem] pt-[0.19rem] pb-[0.19rem] rounded
         ${isActive ? 'text-gray-400 bg-gray-100' : 'text-primary-default bg-primary-light'}`}
