@@ -5,8 +5,14 @@ const getProduct = async () => {
   return data;
 };
 
+const getProductById = async (id: string) => {
+  const { data } = await axios.get(`/api/shop/${id}`);
+  return data;
+};
+
 const API = {
   getProduct,
+  getProductById,
 };
 
 export default API;

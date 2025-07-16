@@ -8,3 +8,10 @@ export const useGetProduct = () => {
     queryFn: () => API.getProduct(),
   });
 };
+
+export const useGetProductById = (id: string) => {
+  return useQuery({
+    queryKey: [shopKeys.useGetProductById, id],
+    queryFn: () => API.getProductById(id),
+  });
+};
