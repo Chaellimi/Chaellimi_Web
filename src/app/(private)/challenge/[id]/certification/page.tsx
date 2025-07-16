@@ -37,7 +37,6 @@ const Certification = () => {
   const path = usePathname();
   const challengeId = PathUtil(path, 1);
   const backPath = useSearchParams().get('back');
-  console.log(backPath);
 
   useStatusBarBridge({
     backgroundColor: '#FFF',

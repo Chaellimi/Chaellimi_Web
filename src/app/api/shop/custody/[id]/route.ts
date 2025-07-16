@@ -8,7 +8,6 @@ import { NextRequest } from 'next/server';
 async function getHandler(req: NextRequest) {
   try {
     const custodyId = Number(req.nextUrl.pathname.split('/')[4]);
-    console.log('custodyId:', custodyId);
 
     if (!custodyId) {
       return resUtil.successFalse({
