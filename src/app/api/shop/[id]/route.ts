@@ -2,7 +2,7 @@ import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
 import { NextRequest } from 'next/server';
 import resUtil from '@/lib/utils/responseUtil';
-import { Product } from '@/database/models';
+import { Product, Inventory } from '@/database/models';
 
 async function getHandler(req: NextRequest) {
   try {
@@ -25,10 +25,25 @@ async function getHandler(req: NextRequest) {
       });
     }
 
+    const inventory = await Inventory.findAll({
+      where: { productId },
+    });
+
+    const totalStock = inventory.length;
+    const availableStock = inventory.filter((item) => !item.isSold).length;
+    const soldStock = inventory.filter((item) => item.isSold).length;
+
     return resUtil.successTrue({
       status: 200,
       message: '상품 조회 성공',
-      data: product,
+      data: {
+        product,
+        inventory: {
+          totalStock,
+          availableStock,
+          soldStock,
+        },
+      },
     });
   } catch (err) {
     return resUtil.unknownError({ data: { err } });
