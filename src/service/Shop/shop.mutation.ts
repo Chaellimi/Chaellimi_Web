@@ -6,3 +6,9 @@ export const usePostBuyProduct = (id: string) => {
     mutationFn: () => API.postBuyProduct(id),
   });
 };
+
+export const usePostUseCustody = (id: string) => {
+  return useMutation({
+    mutationFn: () => API.postUseCustody(id),
+  });
+};

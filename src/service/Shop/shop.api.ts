@@ -25,12 +25,18 @@ const getCustodyById = async (id: string) => {
   return data;
 };
 
+const postUseCustody = async (id: string) => {
+  const { data } = await axios.post(`/api/shop/custody/${id}/use`);
+  return data;
+};
+
 const API = {
   getProduct,
   getProductById,
   getCustody,
   postBuyProduct,
   getCustodyById,
+  postUseCustody,
 };
 
 export default API;
