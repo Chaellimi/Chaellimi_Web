@@ -10,9 +10,15 @@ const getProductById = async (id: string) => {
   return data;
 };
 
+const getCustody = async () => {
+  const { data } = await axios.get(`/api/shop/custody`);
+  return data;
+};
+
 const API = {
   getProduct,
   getProductById,
+  getCustody,
 };
 
 export default API;

@@ -15,3 +15,10 @@ export const useGetProductById = (id: string) => {
     queryFn: () => API.getProductById(id),
   });
 };
+
+export const useGetCustody = () => {
+  return useQuery({
+    queryKey: [shopKeys.useGetCustody],
+    queryFn: () => API.getCustody(),
+  });
+};
