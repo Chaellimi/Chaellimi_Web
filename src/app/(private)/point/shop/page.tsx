@@ -12,6 +12,7 @@ import {
   ChickenIcon,
   CouponIcon,
   DessertIcon,
+  NothingItemIcon,
   PizzaIcon,
   PointIcon,
   StoreIcon,
@@ -135,81 +136,89 @@ const Shop = () => {
         </div>
       ) : (
         <div className="flex flex-col w-full gap-4 mt-4 overflow-y-scroll scrollbar-hide">
-          {/* <div className="flex flex-col items-center justify-center h-[calc(100vh-12rem)] gap-4">
-            <NothingItemIcon />
-            <div className="text-gray-600 text-b1">
-              구매한 기프티콘이 없어요
+          {activeCustodyData?.length + usedCustodyData?.length <= 0 ? (
+            <div className="flex flex-col items-center justify-center h-[calc(100vh-12rem)] gap-4">
+              <NothingItemIcon />
+              <div className="text-gray-600 text-b1">
+                구매한 기프티콘이 없어요
+              </div>
+              <button
+                className="text-white bg-primary-default px-6 py-[0.62rem] rounded-lg"
+                onClick={() => {
+                  setActiveFilter(1);
+                }}
+              >
+                사러가기
+              </button>
             </div>
-            <button
-              className="text-white bg-primary-default px-6 py-[0.62rem] rounded-lg"
-              onClick={() => {
-                setActiveCategory(1);
-              }}
-            >
-              사러가기
-            </button>
-          </div> */}
+          ) : (
+            <>
+              <div className="flex flex-col items-start justify-start w-full gap-4 px-6">
+                <span className="text-h3">
+                  보유 {activeCustodyData?.length}개
+                </span>
 
-          <div className="flex flex-col items-start justify-start w-full gap-4 px-6">
-            <span className="text-h3">보유 {activeCustodyData?.length}개</span>
-
-            <div className="grid grid-cols-2 gap-x-5 gap-y-5">
-              {activeCustodyData?.map((item: CustodyType, index: number) => (
-                <div
-                  className="flex flex-col items-start justify-start gap-2"
-                  key={index}
-                >
-                  <div className="relative rounded-full w-[9.875rem] h-[9.875rem]">
-                    <Image
-                      src={item.product.imgURL}
-                      alt={item.product.title}
-                      width={158}
-                      height={158}
-                      className="object-cover object-top w-full h-full rounded-xl"
-                    />
-                  </div>
-                  <div>
-                    <div className="text-c1">{item.product.brand}</div>
-                    <div className="text-h3">{item.product.price}P</div>
-                    <div className="text-b3">{item.product.title}</div>
-                  </div>
+                <div className="grid grid-cols-2 gap-x-5 gap-y-5">
+                  {activeCustodyData?.map(
+                    (item: CustodyType, index: number) => (
+                      <div
+                        className="flex flex-col items-start justify-start gap-2"
+                        key={index}
+                      >
+                        <div className="relative rounded-full w-[9.875rem] h-[9.875rem]">
+                          <Image
+                            src={item.product.imgURL}
+                            alt={item.product.title}
+                            width={158}
+                            height={158}
+                            className="object-cover object-top w-full h-full rounded-xl"
+                          />
+                        </div>
+                        <div>
+                          <div className="text-c1">{item.product.brand}</div>
+                          <div className="text-h3">{item.product.price}P</div>
+                          <div className="text-b3">{item.product.title}</div>
+                        </div>
+                      </div>
+                    )
+                  )}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
 
-          <div className="w-full h-2 min-h-2 bg-gray-50" />
+              <div className="w-full h-2 min-h-2 bg-gray-50" />
 
-          <div className="flex flex-col items-start justify-start w-full gap-4 px-6 scrollbar-hide">
-            <span className="text-h3">
-              사용완료 {usedCustodyData?.length}개
-            </span>
+              <div className="flex flex-col items-start justify-start w-full gap-4 px-6 scrollbar-hide">
+                <span className="text-h3">
+                  사용완료 {usedCustodyData?.length}개
+                </span>
 
-            <div className="grid grid-cols-2 gap-x-5 gap-y-5">
-              {usedCustodyData?.map((item: CustodyType, index: number) => (
-                <div
-                  className="flex flex-col items-start justify-start gap-2"
-                  key={index}
-                >
-                  <div className="relative rounded-full w-[9.875rem] h-[9.875rem]">
-                    <Image
-                      src={item.product.imgURL}
-                      alt={item.product.title}
-                      width={158}
-                      height={158}
-                      className="object-cover object-top w-full h-full rounded-xl"
-                    />
-                  </div>
+                <div className="grid grid-cols-2 gap-x-5 gap-y-5">
+                  {usedCustodyData?.map((item: CustodyType, index: number) => (
+                    <div
+                      className="flex flex-col items-start justify-start gap-2"
+                      key={index}
+                    >
+                      <div className="relative rounded-full w-[9.875rem] h-[9.875rem]">
+                        <Image
+                          src={item.product.imgURL}
+                          alt={item.product.title}
+                          width={158}
+                          height={158}
+                          className="object-cover object-top w-full h-full rounded-xl"
+                        />
+                      </div>
 
-                  <div>
-                    <div className="text-c1">{item.product.brand}</div>
-                    <div className="text-h3">{item.product.price}P</div>
-                    <div className="text-b3">{item.product.title}</div>
-                  </div>
+                      <div>
+                        <div className="text-c1">{item.product.brand}</div>
+                        <div className="text-h3">{item.product.price}P</div>
+                        <div className="text-b3">{item.product.title}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>
