@@ -16,17 +16,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
-      <>
-        <AuthProviders>
-          <LayoutWithNav>
-            <ReactQueryProvider>
-              <GoogleAnalytics />
-              {children} <ReactQueryDevtools initialIsOpen={false} />
-            </ReactQueryProvider>
-          </LayoutWithNav>
-        </AuthProviders>
-      </>
-    </html>
+    <>
+      <AuthProviders>
+        <LayoutWithNav>
+          <ReactQueryProvider>
+            <GoogleAnalytics />
+            {children} <ReactQueryDevtools initialIsOpen={false} />
+          </ReactQueryProvider>
+        </LayoutWithNav>
+      </AuthProviders>
+    </>
   );
 }
