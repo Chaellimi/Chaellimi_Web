@@ -5,6 +5,9 @@ import CertificationLog from './CertificationLog';
 import File from './File';
 import Point from './Point';
 import Transactions from './Transactions';
+import Product from './Product';
+import Inventory from './Inventory';
+import Custody from './Custody';
 
 // 유저 → 챌린지(생성자)
 Users.hasMany(Challenge, { foreignKey: 'userId', as: 'createdChallenges' });
@@ -54,6 +57,19 @@ Users.hasOne(Point, { foreignKey: 'userId' });
 Transactions.belongsTo(Users, { foreignKey: 'userId' });
 Users.hasMany(Transactions, { foreignKey: 'userId' });
 
+// 상품 관계
+Product.hasMany(Inventory, { foreignKey: 'productId', as: 'inventories' });
+Inventory.belongsTo(Product, { foreignKey: 'productId', as: 'product' });
+
+// 보관 관계
+Custody.belongsTo(Users, { foreignKey: 'userId', as: 'user' });
+Custody.belongsTo(Product, { foreignKey: 'productId', as: 'product' });
+Custody.belongsTo(Inventory, { foreignKey: 'inventoryId', as: 'inventory' });
+
+Users.hasMany(Custody, { foreignKey: 'userId', as: 'custody' });
+Product.hasMany(Custody, { foreignKey: 'productId', as: 'custody' });
+Inventory.hasOne(Custody, { foreignKey: 'inventoryId', as: 'custody' });
+
 export {
   Users,
   Challenge,
@@ -62,4 +78,7 @@ export {
   File,
   Point,
   Transactions,
+  Product,
+  Inventory,
+  Custody,
 };
