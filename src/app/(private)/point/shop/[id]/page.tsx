@@ -32,38 +32,40 @@ const ShopDetail = () => {
         backClick="/point/shop"
       />
 
-      <div className="flex flex-col w-full gap-4 px-6 pb-[1.38rem] overflow-y-scroll scrollbar-hide">
-        <div className="relative rounded-full min-h-[20.5rem] min-w[20.5rem]">
-          <Image
-            src={productData?.imgURL}
-            alt={productData?.title}
-            width={328}
-            height={328}
-            className="object-cover object-top w-full h-full rounded-xl"
+      <div className="relative flex flex-col justify-between pb-[1.38rem] overflow-y-scroll scrollbar-hide w-full">
+        <div className="flex flex-col w-full gap-4 px-6">
+          <div className="relative rounded-full min-h-[20.5rem] max-h-[20.5rem] min-w[20.5rem] max-w-[20.5rem]">
+            <Image
+              src={productData?.imgURL}
+              alt={productData?.title}
+              width={328}
+              height={328}
+              className="object-cover object-top w-full h-full rounded-xl"
+            />
+          </div>
+
+          <div>
+            <div className="text-c1">{productData?.brand}</div>
+            <div className="text-h3">{productData?.price}P</div>
+            <div className="text-b3">{productData?.title}</div>
+          </div>
+
+          <div className="text-b1">상품설명</div>
+
+          <div className="text-gray-400 whitespace-pre-line text-b3">
+            {productData?.explanation}
+          </div>
+        </div>
+
+        <div className="fixed bottom-0 flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 border-t bg-gray-white border-gray-50 custom601:mb-6">
+          <BottomButton
+            title="구매하기"
+            onClick={() => {
+              setIsOpenConfirmModal(true);
+            }}
+            disabled={'false'}
           />
         </div>
-
-        <div>
-          <div className="text-c1">{productData?.brand}</div>
-          <div className="text-h3">{productData?.price}P</div>
-          <div className="text-b3">{productData?.title}</div>
-        </div>
-
-        <div className="text-b1">상품설명</div>
-
-        <div className="text-gray-400 whitespace-pre-line text-b3">
-          {productData?.explanation}
-        </div>
-      </div>
-
-      <div className="flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 border-t bg-gray-white border-gray-50 custom601:mb-6">
-        <BottomButton
-          title="구매하기"
-          onClick={() => {
-            setIsOpenConfirmModal(true);
-          }}
-          disabled={'false'}
-        />
       </div>
 
       {isOpenConfirmModal && (
