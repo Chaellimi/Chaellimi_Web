@@ -69,6 +69,7 @@ async function postHandler(req: NextRequest) {
           ],
         ],
         group: ['Product.id'],
+        order: [['id', 'ASC']],
       });
     } else {
       const whereCondition = categoryParam ? { category: categoryParam } : {};
