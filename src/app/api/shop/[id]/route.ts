@@ -27,7 +27,7 @@ async function getHandler(req: NextRequest) {
 
     return resUtil.successTrue({
       status: 200,
-      message: '챌린지 조회 성공',
+      message: '상품 조회 성공',
       data: product,
     });
   } catch (err) {
