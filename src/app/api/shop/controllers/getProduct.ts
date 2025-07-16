@@ -3,6 +3,7 @@ import { withLogging } from '@/lib/middleware/withLogging';
 import resUtil from '@/lib/utils/responseUtil';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
 import { Product, Users, Inventory } from '@/database/models';
+import { sequelize } from '@/database/sequelize';
 
 async function postHandler() {
   try {
@@ -21,9 +22,26 @@ async function postHandler() {
               isSold: false,
               isUse: false,
             },
+            attributes: [],
             required: true,
           },
         ],
+        attributes: [
+          'id',
+          'category',
+          'imgURL',
+          'brand',
+          'price',
+          'title',
+          'explanation',
+          'createdAt',
+          'updatedAt',
+          [
+            sequelize.fn('COUNT', sequelize.col('inventories.id')),
+            'inventoryCount',
+          ],
+        ],
+        group: ['Product.id'],
       });
     } else {
       productData = await Product.findAll();
