@@ -113,6 +113,33 @@ const Profile = () => {
             <ArrowIcon location="right" width="20" height="20" fill="#A5A5A5" />
           </div>
         </div>
+
+        {/* 기타 */}
+        <div className="flex flex-col w-full p-4 bg-white rounded-2xl">
+          <div className="flex items-center justify-between w-full py-3">
+            <div className="flex items-center gap-[0.62rem]">
+              <ShopIcon />
+              <div className="text-b2">구매내역</div>
+            </div>
+            <ArrowIcon location="right" width="20" height="20" fill="#A5A5A5" />
+          </div>
+
+          <div className="flex items-center justify-between w-full py-3">
+            <div className="flex items-center gap-[0.62rem]">
+              <PointIcon />
+              <div className="text-b2">적립내역</div>
+            </div>
+            <ArrowIcon location="right" width="20" height="20" fill="#A5A5A5" />
+          </div>
+
+          <div className="flex items-center justify-between w-full py-3">
+            <div className="flex items-center gap-[0.62rem]">
+              <BookmarkIcon />
+              <div className="text-b2">저장됨</div>
+            </div>
+            <ArrowIcon location="right" width="20" height="20" fill="#A5A5A5" />
+          </div>
+        </div>
       </div>
     </div>
   );
