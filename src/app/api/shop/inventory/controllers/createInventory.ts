@@ -63,4 +63,4 @@ async function postHandler(req: NextRequest) {
   }
 }
 
-export const CreatInventory = withLogging(withAuth(postHandler));
+export const CreateInventory = withLogging(withAuth(postHandler));

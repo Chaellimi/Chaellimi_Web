@@ -1,2 +1,2 @@
-import { CreatInventory } from './controllers/createInventory';
-export const POST = CreatInventory;
+import { CreateInventory } from './controllers/createInventory';
+export const POST = CreateInventory;
