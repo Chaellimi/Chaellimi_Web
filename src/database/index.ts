@@ -1,12 +1,15 @@
 import { sequelize } from './sequelize';
 
+import './models/User';
 import './models/Challenge';
 import './models/ChallengeParticipants';
 import './models/File';
 import './models/Point';
 import './models/Transactions';
-import './models/User';
 import './models/CertificationLog';
+import './models/Product';
+import './models/Inventory';
+import './models/Custody';
 import './models/index';
 
 export const connectToDatabase = async () => {

@@ -37,10 +37,6 @@ Inventory.init(
     productId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'products',
-        key: 'id',
-      },
     },
     imgURL: {
       type: DataTypes.STRING,
@@ -64,7 +60,7 @@ Inventory.init(
   {
     sequelize,
     modelName: 'Inventory',
-    tableName: 'inventories',
+    tableName: 'Inventory',
     timestamps: true,
   }
 );

@@ -33,32 +33,20 @@ Custody.init(
     productId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'products',
-        key: 'id',
-      },
     },
     inventoryId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'inventories',
-        key: 'id',
-      },
     },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'users',
-        key: 'userId',
-      },
     },
   },
   {
     sequelize,
     modelName: 'Custody',
-    tableName: 'custody',
+    tableName: 'Custody',
     timestamps: true,
   }
 );
