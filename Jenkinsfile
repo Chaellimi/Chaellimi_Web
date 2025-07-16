@@ -106,9 +106,8 @@ pipeline {
                     GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
                     KAKAO_CLIENT_ID=$KAKAO_CLIENT_ID
                     KAKAO_CLIENT_SECRET=$KAKAO_CLIENT_SECRET
-                    NEXTAUTH_SECRET=$NEXTAUTH_SECRET;
+                    NEXTAUTH_SECRET=$NEXTAUTH_SECRET
                     NEXTAUTH_URL=https://www.chaellimi.kro.kr
-                    EOF
                 '''
 
                 sh 'mkdir -p public/uploads'
