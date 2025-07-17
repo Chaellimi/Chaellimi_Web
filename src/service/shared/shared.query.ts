@@ -15,3 +15,10 @@ export const useGetProfileChallengeState = () => {
     queryFn: () => API.getProfileChallengeState(),
   });
 };
+
+export const useGetBookmarkList = () => {
+  return useQuery({
+    queryKey: [sharedKeys.useGetBookmarkList],
+    queryFn: () => API.getBookmarkList(),
+  });
+};

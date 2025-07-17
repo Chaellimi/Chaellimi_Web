@@ -15,6 +15,16 @@ const getProfileChallengeState = async () => {
   return data;
 };
 
-const API = { postUploadImg, getUserRole, getProfileChallengeState };
+const getBookmarkList = async () => {
+  const { data } = await axios.get('/api/challenge/bookmark');
+  return data;
+};
+
+const API = {
+  postUploadImg,
+  getUserRole,
+  getProfileChallengeState,
+  getBookmarkList,
+};
 
 export default API;
