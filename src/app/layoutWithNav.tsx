@@ -17,6 +17,7 @@ export default function LayoutWithNav({
     pathname !== '/login' &&
     pathname !== '/splash' &&
     pathname !== '/profile/bookmark' &&
+    pathname !== '/profile/policies' &&
     !(pathname.startsWith('/challenge') && pathname !== '/challenge') &&
     !adminPath &&
     !(pathname.startsWith('/point') && pathname !== '/point');
