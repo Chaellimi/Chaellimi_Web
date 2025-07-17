@@ -42,7 +42,7 @@ async function postHandler(req: NextRequest) {
     if (bookmark) {
       await bookmark.destroy();
       return resUtil.successFalse({
-        status: 409,
+        status: 201,
         message: '북마크를 취소했습니다.',
       });
     } else {
