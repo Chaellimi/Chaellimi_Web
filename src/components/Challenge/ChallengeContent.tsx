@@ -12,6 +12,9 @@ interface OwnProps {
   createrName: string;
   createrImgUrl: string;
   days: number;
+  isChecked?: boolean;
+  onClickBookmark?: () => void;
+  link?: string;
 }
 
 const ChallengeContent = ({
@@ -23,9 +26,12 @@ const ChallengeContent = ({
   createrName,
   createrImgUrl,
   days,
+  isChecked = false,
+  onClickBookmark,
+  link = `/challenge/${id}`,
 }: OwnProps) => {
   return (
-    <Link href={`/challenge/${id}`}>
+    <Link href={link}>
       <div className="flex flex-col gap-1">
         <div
           className="w-full aspect-square rounded-xl"
@@ -41,9 +47,12 @@ const ChallengeContent = ({
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
+                if (onClickBookmark) {
+                  onClickBookmark();
+                }
               }}
             >
-              <BookmarkIcon />
+              <BookmarkIcon isChecked={isChecked && isChecked} />
             </button>
 
             <div className="flex items-center justify-between w-full">
