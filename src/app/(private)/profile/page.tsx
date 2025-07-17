@@ -128,7 +128,12 @@ const Profile = () => {
             <ArrowIcon location="right" width="20" height="20" fill="#A5A5A5" />
           </div>
 
-          <div className="flex items-center justify-between w-full py-3">
+          <div
+            className="flex items-center justify-between w-full py-3"
+            onClick={() => {
+              router.push('/profile/bookmark');
+            }}
+          >
             <div className="flex items-center gap-[0.62rem]">
               <BookmarkIcon />
               <div className="text-b2">저장됨</div>
@@ -155,7 +160,12 @@ const Profile = () => {
             <ArrowIcon location="right" width="20" height="20" fill="#A5A5A5" />
           </div>
 
-          <div className="flex items-center justify-between w-full py-3">
+          <div
+            className="flex items-center justify-between w-full py-3"
+            onClick={() => {
+              router.push('/profile/policies');
+            }}
+          >
             <div className="flex items-center gap-[0.62rem]">
               <PaperIcon />
               <div className="text-b2">약관 및 정책</div>
