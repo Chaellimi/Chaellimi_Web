@@ -3,7 +3,12 @@ import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
 import resUtil from '@/lib/utils/responseUtil';
-import { Bookmark, Challenge, Users } from '@/database/models';
+import {
+  Bookmark,
+  Challenge,
+  Users,
+  ChallengeParticipants,
+} from '@/database/models';
 
 async function postHandler() {
   try {
@@ -21,6 +26,13 @@ async function postHandler() {
             {
               model: Challenge,
               as: 'challenge',
+              include: [
+                {
+                  model: Users,
+                  as: 'User',
+                  attributes: ['userId', 'name', 'profileImg'],
+                },
+              ],
             },
           ],
         },
@@ -34,10 +46,29 @@ async function postHandler() {
       });
     }
 
+    // 각 북마크된 챌린지에 대해 참여자 수를 계산
+    const bookmarksWithParticipantCount = await Promise.all(
+      (userBookmarks as any).bookmarks.map(async (bookmark: any) => {
+        const participantCount = await ChallengeParticipants.count({
+          where: {
+            challengeId: bookmark.challenge.id,
+          },
+        });
+
+        return {
+          ...bookmark.toJSON(),
+          challenge: {
+            ...bookmark.challenge.toJSON(),
+            participantCount,
+          },
+        };
+      })
+    );
+
     return resUtil.successTrue({
       status: 200,
       message: '북마크 조회 성공',
-      data: (userBookmarks as any).bookmarks,
+      data: bookmarksWithParticipantCount,
     });
   } catch (err) {
     console.log(err);
