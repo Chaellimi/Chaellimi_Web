@@ -8,6 +8,7 @@ import Transactions from './Transactions';
 import Product from './Product';
 import Inventory from './Inventory';
 import Custody from './Custody';
+import Bookmark from './Bookmark';
 
 // 유저 → 챌린지(생성자)
 Users.hasMany(Challenge, { foreignKey: 'userId', as: 'createdChallenges' });
@@ -70,6 +71,13 @@ Users.hasMany(Custody, { foreignKey: 'userId', as: 'custody' });
 Product.hasMany(Custody, { foreignKey: 'productId', as: 'custody' });
 Inventory.hasOne(Custody, { foreignKey: 'inventoryId', as: 'custody' });
 
+// 북마크 관계
+Bookmark.belongsTo(Users, { foreignKey: 'userId', as: 'user' });
+Bookmark.belongsTo(Challenge, { foreignKey: 'challengeId', as: 'challenge' });
+
+Users.hasMany(Bookmark, { foreignKey: 'userId', as: 'bookmarks' });
+Challenge.hasMany(Bookmark, { foreignKey: 'challengeId', as: 'bookmarks' });
+
 export {
   Users,
   Challenge,
@@ -81,4 +89,5 @@ export {
   Product,
   Inventory,
   Custody,
+  Bookmark,
 };

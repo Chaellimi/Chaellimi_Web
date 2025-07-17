@@ -10,6 +10,7 @@ import './models/CertificationLog';
 import './models/Product';
 import './models/Inventory';
 import './models/Custody';
+import './models/Bookmark';
 import './models/index';
 
 export const connectToDatabase = async () => {
