@@ -19,9 +19,12 @@ import {
 } from '@public/icons/Profile';
 import { ArrowIcon, FireIcon } from '@public/icons/shared';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const Profile = () => {
+  const router = useRouter();
+
   const { data, isLoading } = useGetUserRole();
   const UserData = data?.data?.UserData;
 
@@ -99,7 +102,12 @@ const Profile = () => {
 
         {/* 상점 */}
         <div className="flex flex-col w-full p-4 bg-white rounded-2xl">
-          <div className="flex items-center justify-between w-full py-3">
+          <div
+            className="flex items-center justify-between w-full py-3"
+            onClick={() => {
+              router.push('/point/shop?activeFilter=2&back=/profile');
+            }}
+          >
             <div className="flex items-center gap-[0.62rem]">
               <ShopIcon />
               <div className="text-b2">구매내역</div>
@@ -107,7 +115,12 @@ const Profile = () => {
             <ArrowIcon location="right" width="20" height="20" fill="#A5A5A5" />
           </div>
 
-          <div className="flex items-center justify-between w-full py-3">
+          <div
+            className="flex items-center justify-between w-full py-3"
+            onClick={() => {
+              router.push('/point?back=/profile');
+            }}
+          >
             <div className="flex items-center gap-[0.62rem]">
               <PointIcon />
               <div className="text-b2">적립내역</div>
