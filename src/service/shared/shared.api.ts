@@ -10,6 +10,11 @@ const getUserRole = async () => {
   return data;
 };
 
-const API = { postUploadImg, getUserRole };
+const getProfileChallengeState = async () => {
+  const { data } = await axios.get('/api/challenge/profile');
+  return data;
+};
+
+const API = { postUploadImg, getUserRole, getProfileChallengeState };
 
 export default API;

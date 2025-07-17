@@ -8,3 +8,10 @@ export const useGetUserRole = () => {
     queryFn: () => API.getUserRole(),
   });
 };
+
+export const useGetProfileChallengeState = () => {
+  return useQuery({
+    queryKey: [sharedKeys.useGetProfileChallengeState],
+    queryFn: () => API.getProfileChallengeState(),
+  });
+};
