@@ -20,11 +20,17 @@ const getBookmarkList = async () => {
   return data;
 };
 
+const postBookmarkUpdate = async (challengeId: number) => {
+  const { data } = await axios.post('/api/challenge/bookmark', { challengeId });
+  return data;
+};
+
 const API = {
   postUploadImg,
   getUserRole,
   getProfileChallengeState,
   getBookmarkList,
+  postBookmarkUpdate,
 };
 
 export default API;
