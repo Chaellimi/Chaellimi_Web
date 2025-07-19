@@ -3,37 +3,11 @@
 import React, { useState } from 'react';
 import Sidebar from '@/components/Admin/Sidebar';
 import UserTable from '@/components/Admin/User/Table';
-import { useGetAdminUser } from '@/service/Admin/admin.query';
+import EditModal from '@/components/Admin/User/EditModal';
+import { useGetAdminUser, useEditAdminUser } from '@/service/Admin/admin.query';
+import { usePostUploadImg } from '@/service/shared/shared.query';
 import Loading from '@/components/shared/Loading';
-
-interface ApiUser {
-  userId: number;
-  authId: string;
-  email: string;
-  name: string;
-  profileImg: string;
-  provider: string;
-  role: 'user' | 'admin';
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-  Point: {
-    totalPoint: string;
-  } | null;
-}
-
-interface User {
-  id: number;
-  username: string;
-  email: string;
-  name: string;
-  points: number;
-  role: 'USER' | 'ADMIN';
-  isActive: boolean;
-  createdAt: string;
-  lastLogin: string;
-  profileImage?: string;
-}
+import { User, ApiUser } from '@/types/user';
 
 const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -42,9 +16,10 @@ const UserManagement = () => {
   const [editUser, setEditUser] = useState<User | null>(null);
 
   const { data, isLoading } = useGetAdminUser();
+  const editUserMutation = useEditAdminUser();
+  const uploadImgMutation = usePostUploadImg();
   const userList = data?.data || [];
 
-  // 실제 API 데이터를 UI 형태로 변환
   const users: User[] = userList.map((user: ApiUser) => ({
     id: user.userId,
     username: user.email.split('@')[0],
@@ -72,11 +47,48 @@ const UserManagement = () => {
     setIsEditMode(true);
   };
 
-  const handleSaveUser = () => {
+  const handleSaveUser = async () => {
     if (!editUser) return;
-    // API 호출로 실제 업데이트 해야함 (현재는 로컬 상태만 업데이트)
-    setIsEditMode(false);
-    setEditUser(null);
+
+    try {
+      await editUserMutation.mutateAsync({
+        userId: editUser.id,
+        name: editUser.name,
+        email: editUser.email,
+        points: editUser.points,
+        role: editUser.role.toLowerCase(),
+        profileImg: editUser.profileImage,
+      });
+
+      setIsEditMode(false);
+      setEditUser(null);
+    } catch (error) {
+      console.error('유저 수정 실패:', error);
+    }
+  };
+
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file || !editUser) return;
+
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const response = await uploadImgMutation.mutateAsync(formData);
+
+      if (response.success && response.data?.fileUrl) {
+        setEditUser({
+          ...editUser,
+          profileImage: response.data.fileUrl,
+        });
+      }
+    } catch (error) {
+      console.error('이미지 업로드 실패:', error);
+      alert('이미지 업로드에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   if (isLoading) {
@@ -134,104 +146,16 @@ const UserManagement = () => {
       </div>
 
       {/* 유저 수정 모달 */}
-      {isEditMode && editUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-          <div className="w-full max-w-md bg-white rounded-lg shadow-xl">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold">유저 수정</h2>
-                <button
-                  onClick={() => setIsEditMode(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    이름
-                  </label>
-                  <input
-                    type="text"
-                    value={editUser.name}
-                    onChange={(e) =>
-                      setEditUser({ ...editUser, name: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    이메일
-                  </label>
-                  <input
-                    type="email"
-                    value={editUser.email}
-                    onChange={(e) =>
-                      setEditUser({ ...editUser, email: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    포인트
-                  </label>
-                  <input
-                    type="number"
-                    value={editUser.points}
-                    onChange={(e) =>
-                      setEditUser({
-                        ...editUser,
-                        points: Number(e.target.value),
-                      })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    권한
-                  </label>
-                  <select
-                    value={editUser.role}
-                    onChange={(e) =>
-                      setEditUser({
-                        ...editUser,
-                        role: e.target.value as 'USER' | 'ADMIN',
-                      })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="USER">일반 유저</option>
-                    <option value="ADMIN">관리자</option>
-                  </select>
-                </div>
-
-                <div className="flex space-x-2">
-                  <button
-                    onClick={handleSaveUser}
-                    className="flex-1 px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700"
-                  >
-                    저장
-                  </button>
-                  <button
-                    onClick={() => setIsEditMode(false)}
-                    className="flex-1 px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
-                  >
-                    취소
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <EditModal
+        isOpen={isEditMode}
+        editUser={editUser}
+        isLoading={editUserMutation.isPending}
+        isUploadingImage={uploadImgMutation.isPending}
+        onClose={() => setIsEditMode(false)}
+        onSave={handleSaveUser}
+        onUserChange={setEditUser}
+        onImageUpload={handleImageUpload}
+      />
     </div>
   );
 };

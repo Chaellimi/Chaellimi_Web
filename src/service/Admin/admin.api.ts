@@ -18,7 +18,7 @@ const editAdminUser = async (userData: {
   role: string;
   profileImg?: string;
 }) => {
-  const { data } = await axios.post('/api/admin/users/edit', userData);
+  const { data } = await axios.put('/api/admin/users', userData);
   return data;
 };
 
