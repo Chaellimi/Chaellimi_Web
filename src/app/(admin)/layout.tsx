@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Loading from '@/components/shared/Loading';
+import { useGetUserRole } from '@/service/shared/shared.query';
 
 export default function AuthLayout({
   children,
@@ -14,13 +15,18 @@ export default function AuthLayout({
   const { data: myInfo, status } = useSession();
   const isLoading = status === 'loading';
 
+  const { data: user, isLoading: isUserLoading } = useGetUserRole();
+
   useEffect(() => {
+    if (user?.data?.UserData?.role !== 'admin') {
+      router.replace('/');
+    }
     if (!isLoading && !myInfo) {
       router.replace('/login');
     }
-  }, [myInfo, router, isLoading]);
+  }, [myInfo, router, isLoading, user]);
 
-  if (isLoading) {
+  if (isLoading || isUserLoading) {
     return <Loading />;
   }
 
