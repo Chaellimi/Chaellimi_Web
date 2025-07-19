@@ -1,4 +1,4 @@
-import { Users } from '@/database/models';
+import { Users, Point } from '@/database/models';
 import { withAuth } from '@/lib/middleware/withAuth';
 import { withLogging } from '@/lib/middleware/withLogging';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
@@ -16,7 +16,15 @@ async function getHandler() {
       });
     }
 
-    const users = await Users.findAll();
+    const users = await Users.findAll({
+      include: [
+        {
+          model: Point,
+          attributes: ['totalPoint'],
+        },
+      ],
+      order: [['createdAt', 'DESC']],
+    });
 
     return resUtil.successTrue({
       status: 200,
