@@ -3,6 +3,7 @@
 import { CustodyType, ProductType } from '@/app/api/shop/Product.type';
 import Header from '@/components/shared/Header';
 import Loading from '@/components/shared/Loading';
+import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 import { useGetPoint } from '@/service/Point/point.query';
 import { useGetCustody, useGetProduct } from '@/service/Shop/shop.query';
 import {
@@ -46,6 +47,12 @@ const Shop = () => {
 
   const { data, isLoading } = useGetProduct();
   const productData = data?.data;
+
+  useStatusBarBridge({
+    backgroundColor: '#FFF',
+    translucent: true,
+    bottomBackgroundColor: '#FFF',
+  });
 
   const { data: custodies, isLoading: isCustodyLoading } = useGetCustody();
   const activeCustodyData = custodies?.data?.activeCustody;

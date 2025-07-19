@@ -6,6 +6,7 @@ import Header from '@/components/shared/Header';
 import Loading from '@/components/shared/Loading';
 import { usePostBookmarkUpdate } from '@/service/shared/shared.mutation';
 import { useGetBookmarkList } from '@/service/shared/shared.query';
+import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 
 interface BookmarkType {
   id: number;
@@ -41,6 +42,12 @@ const Bookmark = () => {
   const { mutate } = usePostBookmarkUpdate();
 
   const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
+
+  useStatusBarBridge({
+    backgroundColor: '#FFF',
+    translucent: true,
+    bottomBackgroundColor: '#FFF',
+  });
 
   useEffect(() => {
     if (bookmarkList.length > 0) {
