@@ -38,3 +38,14 @@ export const useEditAdminProduct = () => {
     },
   });
 };
+
+export const useCreateAdminProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: API.createAdminProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [shopKeys.useGetProduct] });
+    },
+  });
+};

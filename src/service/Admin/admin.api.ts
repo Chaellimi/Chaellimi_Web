@@ -35,11 +35,24 @@ const editAdminProduct = async (productData: {
   return data;
 };
 
+const createAdminProduct = async (productData: {
+  category: string;
+  imgURL: string;
+  brand: string;
+  price: number;
+  title: string;
+  explanation: string;
+}) => {
+  const { data } = await axios.post('/api/shop', productData);
+  return data;
+};
+
 const API = {
   getAdminHome,
   getAdminUser,
   editAdminUser,
   editAdminProduct,
+  createAdminProduct,
 };
 
 export default API;
