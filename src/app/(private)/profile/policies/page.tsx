@@ -1,6 +1,7 @@
 'use client';
 
 import Header from '@/components/shared/Header';
+import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 import { useState } from 'react';
 
 // 간단한 아이콘 컴포넌트들
@@ -41,6 +42,12 @@ export default function PoliciesPage() {
     'service'
   );
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
+
+  useStatusBarBridge({
+    backgroundColor: '#F7F7F7',
+    translucent: true,
+    bottomBackgroundColor: '#F7F7F7',
+  });
 
   const toggleSection = (section: string) => {
     setExpandedSection(expandedSection === section ? null : section);

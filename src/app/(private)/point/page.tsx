@@ -8,6 +8,7 @@ import { PointDetailType } from '@/types/Point';
 import Loading from '@/components/shared/Loading';
 import { formatDateToDot } from '@/lib/utils/formatDateToDot';
 import { useSearchParams } from 'next/navigation';
+import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 
 const PointCategory = [
   { id: 1, name: '전체', type: '' },
@@ -31,6 +32,12 @@ const Point = () => {
   const backPath = useSearchParams().get('back');
 
   const [activeCategory, setActiveCategory] = useState<number>(1);
+
+  useStatusBarBridge({
+    backgroundColor: '#FFF',
+    translucent: true,
+    bottomBackgroundColor: '#FFF',
+  });
 
   const activeType =
     PointCategory.find((item) => item.id === activeCategory)?.type ?? '';
