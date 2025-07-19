@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 import Sidebar from '@/components/Admin/Sidebar';
 import UserTable from '@/components/Admin/User/Table';
 import EditModal from '@/components/Admin/User/EditModal';
-import { useGetAdminUser, useEditAdminUser } from '@/service/Admin/admin.query';
+import { useGetAdminUser } from '@/service/Admin/admin.query';
 import { usePostUploadImg } from '@/service/shared/shared.query';
 import Loading from '@/components/shared/Loading';
 import { User, ApiUser } from '@/types/user';
+import { useEditAdminUser } from '@/service/Admin/admin.mutation';
 
 const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');

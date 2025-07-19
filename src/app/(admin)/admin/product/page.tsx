@@ -2,11 +2,6 @@
 
 import React, { useState } from 'react';
 import { useGetProduct } from '@/service/Shop/shop.query';
-import {
-  useEditAdminProduct,
-  useCreateAdminProduct,
-  useDeleteAdminProduct,
-} from '@/service/Admin/admin.query';
 import { usePostUploadImg } from '@/service/shared/shared.query';
 import Loading from '@/components/shared/Loading';
 import Image from 'next/image';
@@ -14,6 +9,11 @@ import { ProductType } from '@/app/api/shop/Product.type';
 import Sidebar from '@/components/Admin/Sidebar';
 import EditProductModal from '@/components/Admin/Product/EditProductModal';
 import AddProductModal from '@/components/Admin/Product/AddProductModal';
+import {
+  useCreateAdminProduct,
+  useDeleteAdminProduct,
+  useEditAdminProduct,
+} from '@/service/Admin/admin.mutation';
 
 const ProductManagement = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
