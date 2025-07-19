@@ -71,6 +71,19 @@ const createAdminInventory = async (inventoryData: {
   return data;
 };
 
+const deleteAdminInventory = async (inventoryData: {
+  inventoryId: number;
+  productId: number;
+}) => {
+  const { data } = await axios.delete('/api/admin/inventory', {
+    data: {
+      inventoryId: inventoryData.inventoryId,
+      productId: inventoryData.productId,
+    },
+  });
+  return data;
+};
+
 const API = {
   getAdminHome,
   getAdminUser,
@@ -80,6 +93,7 @@ const API = {
   deleteAdminProduct,
   getAdminInventory,
   createAdminInventory,
+  deleteAdminInventory,
 };
 
 export default API;
