@@ -1,9 +1,18 @@
 'use client';
 
 import Sidebar from '@/components/Admin/Sidebar';
+import Loading from '@/components/shared/Loading';
+import { useGetAdminHome } from '@/service/Admin/admin.query';
 import React from 'react';
 
 const AdminHome = () => {
+  const { data, isLoading } = useGetAdminHome();
+  const adminCountData = data?.data;
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="flex h-screen bg-gray-900">
       {/* 사이드바 */}
@@ -41,7 +50,9 @@ const AdminHome = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-blue-100">유저 관리</p>
-                  <p className="text-2xl font-bold">1,234</p>
+                  <p className="text-2xl font-bold">
+                    {adminCountData?.userCount}
+                  </p>
                   <p className="text-sm text-blue-100">총 사용자</p>
                 </div>
                 <div className="flex items-center justify-center w-12 h-12 bg-blue-400 rounded-full">
@@ -58,7 +69,9 @@ const AdminHome = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-green-100">재고 관리</p>
-                  <p className="text-2xl font-bold">567</p>
+                  <p className="text-2xl font-bold">
+                    {adminCountData?.inventoryCount}
+                  </p>
                   <p className="text-sm text-green-100">총 재고</p>
                 </div>
                 <div className="flex items-center justify-center w-12 h-12 bg-green-400 rounded-full">
@@ -75,7 +88,9 @@ const AdminHome = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-purple-100">상품 관리</p>
-                  <p className="text-2xl font-bold">89</p>
+                  <p className="text-2xl font-bold">
+                    {adminCountData?.productCount}
+                  </p>
                   <p className="text-sm text-purple-100">총 상품</p>
                 </div>
                 <div className="flex items-center justify-center w-12 h-12 bg-purple-400 rounded-full">
