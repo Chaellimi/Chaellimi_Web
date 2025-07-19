@@ -1,12 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useGetAdminInventory } from '@/service/Admin/admin.query';
+import {
+  useGetAdminInventory,
+  useCreateAdminInventory,
+  useDeleteAdminInventory,
+} from '@/service/Admin/admin.query';
 import { usePostUploadImg } from '@/service/shared/shared.query';
 import Loading from '@/components/shared/Loading';
 import Image from 'next/image';
 import Sidebar from '@/components/Admin/Sidebar';
-import { useCreateAdminInventory } from '@/service/Admin/admin.mutation';
 
 interface ProductInfo {
   id: number;
@@ -52,8 +55,9 @@ const InventoryManagement = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string>('');
 
-  const { data, isLoading } = useGetAdminInventory();
+  const { data, isLoading, refetch } = useGetAdminInventory();
   const createInventoryMutation = useCreateAdminInventory();
+  const deleteInventoryMutation = useDeleteAdminInventory();
   const uploadImgMutation = usePostUploadImg();
   const inventoryList = data?.data || [];
 
@@ -101,9 +105,8 @@ const InventoryManagement = () => {
 
   const handleSaveInventory = async () => {
     try {
-      let imageUrl = '/images/barcode.jpg'; // 기본 이미지
+      let imageUrl = '/images/barcode.jpg';
 
-      // 파일이 선택되었다면 업로드
       if (selectedFile) {
         const formData = new FormData();
         formData.append('image', selectedFile);
@@ -114,7 +117,6 @@ const InventoryManagement = () => {
         }
       }
 
-      // 재고 생성
       await createInventoryMutation.mutateAsync({
         productId: newInventory.productId,
         imgURL: imageUrl,
@@ -122,11 +124,54 @@ const InventoryManagement = () => {
       });
 
       setIsAddInventoryModalOpen(false);
-      setIsInventoryModalOpen(false);
-      alert('재고가 성공적으로 추가되었습니다.');
+
+      const refreshedData = await refetch();
+      if (selectedInventoryData && refreshedData.data?.data) {
+        const updatedInventoryData = refreshedData.data.data.find(
+          (item: InventoryData) =>
+            item.product.id === selectedInventoryData.product.id
+        );
+        if (updatedInventoryData) {
+          setSelectedInventoryData(updatedInventoryData);
+        }
+      }
     } catch (error) {
       console.error('재고 추가 실패:', error);
       alert('재고 추가에 실패했습니다.');
+    }
+  };
+
+  const handleDeleteInventory = async (
+    inventoryId: number,
+    productId: number
+  ) => {
+    if (!confirm('정말로 이 재고를 삭제하시겠습니까?')) {
+      return;
+    }
+
+    console.log(productId, inventoryId);
+
+    try {
+      await deleteInventoryMutation.mutateAsync({
+        productId,
+        inventoryId,
+      });
+      alert('재고가 성공적으로 삭제되었습니다.');
+
+      // 데이터를 새로고침하고 현재 선택된 상품의 업데이트된 정보를 모달에 반영
+      const refreshedData = await refetch();
+      if (selectedInventoryData && refreshedData.data?.data) {
+        const updatedInventoryData = refreshedData.data.data.find(
+          (item: InventoryData) =>
+            item.product.id === selectedInventoryData.product.id
+        );
+        if (updatedInventoryData) {
+          setSelectedInventoryData(updatedInventoryData);
+        }
+      }
+    } catch (error) {
+      console.error('재고 삭제 실패:', error);
+      alert('재고 삭제에 실패했습니다.');
     }
   };
 
@@ -382,8 +427,20 @@ const InventoryManagement = () => {
                             {new Date(inventory.createdAt).toLocaleDateString()}
                           </td>
                           <td className="px-6 py-4 text-sm font-medium whitespace-nowrap">
-                            <button className="text-red-600 hover:text-red-900">
-                              삭제
+                            <button
+                              onClick={() => {
+                                handleDeleteInventory(
+                                  inventory.id,
+                                  selectedInventoryData?.product.id
+                                );
+                                console.log(selectedInventoryData);
+                              }}
+                              disabled={deleteInventoryMutation.isPending}
+                              className="text-red-600 hover:text-red-900 disabled:text-gray-400 disabled:cursor-not-allowed"
+                            >
+                              {deleteInventoryMutation.isPending
+                                ? '삭제 중...'
+                                : '삭제'}
                             </button>
                           </td>
                         </tr>
