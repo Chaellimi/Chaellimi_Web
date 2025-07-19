@@ -60,3 +60,10 @@ export const useDeleteAdminProduct = () => {
     },
   });
 };
+
+export const useGetAdminInventory = () => {
+  return useQuery({
+    queryKey: [adminKeys.useGetAdminInventory],
+    queryFn: () => API.getAdminInventory(),
+  });
+};

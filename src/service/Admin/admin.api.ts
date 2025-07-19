@@ -54,6 +54,11 @@ const deleteAdminProduct = async (productId: number) => {
   return data;
 };
 
+const getAdminInventory = async () => {
+  const { data } = await axios.get('/api/admin/inventory');
+  return data;
+};
+
 const API = {
   getAdminHome,
   getAdminUser,
@@ -61,6 +66,7 @@ const API = {
   editAdminProduct,
   createAdminProduct,
   deleteAdminProduct,
+  getAdminInventory,
 };
 
 export default API;
