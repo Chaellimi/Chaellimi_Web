@@ -25,12 +25,18 @@ const postBookmarkUpdate = async (challengeId: number) => {
   return data;
 };
 
+const logoutUser = async () => {
+  const { data } = await axios.post('/api/auth/logout');
+  return data;
+};
+
 const API = {
   postUploadImg,
   getUserRole,
   getProfileChallengeState,
   getBookmarkList,
   postBookmarkUpdate,
+  logoutUser,
 };
 
 export default API;

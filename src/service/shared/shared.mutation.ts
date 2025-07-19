@@ -12,3 +12,9 @@ export const usePostBookmarkUpdate = () => {
     mutationFn: API.postBookmarkUpdate,
   });
 };
+
+export const useLogoutUser = () => {
+  return useMutation({
+    mutationFn: API.logoutUser,
+  });
+};
