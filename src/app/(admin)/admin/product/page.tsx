@@ -2,13 +2,17 @@
 
 import React, { useState } from 'react';
 import { useGetProduct } from '@/service/Shop/shop.query';
-import { useEditAdminProduct } from '@/service/Admin/admin.query';
+import {
+  useEditAdminProduct,
+  useCreateAdminProduct,
+} from '@/service/Admin/admin.query';
 import { usePostUploadImg } from '@/service/shared/shared.query';
 import Loading from '@/components/shared/Loading';
 import Image from 'next/image';
 import { ProductType } from '@/app/api/shop/Product.type';
 import Sidebar from '@/components/Admin/Sidebar';
 import EditProductModal from '@/components/Admin/Product/EditProductModal';
+import AddProductModal from '@/components/Admin/Product/AddProductModal';
 
 const ProductManagement = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -26,12 +30,13 @@ const ProductManagement = () => {
     price: 0,
     category: 'cafe',
     imgURL: '',
-    description: '',
+    explanation: '',
     isActive: true,
   });
 
   const { data, isLoading } = useGetProduct();
   const editProductMutation = useEditAdminProduct();
+  const createProductMutation = useCreateAdminProduct();
   const uploadImgMutation = usePostUploadImg();
   const products = data?.data || [];
 
@@ -99,22 +104,62 @@ const ProductManagement = () => {
     }
   };
 
+  const handleNewProductImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const response = await uploadImgMutation.mutateAsync(formData);
+
+      if (response.success && response.data?.fileUrl) {
+        setNewProduct({
+          ...newProduct,
+          imgURL: response.data.fileUrl,
+        });
+      }
+    } catch (error) {
+      console.error('이미지 업로드 실패:', error);
+    }
+  };
+
   const handleAddProduct = () => {
     setIsAddProductModalOpen(true);
   };
 
-  const handleSaveNewProduct = () => {
-    console.log('새 상품 추가:', newProduct);
-    setIsAddProductModalOpen(false);
-    setNewProduct({
-      title: '',
-      brand: '',
-      price: 0,
-      category: 'cafe',
-      imgURL: '',
-      description: '',
-      isActive: true,
-    });
+  const handleSaveNewProduct = async () => {
+    if (!newProduct.title || !newProduct.brand || !newProduct.imgURL) {
+      alert('필수 필드를 모두 입력해주세요.');
+      return;
+    }
+
+    try {
+      await createProductMutation.mutateAsync({
+        title: newProduct.title,
+        brand: newProduct.brand,
+        price: newProduct.price,
+        category: newProduct.category,
+        imgURL: newProduct.imgURL,
+        explanation: newProduct.explanation,
+      });
+
+      setIsAddProductModalOpen(false);
+      setNewProduct({
+        title: '',
+        brand: '',
+        price: 0,
+        category: 'cafe',
+        imgURL: '',
+        explanation: '',
+        isActive: true,
+      });
+    } catch (error) {
+      console.error('상품 추가 실패:', error);
+    }
   };
 
   const handleToggleStatus = (productId: number) => {
@@ -199,11 +244,6 @@ const ProductManagement = () => {
                     fill
                     className="object-cover"
                   />
-                  <div className="absolute top-2 right-2">
-                    <span className="px-2 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full">
-                      활성
-                    </span>
-                  </div>
                 </div>
 
                 <div className="p-4">
@@ -352,137 +392,16 @@ const ProductManagement = () => {
       />
 
       {/* 상품 추가 모달 */}
-      {isAddProductModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold">상품 추가</h2>
-                <button
-                  onClick={() => setIsAddProductModalOpen(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    상품명
-                  </label>
-                  <input
-                    type="text"
-                    value={newProduct.title}
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, title: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    브랜드
-                  </label>
-                  <input
-                    type="text"
-                    value={newProduct.brand}
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, brand: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    가격
-                  </label>
-                  <input
-                    type="number"
-                    value={newProduct.price}
-                    onChange={(e) =>
-                      setNewProduct({
-                        ...newProduct,
-                        price: Number(e.target.value),
-                      })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    카테고리
-                  </label>
-                  <select
-                    value={newProduct.category}
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, category: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="cafe">카페</option>
-                    <option value="pizza">피자</option>
-                    <option value="chicken">치킨</option>
-                    <option value="burger">버거</option>
-                    <option value="dessert">디저트</option>
-                    <option value="store">스토어</option>
-                    <option value="coupon">쿠폰</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    이미지 URL
-                  </label>
-                  <input
-                    type="text"
-                    value={newProduct.imgURL}
-                    onChange={(e) =>
-                      setNewProduct({ ...newProduct, imgURL: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    설명
-                  </label>
-                  <textarea
-                    value={newProduct.description}
-                    onChange={(e) =>
-                      setNewProduct({
-                        ...newProduct,
-                        description: e.target.value,
-                      })
-                    }
-                    rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div className="flex space-x-2">
-                  <button
-                    onClick={handleSaveNewProduct}
-                    className="flex-1 px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700"
-                  >
-                    저장
-                  </button>
-                  <button
-                    onClick={() => setIsAddProductModalOpen(false)}
-                    className="flex-1 px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
-                  >
-                    취소
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <AddProductModal
+        isOpen={isAddProductModalOpen}
+        newProduct={newProduct}
+        isLoading={createProductMutation.isPending}
+        isUploadingImage={uploadImgMutation.isPending}
+        onClose={() => setIsAddProductModalOpen(false)}
+        onSave={handleSaveNewProduct}
+        onProductChange={setNewProduct}
+        onImageUpload={handleNewProductImageUpload}
+      />
     </div>
   );
 };
