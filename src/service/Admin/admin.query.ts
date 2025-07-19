@@ -49,3 +49,14 @@ export const useCreateAdminProduct = () => {
     },
   });
 };
+
+export const useDeleteAdminProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: API.deleteAdminProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [shopKeys.useGetProduct] });
+    },
+  });
+};

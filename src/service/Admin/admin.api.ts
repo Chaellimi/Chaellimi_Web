@@ -31,7 +31,7 @@ const editAdminProduct = async (productData: {
   title: string;
   explanation?: string;
 }) => {
-  const { data } = await axios.post('/api/admin/product/edit', productData);
+  const { data } = await axios.put('/api/admin/product', productData);
   return data;
 };
 
@@ -47,12 +47,20 @@ const createAdminProduct = async (productData: {
   return data;
 };
 
+const deleteAdminProduct = async (productId: number) => {
+  const { data } = await axios.delete(`/api/admin/product`, {
+    data: { productId },
+  });
+  return data;
+};
+
 const API = {
   getAdminHome,
   getAdminUser,
   editAdminUser,
   editAdminProduct,
   createAdminProduct,
+  deleteAdminProduct,
 };
 
 export default API;
