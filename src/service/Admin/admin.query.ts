@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import API from './admin.api';
 import { adminKeys } from './admin.key';
+import { shopKeys } from '../Shop/shop.key';
 
 export const useGetAdminHome = () => {
   return useQuery({
@@ -23,6 +24,17 @@ export const useEditAdminUser = () => {
     mutationFn: API.editAdminUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [adminKeys.useGetAdminUser] });
+    },
+  });
+};
+
+export const useEditAdminProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: API.editAdminProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [shopKeys.useGetProduct] });
     },
   });
 };

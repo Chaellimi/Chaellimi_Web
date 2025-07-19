@@ -18,7 +18,20 @@ const editAdminUser = async (userData: {
   role: string;
   profileImg?: string;
 }) => {
-  const { data } = await axios.put('/api/admin/users', userData);
+  const { data } = await axios.post('/api/admin/users/edit', userData);
+  return data;
+};
+
+const editAdminProduct = async (productData: {
+  productId: number;
+  category: string;
+  imgURL: string;
+  brand: string;
+  price: string | number;
+  title: string;
+  explanation?: string;
+}) => {
+  const { data } = await axios.post('/api/admin/product/edit', productData);
   return data;
 };
 
@@ -26,6 +39,7 @@ const API = {
   getAdminHome,
   getAdminUser,
   editAdminUser,
+  editAdminProduct,
 };
 
 export default API;
