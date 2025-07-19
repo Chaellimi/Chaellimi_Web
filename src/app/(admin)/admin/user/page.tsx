@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Sidebar from '@/components/Admin/Sidebar';
 
 interface User {
   id: number;
@@ -18,7 +18,6 @@ interface User {
 }
 
 const UserManagement = () => {
-  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
@@ -105,79 +104,10 @@ const UserManagement = () => {
     );
   };
 
-  const menuItems = [
-    { id: 'dashboard', label: '대시보드', icon: '📊' },
-    { id: 'users', label: '유저 관리', icon: '👥' },
-    { id: 'inventory', label: '재고 관리', icon: '📦' },
-    { id: 'products', label: '상품 관리', icon: '🛍️' },
-    { id: 'orders', label: '주문 관리', icon: '📋' },
-    { id: 'analytics', label: '분석', icon: '📈' },
-  ];
-
-  const handleMenuClick = (menuId: string) => {
-    switch (menuId) {
-      case 'dashboard':
-        router.push('/admin');
-        break;
-      case 'users':
-        router.push('/admin/user');
-        break;
-      case 'inventory':
-        router.push('/admin/inventory');
-        break;
-      case 'products':
-        router.push('/admin/products');
-        break;
-      case 'orders':
-        router.push('/admin/orders');
-        break;
-      case 'analytics':
-        router.push('/admin/analytics');
-        break;
-    }
-  };
-
   return (
     <div className="flex h-screen bg-gray-900">
       {/* 사이드바 */}
-      <div className="flex flex-col w-64 text-white bg-gray-800">
-        <div className="p-6 border-b border-gray-700">
-          <h1 className="text-xl font-bold text-blue-400">Chaellimi</h1>
-          <p className="text-sm text-gray-400">관리자 패널</p>
-        </div>
-
-        <nav className="flex-1 px-4 py-6">
-          <ul className="space-y-2">
-            {menuItems.map((item) => (
-              <li key={item.id}>
-                <button
-                  onClick={() => handleMenuClick(item.id)}
-                  className={`w-full flex items-center px-4 py-3 rounded-lg transition-colors ${
-                    item.id === 'users'
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                  }`}
-                >
-                  <span className="mr-3 text-lg">{item.icon}</span>
-                  {item.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <div className="p-4 border-t border-gray-700">
-          <div className="flex items-center">
-            <div className="flex items-center justify-center w-8 h-8 bg-blue-600 rounded-full">
-              <span className="text-sm font-bold">A</span>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium">Admin</p>
-              <p className="text-xs text-gray-400">관리자</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Sidebar activeMenu="users" />
 
       {/* 메인 컨텐츠 */}
       <div className="flex flex-col flex-1 h-full overflow-y-scroll">

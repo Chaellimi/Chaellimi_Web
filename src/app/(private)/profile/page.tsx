@@ -206,9 +206,16 @@ const Profile = () => {
             setIsOpenLogoutModal(false);
           }}
           confirm={() => {
-            logoutMutate();
-            setIsOpenLogoutModal(false);
-            router.push('/login');
+            logoutMutate(undefined, {
+              onSuccess: () => {
+                setIsOpenLogoutModal(false);
+                router.push('/login');
+              },
+              onError: () => {
+                setIsOpenLogoutModal(false);
+                router.push('/login');
+              },
+            });
           }}
         />
       )}
