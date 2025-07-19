@@ -78,7 +78,7 @@ async function postHandler(req: NextRequest) {
       }
     );
 
-    return resUtil.successFalse({
+    return resUtil.successTrue({
       status: 200,
       message: '상품 정보 수정 성공',
     });
