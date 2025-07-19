@@ -8,3 +8,10 @@ export const useGetAdminHome = () => {
     queryFn: () => API.getAdminHome(),
   });
 };
+
+export const useGetAdminUser = () => {
+  return useQuery({
+    queryKey: [adminKeys.useGetAdminUser],
+    queryFn: () => API.getAdminUser(),
+  });
+};
