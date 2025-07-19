@@ -1,7 +1,10 @@
 'use client';
 
+import { useGetUserRole } from '@/service/shared/shared.query';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import Loading from '../shared/Loading';
 
 interface SidebarProps {
   activeMenu?: string;
@@ -40,6 +43,14 @@ const Sidebar = ({ activeMenu = 'dashboard' }: SidebarProps) => {
         break;
     }
   };
+
+  const { data, isLoading } = useGetUserRole();
+  const userData = data?.data?.UserData;
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="flex flex-col w-64 text-white bg-gray-800">
       <div className="p-6 border-b border-gray-700">
@@ -69,11 +80,15 @@ const Sidebar = ({ activeMenu = 'dashboard' }: SidebarProps) => {
 
       <div className="p-4 border-t border-gray-700">
         <div className="flex items-center">
-          <div className="flex items-center justify-center w-8 h-8 bg-blue-600 rounded-full">
-            <span className="text-sm font-bold">A</span>
-          </div>
+          <Image
+            src={userData?.profileImg}
+            alt="Profile Image"
+            width={32}
+            height={32}
+            className="rounded-full"
+          />
           <div className="ml-3">
-            <p className="text-sm font-medium">Admin</p>
+            <p className="text-sm font-medium">{userData?.name}</p>
             <p className="text-xs text-gray-400">관리자</p>
           </div>
         </div>
