@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { sharedKeys } from './shared.key';
 import API from './shared.api';
 
@@ -20,5 +20,11 @@ export const useGetBookmarkList = () => {
   return useQuery({
     queryKey: [sharedKeys.useGetBookmarkList],
     queryFn: () => API.getBookmarkList(),
+  });
+};
+
+export const usePostUploadImg = () => {
+  return useMutation({
+    mutationFn: API.postUploadImg,
   });
 };

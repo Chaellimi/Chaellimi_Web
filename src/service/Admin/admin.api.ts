@@ -10,9 +10,22 @@ const getAdminUser = async () => {
   return data;
 };
 
+const editAdminUser = async (userData: {
+  userId: number;
+  name: string;
+  email: string;
+  points: number;
+  role: string;
+  profileImg?: string;
+}) => {
+  const { data } = await axios.post('/api/admin/users/edit', userData);
+  return data;
+};
+
 const API = {
   getAdminHome,
   getAdminUser,
+  editAdminUser,
 };
 
 export default API;
