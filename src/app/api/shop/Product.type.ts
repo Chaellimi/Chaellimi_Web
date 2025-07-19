@@ -1,4 +1,5 @@
 export interface ProductType {
+  productId?: number;
   id?: number;
   category: string;
   imgURL: string;

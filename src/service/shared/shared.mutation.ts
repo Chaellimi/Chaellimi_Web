@@ -6,3 +6,15 @@ export const useUploadImg = () => {
     mutationFn: API.postUploadImg,
   });
 };
+
+export const usePostBookmarkUpdate = () => {
+  return useMutation({
+    mutationFn: API.postBookmarkUpdate,
+  });
+};
+
+export const useLogoutUser = () => {
+  return useMutation({
+    mutationFn: API.logoutUser,
+  });
+};

@@ -40,6 +40,7 @@ const PointShopCategories = [
 ];
 
 const Shop = () => {
+  const backPath = useSearchParams().get('back');
   const activeTab = useSearchParams().get('activeFilter');
   const [activeFilter, setActiveFilter] = useState(Number(activeTab) || 1);
 
@@ -62,6 +63,7 @@ const Shop = () => {
         type="default"
         title="상점"
         icon={<MagnifyingGlassIcon width="24" height="24" fill="#1F1F1F" />}
+        backClick={backPath || '/'}
       />
 
       <div className="flex justify-between px-6 mt-4 border-b border-gray-100">

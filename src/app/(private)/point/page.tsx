@@ -7,6 +7,7 @@ import { useGetPoint, useGetPointDetail } from '@/service/Point/point.query';
 import { PointDetailType } from '@/types/Point';
 import Loading from '@/components/shared/Loading';
 import { formatDateToDot } from '@/lib/utils/formatDateToDot';
+import { useSearchParams } from 'next/navigation';
 
 const PointCategory = [
   { id: 1, name: '전체', type: '' },
@@ -27,6 +28,8 @@ interface PointResponseType {
 }
 
 const Point = () => {
+  const backPath = useSearchParams().get('back');
+
   const [activeCategory, setActiveCategory] = useState<number>(1);
 
   const activeType =
@@ -44,7 +47,11 @@ const Point = () => {
 
   return (
     <div className="flex flex-col items-center w-full h-full">
-      <Header type="default" backClick="/" title="포인트" />
+      <Header
+        type="default"
+        backClick={backPath ? backPath : '/'}
+        title="포인트"
+      />
 
       {/* 보유 포인트 */}
       <div className="w-full px-6">

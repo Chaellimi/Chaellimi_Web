@@ -10,6 +10,33 @@ const getUserRole = async () => {
   return data;
 };
 
-const API = { postUploadImg, getUserRole };
+const getProfileChallengeState = async () => {
+  const { data } = await axios.get('/api/challenge/profile');
+  return data;
+};
+
+const getBookmarkList = async () => {
+  const { data } = await axios.get('/api/challenge/bookmark');
+  return data;
+};
+
+const postBookmarkUpdate = async (challengeId: number) => {
+  const { data } = await axios.post('/api/challenge/bookmark', { challengeId });
+  return data;
+};
+
+const logoutUser = async () => {
+  const { data } = await axios.post('/api/auth/logout');
+  return data;
+};
+
+const API = {
+  postUploadImg,
+  getUserRole,
+  getProfileChallengeState,
+  getBookmarkList,
+  postBookmarkUpdate,
+  logoutUser,
+};
 
 export default API;
