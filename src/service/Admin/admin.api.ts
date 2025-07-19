@@ -59,6 +59,18 @@ const getAdminInventory = async () => {
   return data;
 };
 
+const createAdminInventory = async (inventoryData: {
+  productId: number;
+  imgURL: string;
+  expiration: string;
+}) => {
+  const { data } = await axios.post('/api/shop/inventory', {
+    ...inventoryData,
+    expiration: new Date(inventoryData.expiration),
+  });
+  return data;
+};
+
 const API = {
   getAdminHome,
   getAdminUser,
@@ -67,6 +79,7 @@ const API = {
   createAdminProduct,
   deleteAdminProduct,
   getAdminInventory,
+  createAdminInventory,
 };
 
 export default API;
