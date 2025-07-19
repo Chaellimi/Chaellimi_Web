@@ -2,10 +2,13 @@
 
 import React, { useState } from 'react';
 import { useGetProduct } from '@/service/Shop/shop.query';
+import { useEditAdminProduct } from '@/service/Admin/admin.query';
+import { usePostUploadImg } from '@/service/shared/shared.query';
 import Loading from '@/components/shared/Loading';
 import Image from 'next/image';
 import { ProductType } from '@/app/api/shop/Product.type';
 import Sidebar from '@/components/Admin/Sidebar';
+import EditProductModal from '@/components/Admin/Product/EditProductModal';
 
 const ProductManagement = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -28,6 +31,8 @@ const ProductManagement = () => {
   });
 
   const { data, isLoading } = useGetProduct();
+  const editProductMutation = useEditAdminProduct();
+  const uploadImgMutation = usePostUploadImg();
   const products = data?.data || [];
 
   const filteredProducts = products.filter((product: ProductType) => {
@@ -49,12 +54,49 @@ const ProductManagement = () => {
     setIsEditMode(true);
   };
 
-  const handleSaveProduct = () => {
+  const handleSaveProduct = async () => {
     if (!editProduct) return;
-    // 실제 API 호출로 상품 정보 업데이트
-    console.log('상품 업데이트:', editProduct);
-    setIsEditMode(false);
-    setEditProduct(null);
+
+    try {
+      await editProductMutation.mutateAsync({
+        productId: editProduct.id || 0,
+        category: editProduct.category,
+        imgURL: editProduct.imgURL,
+        brand: editProduct.brand,
+        price: editProduct.price,
+        title: editProduct.title,
+        explanation: editProduct.explanation || '',
+      });
+
+      setIsEditMode(false);
+      setEditProduct(null);
+    } catch (error) {
+      console.error('상품 수정 실패:', error);
+    }
+  };
+
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file || !editProduct) return;
+
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const response = await uploadImgMutation.mutateAsync(formData);
+
+      if (response.success && response.data?.fileUrl) {
+        setEditProduct({
+          ...editProduct,
+          imgURL: response.data.fileUrl,
+        });
+      }
+    } catch (error) {
+      console.error('이미지 업로드 실패:', error);
+      alert('이미지 업로드에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   const handleAddProduct = () => {
@@ -62,7 +104,6 @@ const ProductManagement = () => {
   };
 
   const handleSaveNewProduct = () => {
-    // 실제 API 호출로 새 상품 추가
     console.log('새 상품 추가:', newProduct);
     setIsAddProductModalOpen(false);
     setNewProduct({
@@ -77,12 +118,10 @@ const ProductManagement = () => {
   };
 
   const handleToggleStatus = (productId: number) => {
-    // 실제 API 호출로 상품 상태 변경
     console.log('상품 상태 변경:', productId);
   };
 
   const handleDeleteProduct = (productId: number) => {
-    // 실제 API 호출로 상품 삭제
     console.log('상품 삭제:', productId);
   };
 
@@ -301,120 +340,16 @@ const ProductManagement = () => {
       )}
 
       {/* 상품 수정 모달 */}
-      {isEditMode && editProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold">상품 수정</h2>
-                <button
-                  onClick={() => setIsEditMode(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    상품명
-                  </label>
-                  <input
-                    type="text"
-                    value={editProduct.title}
-                    onChange={(e) =>
-                      setEditProduct({ ...editProduct, title: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    브랜드
-                  </label>
-                  <input
-                    type="text"
-                    value={editProduct.brand}
-                    onChange={(e) =>
-                      setEditProduct({ ...editProduct, brand: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    가격
-                  </label>
-                  <input
-                    type="number"
-                    value={editProduct.price}
-                    onChange={(e) =>
-                      setEditProduct({ ...editProduct, price: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    카테고리
-                  </label>
-                  <select
-                    value={editProduct.category}
-                    onChange={(e) =>
-                      setEditProduct({
-                        ...editProduct,
-                        category: e.target.value,
-                      })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="cafe">카페</option>
-                    <option value="pizza">피자</option>
-                    <option value="chicken">치킨</option>
-                    <option value="burger">버거</option>
-                    <option value="dessert">디저트</option>
-                    <option value="store">스토어</option>
-                    <option value="coupon">쿠폰</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
-                    이미지 URL
-                  </label>
-                  <input
-                    type="text"
-                    value={editProduct.imgURL}
-                    onChange={(e) =>
-                      setEditProduct({ ...editProduct, imgURL: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div className="flex space-x-2">
-                  <button
-                    onClick={handleSaveProduct}
-                    className="flex-1 px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700"
-                  >
-                    저장
-                  </button>
-                  <button
-                    onClick={() => setIsEditMode(false)}
-                    className="flex-1 px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
-                  >
-                    취소
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <EditProductModal
+        isOpen={isEditMode}
+        editProduct={editProduct}
+        isLoading={editProductMutation.isPending}
+        isUploadingImage={uploadImgMutation.isPending}
+        onClose={() => setIsEditMode(false)}
+        onSave={handleSaveProduct}
+        onProductChange={setEditProduct}
+        onImageUpload={handleImageUpload}
+      />
 
       {/* 상품 추가 모달 */}
       {isAddProductModalOpen && (
