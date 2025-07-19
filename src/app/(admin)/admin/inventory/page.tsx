@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import { useGetAdminInventory } from '@/service/Admin/admin.query';
+import { usePostUploadImg } from '@/service/shared/shared.query';
 import Loading from '@/components/shared/Loading';
 import Image from 'next/image';
 import Sidebar from '@/components/Admin/Sidebar';
+import { useCreateAdminInventory } from '@/service/Admin/admin.mutation';
 
 interface ProductInfo {
   id: number;
@@ -47,8 +49,12 @@ const InventoryManagement = () => {
     imgURL: '',
     expiration: '',
   });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string>('');
 
   const { data, isLoading } = useGetAdminInventory();
+  const createInventoryMutation = useCreateAdminInventory();
+  const uploadImgMutation = usePostUploadImg();
   const inventoryList = data?.data || [];
 
   const filteredInventories = inventoryList.filter(
@@ -72,16 +78,56 @@ const InventoryManagement = () => {
     if (!selectedInventoryData) return;
     setNewInventory({
       productId: selectedInventoryData.product.id,
-      imgURL: selectedInventoryData.product.imgURL,
+      imgURL: '',
       expiration: '',
     });
+    setSelectedFile(null);
+    setPreviewImage('');
     setIsAddInventoryModalOpen(true);
   };
 
-  const handleSaveInventory = () => {
-    // 실제 API 호출로 재고 추가
-    console.log('재고 추가:', newInventory);
-    setIsAddInventoryModalOpen(false);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      // 미리보기 이미지 생성
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPreviewImage(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSaveInventory = async () => {
+    try {
+      let imageUrl = '/images/barcode.jpg'; // 기본 이미지
+
+      // 파일이 선택되었다면 업로드
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append('image', selectedFile);
+
+        const uploadResult = await uploadImgMutation.mutateAsync(formData);
+        if (uploadResult?.data?.imgURL) {
+          imageUrl = uploadResult.data.imgURL;
+        }
+      }
+
+      // 재고 생성
+      await createInventoryMutation.mutateAsync({
+        productId: newInventory.productId,
+        imgURL: imageUrl,
+        expiration: newInventory.expiration,
+      });
+
+      setIsAddInventoryModalOpen(false);
+      setIsInventoryModalOpen(false);
+      alert('재고가 성공적으로 추가되었습니다.');
+    } catch (error) {
+      console.error('재고 추가 실패:', error);
+      alert('재고 추가에 실패했습니다.');
+    }
   };
 
   if (isLoading) {
@@ -188,25 +234,25 @@ const InventoryManagement = () => {
 
                   {/* 재고 통계 */}
                   <div className="grid grid-cols-2 gap-2 mb-4 text-sm">
-                    <div className="text-center p-2 bg-blue-50 rounded">
+                    <div className="p-2 text-center rounded bg-blue-50">
                       <div className="font-semibold text-blue-600">
                         {inventoryData.totalCount}
                       </div>
                       <div className="text-gray-600">총 재고</div>
                     </div>
-                    <div className="text-center p-2 bg-green-50 rounded">
+                    <div className="p-2 text-center rounded bg-green-50">
                       <div className="font-semibold text-green-600">
                         {inventoryData.availableCount}
                       </div>
                       <div className="text-gray-600">사용 가능</div>
                     </div>
-                    <div className="text-center p-2 bg-yellow-50 rounded">
+                    <div className="p-2 text-center rounded bg-yellow-50">
                       <div className="font-semibold text-yellow-600">
                         {inventoryData.soldCount}
                       </div>
                       <div className="text-gray-600">판매됨</div>
                     </div>
-                    <div className="text-center p-2 bg-red-50 rounded">
+                    <div className="p-2 text-center rounded bg-red-50">
                       <div className="font-semibold text-red-600">
                         {inventoryData.usedCount}
                       </div>
@@ -375,19 +421,29 @@ const InventoryManagement = () => {
               <div className="space-y-4">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-700">
-                    이미지 URL
+                    이미지 업로드
                   </label>
                   <input
-                    type="text"
-                    value={newInventory.imgURL}
-                    onChange={(e) =>
-                      setNewInventory({
-                        ...newInventory,
-                        imgURL: e.target.value,
-                      })
-                    }
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
+                  {previewImage && (
+                    <div className="mt-2">
+                      <div className="relative w-20 h-20">
+                        <Image
+                          src={previewImage}
+                          alt="미리보기"
+                          fill
+                          className="object-cover rounded"
+                        />
+                      </div>
+                    </div>
+                  )}
+                  <p className="mt-1 text-xs text-gray-500">
+                    이미지를 업로드하지 않으면 기본 바코드 이미지가 사용됩니다.
+                  </p>
                 </div>
 
                 <div>
@@ -404,15 +460,20 @@ const InventoryManagement = () => {
                       })
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
                   />
                 </div>
 
                 <div className="flex space-x-2">
                   <button
                     onClick={handleSaveInventory}
-                    className="flex-1 px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                    disabled={
+                      !newInventory.expiration ||
+                      createInventoryMutation.isPending
+                    }
+                    className="flex-1 px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
-                    저장
+                    {createInventoryMutation.isPending ? '저장 중...' : '저장'}
                   </button>
                   <button
                     onClick={() => setIsAddInventoryModalOpen(false)}
