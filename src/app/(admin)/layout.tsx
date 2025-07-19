@@ -15,16 +15,21 @@ export default function AuthLayout({
   const { data: myInfo, status } = useSession();
   const isLoading = status === 'loading';
 
-  const { data: user, isLoading: isUserLoading } = useGetUserRole();
+  const {
+    data: user,
+    isLoading: isUserLoading,
+    isError: isUserError,
+  } = useGetUserRole();
+
+  console.log(user?.data?.UserData?.role);
 
   useEffect(() => {
-    if (user?.data?.UserData?.role !== 'admin') {
+    if (user?.data?.UserData?.role === 'user') {
       router.replace('/');
-    }
-    if (!isLoading && !myInfo) {
+    } else if (isUserError) {
       router.replace('/login');
     }
-  }, [myInfo, router, isLoading, user]);
+  }, [myInfo, router, isLoading, user, isUserError]);
 
   if (isLoading || isUserLoading) {
     return <Loading />;
