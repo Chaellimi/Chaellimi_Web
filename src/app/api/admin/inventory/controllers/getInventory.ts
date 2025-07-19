@@ -53,7 +53,12 @@ async function postHandler() {
       });
     }
 
-    // 모든 재고를 상품 정보와 함께 조회
+    // 모든 제품 조회
+    const allProducts = await Product.findAll({
+      attributes: ['id', 'title', 'brand', 'category', 'price', 'imgURL'],
+    });
+
+    // 모든 재고 조회
     const inventories = await Inventory.findAll({
       include: [
         {
@@ -65,50 +70,47 @@ async function postHandler() {
       order: [['createdAt', 'DESC']],
     });
 
-    // 상품별로 재고 그룹화
-    const inventoryByProduct = inventories.reduce(
-      (acc: InventoryByProduct, inventory) => {
-        const productId = inventory.productId;
-        const inventoryWithProduct =
-          inventory as unknown as InventoryWithProduct; // Sequelize include 결과를 위한 타입 단언
+    // 초기값: 모든 제품에 대해 기본 구조 생성
+    const inventoryByProduct: InventoryByProduct = {};
+    for (const product of allProducts) {
+      inventoryByProduct[product.id] = {
+        product: product as ProductInfo,
+        inventories: [],
+        totalCount: 0,
+        availableCount: 0,
+        soldCount: 0,
+        usedCount: 0,
+      };
+    }
 
-        if (!acc[productId]) {
-          acc[productId] = {
-            product: inventoryWithProduct.product,
-            inventories: [],
-            totalCount: 0,
-            availableCount: 0,
-            soldCount: 0,
-            usedCount: 0,
-          };
-        }
+    // 재고 데이터 누적
+    for (const inventory of inventories) {
+      const inventoryWithProduct = inventory as unknown as InventoryWithProduct;
+      const productId = inventoryWithProduct.productId;
 
-        acc[productId].inventories.push({
-          id: inventory.id,
-          imgURL: inventory.imgURL,
-          isSold: inventory.isSold,
-          isUse: inventory.isUse,
-          expiration: inventory.expiration,
-          createdAt: inventory.createdAt,
-          updatedAt: inventory.updatedAt,
-        });
+      if (!inventoryByProduct[productId]) continue; // 혹시 누락된 제품이 있다면 skip
 
-        acc[productId].totalCount++;
+      inventoryByProduct[productId].inventories.push({
+        id: inventory.id,
+        imgURL: inventory.imgURL,
+        isSold: inventory.isSold,
+        isUse: inventory.isUse,
+        expiration: inventory.expiration,
+        createdAt: inventory.createdAt,
+        updatedAt: inventory.updatedAt,
+      });
 
-        if (!inventory.isSold && !inventory.isUse) {
-          acc[productId].availableCount++;
-        } else if (inventory.isSold) {
-          acc[productId].soldCount++;
-        } else if (inventory.isUse) {
-          acc[productId].usedCount++;
-        }
+      inventoryByProduct[productId].totalCount++;
 
-        return acc;
-      },
-      {} as InventoryByProduct
-    );
+      if (!inventory.isSold && !inventory.isUse) {
+        inventoryByProduct[productId].availableCount++;
+      } else if (inventory.isSold) {
+        inventoryByProduct[productId].soldCount++;
+      } else if (inventory.isUse) {
+        inventoryByProduct[productId].usedCount++;
+      }
+    }
 
-    // 배열 형태로 변환
     const result = Object.values(inventoryByProduct);
 
     return resUtil.successTrue({
