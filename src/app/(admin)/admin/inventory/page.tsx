@@ -1,14 +1,27 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useGetProduct } from '@/service/Shop/shop.query';
+import { useGetAdminInventory } from '@/service/Admin/admin.query';
 import Loading from '@/components/shared/Loading';
 import Image from 'next/image';
-import { ProductType } from '@/app/api/shop/Product.type';
 import Sidebar from '@/components/Admin/Sidebar';
 
-interface ProductWithInventory extends ProductType {
-  inventoryCount?: number;
+interface ProductInfo {
+  id: number;
+  title: string;
+  brand: string;
+  category: string;
+  price: string;
+  imgURL: string;
+}
+
+interface InventoryData {
+  product: ProductInfo;
+  inventories: InventoryItem[];
+  totalCount: number;
+  availableCount: number;
+  soldCount: number;
+  usedCount: number;
 }
 
 interface InventoryItem {
@@ -25,12 +38,9 @@ interface InventoryItem {
 const InventoryManagement = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedProduct, setSelectedProduct] =
-    useState<ProductWithInventory | null>(null);
+  const [selectedInventoryData, setSelectedInventoryData] =
+    useState<InventoryData | null>(null);
   const [isInventoryModalOpen, setIsInventoryModalOpen] = useState(false);
-  const [productInventories, setProductInventories] = useState<InventoryItem[]>(
-    []
-  );
   const [isAddInventoryModalOpen, setIsAddInventoryModalOpen] = useState(false);
   const [newInventory, setNewInventory] = useState({
     productId: 0,
@@ -38,41 +48,31 @@ const InventoryManagement = () => {
     expiration: '',
   });
 
-  const { data, isLoading } = useGetProduct();
-  const products = data?.data || [];
+  const { data, isLoading } = useGetAdminInventory();
+  const inventoryList = data?.data || [];
 
-  const filteredProducts = products.filter((product: ProductWithInventory) => {
-    const matchesCategory =
-      selectedCategory === 'all' || product.category === selectedCategory;
-    const matchesSearch =
-      product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.brand.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const filteredInventories = inventoryList.filter(
+    (inventoryData: InventoryData) => {
+      const product = inventoryData.product;
+      const matchesCategory =
+        selectedCategory === 'all' || product.category === selectedCategory;
+      const matchesSearch =
+        product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.brand.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesCategory && matchesSearch;
+    }
+  );
 
-  const handleInventoryDetail = async (product: ProductWithInventory) => {
-    setSelectedProduct(product);
-    // 실제 API 호출로 재고 데이터 가져오기
-    setProductInventories([
-      {
-        id: 1,
-        productId: product.id || 0,
-        imgURL: product.imgURL,
-        isSold: false,
-        isUse: false,
-        expiration: '2025-12-31',
-        createdAt: '2025-07-16',
-        updatedAt: '2025-07-16',
-      },
-    ]);
+  const handleInventoryDetail = async (inventoryData: InventoryData) => {
+    setSelectedInventoryData(inventoryData);
     setIsInventoryModalOpen(true);
   };
 
   const handleAddInventory = () => {
-    if (!selectedProduct) return;
+    if (!selectedInventoryData) return;
     setNewInventory({
-      productId: selectedProduct.id || 0,
-      imgURL: selectedProduct.imgURL,
+      productId: selectedInventoryData.product.id,
+      imgURL: selectedInventoryData.product.imgURL,
       expiration: '',
     });
     setIsAddInventoryModalOpen(true);
@@ -100,7 +100,7 @@ const InventoryManagement = () => {
             <h2 className="text-2xl font-bold text-gray-900">재고 관리</h2>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-500">
-                총 상품: {products.length}개
+                총 상품: {inventoryList.length}개
               </span>
             </div>
           </div>
@@ -140,27 +140,29 @@ const InventoryManagement = () => {
 
           {/* 상품 그리드 */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredProducts.map((product: ProductWithInventory) => (
+            {filteredInventories.map((inventoryData: InventoryData) => (
               <div
-                key={product.id}
+                key={inventoryData.product.id}
                 className="overflow-hidden transition-shadow bg-white border rounded-lg shadow-sm hover:shadow-md"
               >
                 <div className="relative aspect-square">
                   <Image
-                    src={product.imgURL}
-                    alt={product.title}
+                    src={inventoryData.product.imgURL}
+                    alt={inventoryData.product.title}
                     fill
                     className="object-cover"
                   />
                   <div className="absolute top-2 right-2">
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        Math.random() > 0.5
+                        inventoryData.availableCount > 0
                           ? 'bg-green-100 text-green-800'
                           : 'bg-red-100 text-red-800'
                       }`}
                     >
-                      {Math.random() > 0.5 ? '재고 있음' : '재고 없음'}
+                      {inventoryData.availableCount > 0
+                        ? '재고 있음'
+                        : '재고 없음'}
                     </span>
                   </div>
                 </div>
@@ -168,34 +170,53 @@ const InventoryManagement = () => {
                 <div className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="font-semibold text-gray-900 truncate">
-                      {product.title}
+                      {inventoryData.product.title}
                     </h3>
                     <span className="ml-2 text-sm text-gray-500">
-                      {product.brand}
+                      {inventoryData.product.brand}
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-lg font-bold text-gray-900">
-                      {product.price}P
+                      {inventoryData.product.price}P
                     </span>
                     <span className="px-2 py-1 text-xs text-gray-700 bg-gray-100 rounded-full">
-                      {product.category}
+                      {inventoryData.product.category}
                     </span>
                   </div>
 
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">재고 수량:</span>
-                      <span className="font-medium">
-                        {Math.floor(Math.random() * 20)}개
-                      </span>
+                  {/* 재고 통계 */}
+                  <div className="grid grid-cols-2 gap-2 mb-4 text-sm">
+                    <div className="text-center p-2 bg-blue-50 rounded">
+                      <div className="font-semibold text-blue-600">
+                        {inventoryData.totalCount}
+                      </div>
+                      <div className="text-gray-600">총 재고</div>
+                    </div>
+                    <div className="text-center p-2 bg-green-50 rounded">
+                      <div className="font-semibold text-green-600">
+                        {inventoryData.availableCount}
+                      </div>
+                      <div className="text-gray-600">사용 가능</div>
+                    </div>
+                    <div className="text-center p-2 bg-yellow-50 rounded">
+                      <div className="font-semibold text-yellow-600">
+                        {inventoryData.soldCount}
+                      </div>
+                      <div className="text-gray-600">판매됨</div>
+                    </div>
+                    <div className="text-center p-2 bg-red-50 rounded">
+                      <div className="font-semibold text-red-600">
+                        {inventoryData.usedCount}
+                      </div>
+                      <div className="text-gray-600">사용됨</div>
                     </div>
                   </div>
 
                   <div className="mt-4">
                     <button
-                      onClick={() => handleInventoryDetail(product)}
+                      onClick={() => handleInventoryDetail(inventoryData)}
                       className="w-full px-3 py-2 text-sm text-white transition-colors bg-blue-600 rounded-md hover:bg-blue-700"
                     >
                       재고 관리
@@ -206,7 +227,7 @@ const InventoryManagement = () => {
             ))}
           </div>
 
-          {filteredProducts.length === 0 && (
+          {filteredInventories.length === 0 && (
             <div className="py-12 text-center">
               <div className="text-lg text-gray-500">검색 결과가 없습니다.</div>
             </div>
@@ -215,13 +236,13 @@ const InventoryManagement = () => {
       </div>
 
       {/* 재고 관리 모달 */}
-      {isInventoryModalOpen && selectedProduct && (
+      {isInventoryModalOpen && selectedInventoryData && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
           <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold">
-                  재고 관리 - {selectedProduct.title}
+                  재고 관리 - {selectedInventoryData.product.title}
                 </h2>
                 <button
                   onClick={() => setIsInventoryModalOpen(false)}
@@ -268,61 +289,65 @@ const InventoryManagement = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {productInventories.map((inventory) => (
-                      <tr key={inventory.id}>
-                        <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                          {inventory.id}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="relative w-10 h-10">
-                            <Image
-                              src={inventory.imgURL}
-                              alt="재고 이미지"
-                              fill
-                              className="object-cover rounded"
-                            />
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span
-                            className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                              inventory.isSold
-                                ? 'bg-red-100 text-red-800'
-                                : 'bg-green-100 text-green-800'
-                            }`}
-                          >
-                            {inventory.isSold ? '판매완료' : '판매가능'}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span
-                            className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                              inventory.isUse
-                                ? 'bg-gray-100 text-gray-800'
-                                : 'bg-blue-100 text-blue-800'
-                            }`}
-                          >
-                            {inventory.isUse ? '사용완료' : '사용가능'}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                          {new Date(inventory.expiration).toLocaleDateString()}
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
-                          {new Date(inventory.createdAt).toLocaleDateString()}
-                        </td>
-                        <td className="px-6 py-4 text-sm font-medium whitespace-nowrap">
-                          <button className="text-red-600 hover:text-red-900">
-                            삭제
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                    {selectedInventoryData.inventories.map(
+                      (inventory: InventoryItem) => (
+                        <tr key={inventory.id}>
+                          <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                            {inventory.id}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="relative w-10 h-10">
+                              <Image
+                                src={inventory.imgURL}
+                                alt="재고 이미지"
+                                fill
+                                className="object-cover rounded"
+                              />
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span
+                              className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                                inventory.isSold
+                                  ? 'bg-red-100 text-red-800'
+                                  : 'bg-green-100 text-green-800'
+                              }`}
+                            >
+                              {inventory.isSold ? '판매완료' : '판매가능'}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span
+                              className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                                inventory.isUse
+                                  ? 'bg-gray-100 text-gray-800'
+                                  : 'bg-blue-100 text-blue-800'
+                              }`}
+                            >
+                              {inventory.isUse ? '사용완료' : '사용가능'}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                            {new Date(
+                              inventory.expiration
+                            ).toLocaleDateString()}
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
+                            {new Date(inventory.createdAt).toLocaleDateString()}
+                          </td>
+                          <td className="px-6 py-4 text-sm font-medium whitespace-nowrap">
+                            <button className="text-red-600 hover:text-red-900">
+                              삭제
+                            </button>
+                          </td>
+                        </tr>
+                      )
+                    )}
                   </tbody>
                 </table>
               </div>
 
-              {productInventories.length === 0 && (
+              {selectedInventoryData.inventories.length === 0 && (
                 <div className="py-8 text-center">
                   <div className="text-gray-500">재고가 없습니다.</div>
                 </div>
