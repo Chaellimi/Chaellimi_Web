@@ -2,7 +2,9 @@
 
 import Header from '@/components/shared/Header';
 import Loading from '@/components/shared/Loading';
+import SelectModal from '@/components/shared/SelectModal';
 import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
+import { useLogoutUser } from '@/service/shared/shared.mutation';
 import {
   useGetProfileChallengeState,
   useGetUserRole,
@@ -20,7 +22,7 @@ import {
 import { ArrowIcon, FireIcon } from '@public/icons/shared';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 
 const Profile = () => {
   const router = useRouter();
@@ -28,8 +30,11 @@ const Profile = () => {
   const { data, isLoading } = useGetUserRole();
   const UserData = data?.data?.UserData;
 
-  const { data: challengeData } = useGetProfileChallengeState();
-  console.log(challengeData?.data);
+  const { data: challengeData, isLoading: isLoadingChallenge } =
+    useGetProfileChallengeState();
+
+  const [isOpenLogoutModal, setIsOpenLogoutModal] = useState(false);
+  const { mutate: logoutMutate, isPending } = useLogoutUser();
 
   useStatusBarBridge({
     backgroundColor: '#F7F7F7',
@@ -37,7 +42,7 @@ const Profile = () => {
     bottomBackgroundColor: '#FFF',
   });
 
-  if (isLoading) {
+  if (isLoading || isPending || isLoadingChallenge) {
     return <Loading />;
   }
 
@@ -176,7 +181,12 @@ const Profile = () => {
 
         {/* 로그인 & 로그아웃 */}
         <div className="flex flex-col w-full p-4 bg-white rounded-2xl">
-          <div className="flex items-center justify-between w-full py-3">
+          <div
+            className="flex items-center justify-between w-full py-3"
+            onClick={() => {
+              setIsOpenLogoutModal(true);
+            }}
+          >
             <div className="text-b2">로그아웃</div>
             <ArrowIcon location="right" width="20" height="20" fill="#A5A5A5" />
           </div>
@@ -187,6 +197,21 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      {isOpenLogoutModal && (
+        <SelectModal
+          title="계정이 로그아웃됩니다."
+          description="정말 로그아웃하시겠습니까?"
+          cancel={() => {
+            setIsOpenLogoutModal(false);
+          }}
+          confirm={() => {
+            logoutMutate();
+            setIsOpenLogoutModal(false);
+            router.push('/login');
+          }}
+        />
+      )}
     </div>
   );
 };
