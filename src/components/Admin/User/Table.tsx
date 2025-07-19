@@ -2,19 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-
-interface User {
-  id: number;
-  username: string;
-  email: string;
-  name: string;
-  points: number;
-  role: 'USER' | 'ADMIN';
-  isActive: boolean;
-  createdAt: string;
-  lastLogin: string;
-  profileImage?: string;
-}
+import { User } from '@/types/user';
 
 interface UserTableProps {
   users: User[];
@@ -67,9 +55,6 @@ const UserTable = ({ users, onEditUser }: UserTableProps) => {
                     <div className="ml-4">
                       <div className="text-sm font-medium text-gray-900">
                         {user.name}
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        @{user.username}
                       </div>
                     </div>
                   </div>
