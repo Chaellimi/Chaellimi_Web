@@ -5,6 +5,7 @@ import { useGetProduct } from '@/service/Shop/shop.query';
 import {
   useEditAdminProduct,
   useCreateAdminProduct,
+  useDeleteAdminProduct,
 } from '@/service/Admin/admin.query';
 import { usePostUploadImg } from '@/service/shared/shared.query';
 import Loading from '@/components/shared/Loading';
@@ -37,6 +38,7 @@ const ProductManagement = () => {
   const { data, isLoading } = useGetProduct();
   const editProductMutation = useEditAdminProduct();
   const createProductMutation = useCreateAdminProduct();
+  const deleteProductMutation = useDeleteAdminProduct();
   const uploadImgMutation = usePostUploadImg();
   const products = data?.data || [];
 
@@ -162,12 +164,22 @@ const ProductManagement = () => {
     }
   };
 
-  const handleToggleStatus = (productId: number) => {
-    console.log('상품 상태 변경:', productId);
-  };
+  const handleDeleteProduct = async (productId: number) => {
+    if (
+      !confirm(
+        '정말로 이 상품을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.'
+      )
+    ) {
+      return;
+    }
 
-  const handleDeleteProduct = (productId: number) => {
-    console.log('상품 삭제:', productId);
+    try {
+      await deleteProductMutation.mutateAsync(productId);
+      setIsProductModalOpen(false);
+    } catch (error) {
+      console.error('상품 삭제 실패:', error);
+      alert('상품 삭제에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   if (isLoading) {
@@ -361,16 +373,11 @@ const ProductManagement = () => {
 
                 <div className="flex space-x-2">
                   <button
-                    onClick={() => handleToggleStatus(selectedProduct.id || 0)}
-                    className="px-4 py-2 text-sm text-yellow-600 border border-yellow-600 rounded-md hover:bg-yellow-50"
-                  >
-                    상태 변경
-                  </button>
-                  <button
                     onClick={() => handleDeleteProduct(selectedProduct.id || 0)}
-                    className="px-4 py-2 text-sm text-red-600 border border-red-600 rounded-md hover:bg-red-50"
+                    disabled={deleteProductMutation.isPending}
+                    className="px-4 py-2 text-sm text-red-600 border border-red-600 rounded-md hover:bg-red-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed"
                   >
-                    삭제
+                    {deleteProductMutation.isPending ? '삭제 중...' : '삭제'}
                   </button>
                 </div>
               </div>
