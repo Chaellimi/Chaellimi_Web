@@ -138,7 +138,7 @@ const Progress = () => {
                 <div className="grid grid-cols-3 gap-y-4 gap-x-2 justify-items-center">
                   {progressDates.map((dateStr, index) => {
                     const today = dayjs().format('YYYY-MM-DD');
-                    const isFeature = new Date(dateStr) <= new Date(today);
+                    const isFeature = new Date(dateStr) < new Date(today);
                     const isCertified = certifiedSet.has(dateStr);
 
                     return (
