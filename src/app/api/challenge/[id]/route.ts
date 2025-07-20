@@ -4,7 +4,12 @@ import { NextRequest } from 'next/server';
 import { Op, fn, col } from 'sequelize';
 import resUtil from '@/lib/utils/responseUtil';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
-import { Challenge, ChallengeParticipants, Users } from '@/database/models';
+import {
+  Bookmark,
+  Challenge,
+  ChallengeParticipants,
+  Users,
+} from '@/database/models';
 
 async function getHandler(req: NextRequest) {
   try {
@@ -82,6 +87,18 @@ async function getHandler(req: NextRequest) {
       }
     }
 
+    let isBookmarked = false;
+    if (loginUser) {
+      isBookmarked = (await Bookmark.findOne({
+        where: {
+          userId: loginUser.id,
+          challengeId,
+        },
+      }))
+        ? true
+        : false;
+    }
+
     return resUtil.successTrue({
       status: 200,
       message: '챌린지 조회 성공',
@@ -90,6 +107,7 @@ async function getHandler(req: NextRequest) {
         totalChallenges,
         recentChallenges,
         joinStatus,
+        isBookmarked,
       },
     });
   } catch (err) {
