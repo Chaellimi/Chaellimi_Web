@@ -8,6 +8,8 @@ import ChallengeContent from '@/components/Challenge/ChallengeContent';
 import Header from '@/components/shared/Header';
 import { ChallengeType, ChallengeFilter } from '@/types/Challenge';
 import { useGetChallenge } from '@/service/Challenge/challenge.query';
+import { useGetBookmarkList } from '@/service/shared/shared.query';
+import { useBookmark } from '@/hooks/useBookmark';
 import Loading from '@/components/shared/Loading';
 
 const challengeCategories = [
@@ -75,6 +77,43 @@ const Challenge = () => {
   };
 
   const { data: ChallengeData, isPending } = useGetChallenge(filterParams);
+  const { data: bookmarkData } = useGetBookmarkList();
+
+  // 북마크된 챌린지 ID들을 배열로 저장
+  const bookmarkedChallengeIds =
+    bookmarkData?.data?.map(
+      (bookmark: { challengeId: number }) => bookmark.challengeId
+    ) || [];
+
+  // 개별 챌린지의 북마크 기능을 위한 컴포넌트
+  const ChallengeWithBookmark = ({
+    challenge,
+  }: {
+    challenge: ChallengeType;
+  }) => {
+    const isInitiallyBookmarked = bookmarkedChallengeIds.includes(challenge.id);
+    const { isBookmarked, toggleBookmark, isLoading } = useBookmark({
+      challengeId: challenge.id,
+      initialBookmarkState: isInitiallyBookmarked,
+    });
+
+    return (
+      <ChallengeContent
+        key={challenge.id}
+        id={challenge.id}
+        count={challenge.participantCount}
+        title={challenge.title}
+        imgUrl={challenge.imgURL}
+        days={Number(challenge.day)}
+        difficulty={challenge.difficulty}
+        createrName={challenge.User.name}
+        createrImgUrl={challenge.User.profileImg}
+        isChecked={isBookmarked}
+        onClickBookmark={toggleBookmark}
+        isBookmarkLoading={isLoading}
+      />
+    );
+  };
 
   const hasActiveFilters = Object.values(filters).some(
     (v) => v !== '전체' && v !== '인기순'
@@ -156,17 +195,7 @@ const Challenge = () => {
       <div className="flex-1 h-0 min-h-0 px-8 pb-16 mt-2 overflow-y-scroll scrollbar-hide -webkit-overflow-scrolling-touch overscroll-contain">
         <div className="grid grid-cols-2 gap-x-5 gap-y-5">
           {ChallengeData?.data?.challenges?.map((item: ChallengeType) => (
-            <ChallengeContent
-              key={item.id}
-              id={item.id}
-              count={item.participantCount}
-              title={item.title}
-              imgUrl={item.imgURL}
-              days={Number(item.day)}
-              difficulty={item.difficulty}
-              createrName={item.User.name}
-              createrImgUrl={item.User.profileImg}
-            />
+            <ChallengeWithBookmark key={item.id} challenge={item} />
           ))}
         </div>
       </div>
