@@ -248,7 +248,7 @@ const InventoryManagement = () => {
 
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-lg font-bold text-gray-900">
-                      {inventoryData.product.price}P
+                      {Number(inventoryData.product.price).toLocaleString()}P
                     </span>
                     <span className="px-2 py-1 text-xs text-gray-700 bg-gray-100 rounded-full">
                       {inventoryData.product.category}

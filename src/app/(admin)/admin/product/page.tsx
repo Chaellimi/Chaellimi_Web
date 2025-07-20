@@ -270,7 +270,7 @@ const ProductManagement = () => {
 
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-lg font-bold text-gray-900">
-                      {product.price}P
+                      {Number(product.price).toLocaleString()}P
                     </span>
                     <span className="px-2 py-1 text-xs text-gray-700 bg-gray-100 rounded-full">
                       {product.category}
@@ -352,7 +352,9 @@ const ProductManagement = () => {
                     <label className="block text-sm font-medium text-gray-700">
                       가격
                     </label>
-                    <p className="text-gray-900">{selectedProduct.price}P</p>
+                    <p className="text-gray-900">
+                      {Number(selectedProduct.price).toLocaleString()}P
+                    </p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
