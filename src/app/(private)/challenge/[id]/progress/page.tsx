@@ -193,7 +193,9 @@ const Progress = () => {
           <div className="text-gray-black text-b2">적립내역</div>
 
           {progressLog?.pointSavingLog.length === 0 ? (
-            <div> 이건 뜨면 안됨... </div>
+            <div className="flex items-center justify-center w-full h-48">
+              적립금 내역이 없습니다.
+            </div>
           ) : (
             <div className="flex flex-col">
               {progressLog?.pointSavingLog.map((item: pointSavingLogType) => (
