@@ -30,6 +30,7 @@ import {
 import { ChallengeWriteType } from '@/types/Challenge';
 import { useGetUserRole } from '@/service/shared/shared.query';
 import useShareBridge from '@/lib/hooks/useShareBridge';
+import { useBookmark } from '@/hooks/useBookmark';
 
 interface recentChallengesType {
   id: number;
@@ -51,7 +52,6 @@ const ChallengeSingle = () => {
   const backPath = useSearchParams().get('back');
 
   const [actionSheet, setActionSheet] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenRefusalModal, setIsOpenRefusalModal] = useState(false);
@@ -67,6 +67,7 @@ const ChallengeSingle = () => {
       recentChallenges: recentChallengesType[];
       totalChallenges: number;
       joinStatus: string;
+      isBookmarked: boolean;
     };
   };
 
@@ -77,6 +78,16 @@ const ChallengeSingle = () => {
   const recentChallenges = challengeData?.recentChallenges ?? [];
   const totalChallenges = challengeData?.totalChallenges ?? [];
   const isJoinedChallenge = challengeData?.joinStatus ?? false;
+  const isBookmarkedData = challengeData?.isBookmarked ?? false;
+
+  const {
+    isBookmarked,
+    toggleBookmark,
+    isLoading: isBookmarkLoading,
+  } = useBookmark({
+    challengeId: id ? Number(id) : 0,
+    initialBookmarkState: isBookmarkedData,
+  });
 
   useStatusBarBridge(
     {
@@ -346,8 +357,9 @@ const ChallengeSingle = () => {
       <div className="flex items-center justify-center w-full h-16 gap-4 px-6 pt-3 border-t bg-gray-white border-gray-50 custom601:mb-6">
         <div
           onClick={() => {
-            setIsBookmarked(!isBookmarked);
+            toggleBookmark();
           }}
+          className={`cursor-pointer ${isBookmarkLoading ? 'opacity-50 pointer-events-none' : ''}`}
         >
           <BookmarkIcon
             width="24"
