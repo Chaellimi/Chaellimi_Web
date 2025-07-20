@@ -14,6 +14,7 @@ interface OwnProps {
   days: number;
   isChecked?: boolean;
   onClickBookmark?: () => void;
+  isBookmarkLoading?: boolean;
   link?: string;
 }
 
@@ -28,6 +29,7 @@ const ChallengeContent = ({
   days,
   isChecked = false,
   onClickBookmark,
+  isBookmarkLoading = false,
   link = `/challenge/${id}`,
 }: OwnProps) => {
   return (
@@ -43,14 +45,15 @@ const ChallengeContent = ({
         >
           <div className="flex flex-col justify-between h-full w-full px-[0.66rem] py-2">
             <button
-              className="flex justify-end w-full"
+              className={`flex justify-end w-full ${isBookmarkLoading ? 'opacity-50 pointer-events-none' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                if (onClickBookmark) {
+                if (onClickBookmark && !isBookmarkLoading) {
                   onClickBookmark();
                 }
               }}
+              disabled={isBookmarkLoading}
             >
               <BookmarkIcon isChecked={isChecked && isChecked} />
             </button>
