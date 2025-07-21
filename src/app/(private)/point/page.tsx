@@ -66,7 +66,7 @@ const Point = () => {
           <div className="text-b3">보유 포인트</div>
           <div className="flex items-center gap-4 text-Lg">
             <PointIcon />
-            {totalPoint?.data?.totalPoint.toLocaleString()}P
+            {Number(totalPoint?.data?.totalPoint).toLocaleString()}P
           </div>
         </div>
       </div>
@@ -93,7 +93,7 @@ const Point = () => {
         </div>
 
         {/* 리스트 */}
-        <div className="flex flex-col w-full h-full overflow-scroll scrollbar-hide custom601:h-[70%]">
+        <div className="flex flex-col w-full h-full overflow-scroll scrollbar-hide custom601:h-[70%] pb-28">
           {pointDetail?.data?.map((item: PointResponseType) => (
             <div
               className="flex items-center justify-between w-full py-5 border-b border-gray-100"
