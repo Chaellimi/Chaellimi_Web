@@ -26,6 +26,10 @@ async function postHandler() {
             {
               model: Challenge,
               as: 'challenge',
+              required: true, // 챌린지가 존재하는 북마크만 가져오기
+              where: {
+                deletedAt: null, // 삭제되지 않은 챌린지만
+              },
               include: [
                 {
                   model: Users,
