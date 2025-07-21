@@ -52,7 +52,10 @@ const Profile = () => {
 
       <div className="flex flex-col flex-1 gap-4 px-6 mt-4 mb-16 overflow-y-auto scrollbar-hide">
         {/* 프로필 */}
-        <div className="flex items-center justify-between w-full p-4 bg-white rounded-2xl min-h-fit">
+        <div
+          className="flex items-center justify-between w-full p-4 bg-white rounded-2xl min-h-fit"
+          onClick={() => router.push('/profile/user')}
+        >
           <div className="flex items-center gap-4">
             <div className="relative w-[72px] h-[72px] rounded-full flex-shrink-0">
               <Image
