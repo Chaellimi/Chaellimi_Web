@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
+import ChallengeContent from '@/components/Challenge/ChallengeContent';
 import Header from '@/components/shared/Header';
 import Loading from '@/components/shared/Loading';
+import { useGetProfileDetail } from '@/service/Profile/profile.query';
 import { useGetUserRole } from '@/service/shared/shared.query';
 import { CameraIcon, PenIcon } from '@public/icons/Profile';
 import { FireIcon } from '@public/icons/shared';
@@ -9,18 +12,23 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 
 const challengeCategories = [
-  { id: 1, name: '참가중', apiValue: 'Participation' },
-  { id: 2, name: '완료', apiValue: 'Complete' },
-  { id: 3, name: '개설', apiValue: 'Open' },
+  { id: 1, name: '참가중', apiValue: 'participating' },
+  { id: 2, name: '완료', apiValue: 'completed' },
+  { id: 3, name: '개설', apiValue: 'created' },
 ];
 
 const ProfileDetail = () => {
   const { data, isLoading } = useGetUserRole();
   const UserData = data?.data?.UserData;
 
+  const { data: profileDetail, isLoading: isLoadingProfileDetail } =
+    useGetProfileDetail();
+  const profileData = profileDetail?.data;
+  console.log(profileData);
+
   const [activeCategory, setActiveCategory] = useState(1);
 
-  if (isLoading) {
+  if (isLoading || isLoadingProfileDetail) {
     return <Loading />;
   }
 
@@ -66,12 +74,41 @@ const ProfileDetail = () => {
                 }`}
                 onClick={() => setActiveCategory(item.id)}
               >
-                {item.name} 3개
+                {item.name} {profileData?.[item.apiValue]?.length || 0}개
               </div>
             ))}
           </div>
 
           {/* 챌린지 map */}
+          <div className="flex flex-col w-full gap-4 px-6 mt-4">
+            {profileData?.[
+              challengeCategories[activeCategory - 1].apiValue
+            ]?.map((item: any) => {
+              const challengeData = item.challenge || item;
+
+              return (
+                <div
+                  key={challengeData.id}
+                  className="flex items-center justify-between p-4 bg-white rounded-2xl"
+                >
+                  <ChallengeContent
+                    key={challengeData.id}
+                    id={challengeData.id}
+                    title={challengeData.title}
+                    imgUrl={challengeData.imgURL}
+                    days={Number(challengeData.day)}
+                    count={challengeData.participantCount}
+                    difficulty={challengeData.difficulty}
+                    createrName={challengeData.User.name}
+                    createrImgUrl={challengeData.User.profileImg}
+                    isChecked={true}
+                    onClickBookmark={() => {}}
+                    link={`/challenge/${challengeData.id}?back=/profile/bookmark`}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
