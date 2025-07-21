@@ -97,7 +97,8 @@ const Shop = () => {
         <div className="flex flex-col w-full gap-4 px-6 mt-4 overflow-y-scroll scrollbar-hide">
           <div className="flex items-center justify-start w-full h-12 gap-[0.62rem] bg-yellow-100 px-5 py-3 rounded-xl text-b3">
             <PointIcon />
-            현재 보유 포인트 {pointData?.data?.totalPoint}P
+            현재 보유 포인트{' '}
+            {Number(pointData?.data?.totalPoint).toLocaleString()}P
           </div>
 
           <div className="grid grid-cols-4 gap-x-5 gap-y-5">
@@ -133,7 +134,9 @@ const Shop = () => {
 
                     <div>
                       <div className="text-c1">{item.brand}</div>
-                      <div className="text-h3">{item.price}P</div>
+                      <div className="text-h3">
+                        {Number(item.price).toLocaleString()}P
+                      </div>
                       <div className="text-b3">{item.title}</div>
                     </div>
                   </div>
@@ -188,7 +191,9 @@ const Shop = () => {
                           </div>
                           <div>
                             <div className="text-c1">{item.product.brand}</div>
-                            <div className="text-h3">{item.product.price}P</div>
+                            <div className="text-h3">
+                              {Number(item.product.price).toLocaleString()}P
+                            </div>
                             <div className="text-b3">{item.product.title}</div>
                           </div>
                         </div>
@@ -227,7 +232,9 @@ const Shop = () => {
 
                         <div>
                           <div className="text-c1">{item.product.brand}</div>
-                          <div className="text-h3">{item.product.price}P</div>
+                          <div className="text-h3">
+                            {Number(item.product.price).toLocaleString()}P
+                          </div>
                           <div className="text-b3">{item.product.title}</div>
                         </div>
                       </div>
