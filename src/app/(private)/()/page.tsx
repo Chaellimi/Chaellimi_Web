@@ -7,7 +7,7 @@ import Banner from '@public/images/HomeBanner.png';
 import ActiveChallenge from '@/components/Home/ActiveChallenge';
 import HotChallenge from '@/components/Home/HotChallenge';
 import Header from '@/components/shared/Header';
-import { ArrowIcon } from '@public/icons/shared';
+import { ArrowIcon, FireIcon } from '@public/icons/shared';
 import {
   useGetParticipatingChallenge,
   useGetPopularChallenge,
@@ -68,12 +68,6 @@ const Home = () => {
     ).length;
 
     return `${certifiedCount}/${total}`;
-  }
-
-  function getCompletedChallengeCount() {
-    return ParticipatingChallengeData?.data.filter(
-      (item: ParticipatingChallenge) => item.achievementRate >= 100
-    ).length;
   }
 
   useStatusBarBridge({
@@ -151,44 +145,22 @@ const Home = () => {
           </div>
         ) : null}
 
-        {/* Complete Challenge */}
-        {ParticipatingChallengeData?.data.length != 0 &&
-        ParticipatingChallengeData?.data.some(
-          (item: ParticipatingChallenge) => item.achievementRate === 100
-        ) ? (
-          <div className="flex flex-col gap-2 mt-5">
-            <div className="flex items-center justify-between">
-              <div className="text-he">완료한 챌린지</div>
-              <div className="text-gray-300 text-fn">
-                총 {getCompletedChallengeCount()}개 완료
+        <div className="flex justify-between w-full px-5 py-4 mt-5 border border-gray-100 rounded-xl">
+          <div className="flex items-center gap-[0.62rem]">
+            <FireIcon width="28" height="28" />
+            <div className="">
+              <div className="text-gray-600 text-c1">
+                오늘 추천 챌린지 도착!
+              </div>
+              <div className="text-primary-hover text-h3">
+                AI가 고른 맞춤 챌린지
               </div>
             </div>
-
-            <div className="flex w-full overflow-scroll gap-[0.62rem] scrollbar-hide">
-              {ParticipatingChallengeData?.data.map(
-                (item: ParticipatingChallenge) => {
-                  if (item.achievementRate >= 100) {
-                    return (
-                      <ActiveChallenge
-                        key={item.challengeId}
-                        isActive={
-                          item.isCertifiedToday || item.achievementRate >= 100
-                        }
-                        title={item.challenge.title}
-                        time={'고정값'}
-                        imgURL={item.challenge.imgURL}
-                        certificationLink={`/challenge/${item.challengeId}/certification`}
-                        progressLink={`/challenge/${item.challengeId}/progress`}
-                      />
-                    );
-                  } else {
-                    return '';
-                  }
-                }
-              )}
-            </div>
           </div>
-        ) : null}
+          <div className="flex items-center">
+            <ArrowIcon width="18" height="18" location="right" fill="#C9C9C9" />
+          </div>
+        </div>
 
         {/* Hot Challenge */}
         <div className="flex flex-col gap-2 mt-5">
@@ -198,7 +170,7 @@ const Home = () => {
               router.push('/challenge');
             }}
           >
-            <div className="text-he">요즘 뜨는 챌린지</div>
+            <div className="text-he">이런 챌린지는 어때요?</div>
             <ArrowIcon width="24" height="24" location="right" />
           </div>
           <div className="flex overflow-scroll gap-[0.62rem] scrollbar-hide">
