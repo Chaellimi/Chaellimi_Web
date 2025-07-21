@@ -5,7 +5,11 @@ import ChallengeContent from '@/components/Challenge/ChallengeContent';
 import Header from '@/components/shared/Header';
 import Loading from '@/components/shared/Loading';
 import { useGetProfileDetail } from '@/service/Profile/profile.query';
-import { useGetUserRole } from '@/service/shared/shared.query';
+import {
+  useGetUserRole,
+  useGetBookmarkList,
+} from '@/service/shared/shared.query';
+import { useBookmark } from '@/hooks/useBookmark';
 import { CameraIcon, PenIcon } from '@public/icons/Profile';
 import { FireIcon } from '@public/icons/shared';
 import Image from 'next/image';
@@ -26,7 +30,48 @@ const ProfileDetail = () => {
   const profileData = profileDetail?.data;
   console.log(profileData);
 
+  const { data: bookmarkData } = useGetBookmarkList();
+
+  const bookmarkedChallengeIds =
+    bookmarkData?.data?.map(
+      (bookmark: { challengeId: number }) => bookmark.challengeId
+    ) || [];
+
   const [activeCategory, setActiveCategory] = useState(1);
+
+  const ChallengeWithBookmark = ({ item }: { item: any }) => {
+    const challengeData = item.challenge || item;
+    const isInitiallyBookmarked = bookmarkedChallengeIds.includes(
+      challengeData.id
+    );
+    const { isBookmarked, toggleBookmark, isLoading } = useBookmark({
+      challengeId: challengeData.id,
+      initialBookmarkState: isInitiallyBookmarked,
+    });
+
+    return (
+      <div
+        key={challengeData.id}
+        className="flex items-center justify-between p-4 bg-white rounded-2xl"
+      >
+        <ChallengeContent
+          key={challengeData.id}
+          id={challengeData.id}
+          title={challengeData.title}
+          imgUrl={challengeData.imgURL}
+          days={Number(challengeData.day)}
+          count={challengeData.participantCount}
+          difficulty={challengeData.difficulty}
+          createrName={challengeData.User.name}
+          createrImgUrl={challengeData.User.profileImg}
+          isChecked={isBookmarked}
+          onClickBookmark={toggleBookmark}
+          isBookmarkLoading={isLoading}
+          link={`/challenge/${challengeData.id}?back=/profile/bookmark`}
+        />
+      </div>
+    );
+  };
 
   if (isLoading || isLoadingProfileDetail) {
     return <Loading />;
@@ -79,35 +124,15 @@ const ProfileDetail = () => {
             ))}
           </div>
 
-          {/* 챌린지 map */}
           <div className="flex flex-col w-full gap-4 px-6 mt-4">
             {profileData?.[
               challengeCategories[activeCategory - 1].apiValue
-            ]?.map((item: any) => {
-              const challengeData = item.challenge || item;
-
-              return (
-                <div
-                  key={challengeData.id}
-                  className="flex items-center justify-between p-4 bg-white rounded-2xl"
-                >
-                  <ChallengeContent
-                    key={challengeData.id}
-                    id={challengeData.id}
-                    title={challengeData.title}
-                    imgUrl={challengeData.imgURL}
-                    days={Number(challengeData.day)}
-                    count={challengeData.participantCount}
-                    difficulty={challengeData.difficulty}
-                    createrName={challengeData.User.name}
-                    createrImgUrl={challengeData.User.profileImg}
-                    isChecked={true}
-                    onClickBookmark={() => {}}
-                    link={`/challenge/${challengeData.id}?back=/profile/bookmark`}
-                  />
-                </div>
-              );
-            })}
+            ]?.map((item: any) => (
+              <ChallengeWithBookmark
+                key={item.challenge?.id || item.id}
+                item={item}
+              />
+            ))}
           </div>
         </div>
       </div>
