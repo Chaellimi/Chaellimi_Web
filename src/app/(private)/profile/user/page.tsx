@@ -95,14 +95,14 @@ const ProfileDetail = () => {
           </div>
         </div>
 
-        <div>
+        <div className="flex flex-col items-center justify-center">
           <div className="flex items-center">
             <FireIcon width="18" height="19" />
             <div className="text-gray-500 text-b3">연속 인증 5일</div>
           </div>
 
-          <div className="flex items-center">
-            <div className="text-h3">userName님</div>
+          <div className="flex items-center gap-1">
+            <div className="text-h3">{UserData?.name}님</div>
             <PenIcon />
           </div>
         </div>
@@ -124,7 +124,7 @@ const ProfileDetail = () => {
             ))}
           </div>
 
-          <div className="flex flex-col w-full gap-4 px-6 mt-4">
+          <div className="grid grid-cols-2 gap-x-5 gap-y-5">
             {profileData?.[
               challengeCategories[activeCategory - 1].apiValue
             ]?.map((item: any) => (
