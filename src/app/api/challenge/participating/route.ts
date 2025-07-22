@@ -1,4 +1,3 @@
-import { Op } from 'sequelize';
 import {
   Challenge,
   ChallengeParticipants,
@@ -35,25 +34,28 @@ async function getHandler() {
     });
 
     const today = new Date();
-    today.setHours(23, 59, 59, 59);
-    today.setDate(today.getDate() - 1);
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
+    today.setHours(0, 0, 0, 0);
+    const todayString = today.toISOString().split('T')[0];
 
-    const todayCertifications = await CertificationLog.findAll({
+    // 각 챌린지별 인증 로그 조회
+    const allCertifications = await CertificationLog.findAll({
       where: {
         userId: user.id,
-        certifiedAt: {
-          [Op.gte]: today,
-          [Op.lt]: tomorrow,
-        },
       },
-      attributes: ['challengeId'],
+      attributes: ['challengeId', 'certifiedAt'],
     });
 
-    const certifiedChallengeIds = new Set(
-      todayCertifications.map((item) => item.challengeId)
-    );
+    // 챌린지별로 오늘 인증 여부 계산
+    const certifiedTodayMap = new Map<number, boolean>();
+    allCertifications.forEach((cert) => {
+      const certDate = new Date(cert.certifiedAt);
+      certDate.setHours(0, 0, 0, 0);
+      const certDateString = certDate.toISOString().split('T')[0];
+
+      if (certDateString === todayString) {
+        certifiedTodayMap.set(cert.challengeId, true);
+      }
+    });
 
     const responseData = joinedChallenges.map((item) => {
       const challenge = item.challenge;
@@ -69,7 +71,7 @@ async function getHandler() {
         status: item.status,
         challenge,
         achievementRate,
-        isCertifiedToday: certifiedChallengeIds.has(item.challengeId),
+        isCertifiedToday: certifiedTodayMap.get(item.challengeId) || false,
       };
     });
 
