@@ -1,4 +1,9 @@
-import { Challenge, ChallengeParticipants, Users } from '@/database/models';
+import {
+  Challenge,
+  ChallengeParticipants,
+  Users,
+  CertificationLog,
+} from '@/database/models';
 import getUserFromRequest from '@/lib/utils/getUserFromRequest';
 import resUtil from '@/lib/utils/responseUtil';
 
@@ -43,28 +48,50 @@ export async function GET() {
     });
 
     const today = new Date();
-    const todayTime = today.getTime();
 
     const participatingChallenges: typeof allParticipations = [];
     const completedChallenges: typeof allParticipations = [];
 
-    allParticipations.forEach((participation) => {
-      if (!participation.challenge) return;
+    // 각 참여 기록에 대해 완료 여부 확인
+    for (const participation of allParticipations) {
+      if (!participation.challenge) continue;
 
       const joinedDate = new Date(participation.joinedAt);
-      const challengeDurationMs =
-        participation.challenge.day * 24 * 60 * 60 * 1000;
-      const challengeEndTime = joinedDate.getTime() + challengeDurationMs;
+      const challengeEndDate = new Date(joinedDate);
+      challengeEndDate.setDate(
+        joinedDate.getDate() + participation.challenge.day
+      );
 
-      if (
-        todayTime > challengeEndTime ||
-        participation.status === 'completed'
-      ) {
+      const todayDate = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+      );
+      const endDateOnly = new Date(
+        challengeEndDate.getFullYear(),
+        challengeEndDate.getMonth(),
+        challengeEndDate.getDate()
+      );
+
+      // 인증 완료 여부 확인
+      const certificationCount = await CertificationLog.count({
+        where: {
+          userId: user.id,
+          challengeId: participation.challengeId,
+        },
+      });
+
+      const isDateCompleted = todayDate >= endDateOnly;
+      const isCertificationCompleted =
+        certificationCount >= participation.challenge.day;
+      const isStatusCompleted = participation.status === 'completed';
+
+      if (isDateCompleted || isCertificationCompleted || isStatusCompleted) {
         completedChallenges.push(participation);
       } else {
         participatingChallenges.push(participation);
       }
-    });
+    }
 
     const createdChallenges = await Challenge.findAll({
       where: {
