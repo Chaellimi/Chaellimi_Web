@@ -9,6 +9,7 @@ import { useEditUser } from '@/service/Profile/profile.mutation';
 import {
   useGetUserRole,
   useGetBookmarkList,
+  usePostUploadImg,
 } from '@/service/shared/shared.query';
 import { useBookmark } from '@/hooks/useBookmark';
 import { useQueryClient } from '@tanstack/react-query';
@@ -36,6 +37,7 @@ const ProfileDetail = () => {
   const { data: bookmarkData } = useGetBookmarkList();
 
   const editUserMutation = useEditUser();
+  const uploadImgMutation = usePostUploadImg();
 
   const [isEditNameMode, setIsEditNameMode] = useState(false);
   const [editName, setEditName] = useState(UserData?.name);
@@ -43,6 +45,45 @@ const ProfileDetail = () => {
   useEffect(() => {
     setEditName(UserData?.name);
   }, [UserData?.name]);
+
+  const handleProfileImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const previousData = queryClient.getQueryData([sharedKeys.useGetUserRole]);
+
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const uploadResponse = await uploadImgMutation.mutateAsync(formData);
+      const newImageUrl = uploadResponse.data.fileUrl;
+
+      queryClient.setQueryData([sharedKeys.useGetUserRole], (old: any) => ({
+        ...old,
+        data: {
+          ...old?.data,
+          UserData: {
+            ...old?.data?.UserData,
+            profileImg: newImageUrl,
+          },
+        },
+      }));
+      await editUserMutation.mutateAsync({
+        name: UserData?.name || '',
+        profileImg: newImageUrl,
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [sharedKeys.useGetUserRole],
+      });
+    } catch (error) {
+      console.error('프로필 사진 업로드 실패:', error);
+      queryClient.setQueryData([sharedKeys.useGetUserRole], previousData);
+    }
+  };
 
   const bookmarkedChallengeIds =
     bookmarkData?.data?.map(
@@ -133,16 +174,40 @@ const ProfileDetail = () => {
 
       <div className="flex flex-col w-full h-full overflow-scroll scrollbar-hide custom601:h-[70%] pb-28 gap-8 items-center">
         <div className="relative w-[100px] h-[100px] rounded-full flex-shrink-0">
-          <Image
-            src={UserData?.profileImg}
-            alt="Profile Image"
-            width={100}
-            height={100}
-            className="object-cover object-top rounded-full"
-          />
-          <div className="absolute bottom-0 right-0 p-1 bg-white border rounded-full border-gray-50">
-            <CameraIcon />
+          {UserData?.profileImg ? (
+            <Image
+              src={UserData.profileImg}
+              alt="Profile Image"
+              width={100}
+              height={100}
+              className="object-cover object-top rounded-full"
+            />
+          ) : (
+            <div className="flex items-center justify-center w-full h-full bg-gray-200 rounded-full">
+              <span className="text-lg font-semibold text-gray-400">
+                {UserData?.name?.charAt(0)?.toUpperCase() || '?'}
+              </span>
+            </div>
+          )}
+          <div
+            className="absolute bottom-0 right-0 p-1 transition-colors bg-white border rounded-full cursor-pointer border-gray-50 hover:bg-gray-50"
+            onClick={() =>
+              document.getElementById('profile-image-input')?.click()
+            }
+          >
+            {uploadImgMutation.isPending ? (
+              <div className="w-4 h-4 border-2 border-gray-300 rounded-full border-t-blue-500 animate-spin"></div>
+            ) : (
+              <CameraIcon />
+            )}
           </div>
+          <input
+            id="profile-image-input"
+            type="file"
+            accept="image/*"
+            onChange={handleProfileImageChange}
+            className="hidden"
+          />
         </div>
 
         <div className="flex flex-col items-center justify-center">
