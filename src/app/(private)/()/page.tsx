@@ -62,8 +62,12 @@ const Home = () => {
     useGetPopularChallenge(3);
 
   function getCertificationProgress() {
-    const total = ParticipatingChallengeData?.data?.length;
-    const certifiedCount = ParticipatingChallengeData?.data.filter(
+    const activeChallenges = ParticipatingChallengeData?.data?.filter(
+      (item: ParticipatingChallenge) => item.achievementRate < 100
+    );
+
+    const total = activeChallenges?.length;
+    const certifiedCount = activeChallenges?.filter(
       (item: ParticipatingChallenge) => item.isCertifiedToday
     ).length;
 
