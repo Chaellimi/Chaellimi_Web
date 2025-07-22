@@ -5,15 +5,18 @@ import ChallengeContent from '@/components/Challenge/ChallengeContent';
 import Header from '@/components/shared/Header';
 import Loading from '@/components/shared/Loading';
 import { useGetProfileDetail } from '@/service/Profile/profile.query';
+import { useEditUser } from '@/service/Profile/profile.mutation';
 import {
   useGetUserRole,
   useGetBookmarkList,
 } from '@/service/shared/shared.query';
 import { useBookmark } from '@/hooks/useBookmark';
+import { useQueryClient } from '@tanstack/react-query';
 import { CameraIcon, PenIcon } from '@public/icons/Profile';
 import { FireIcon } from '@public/icons/shared';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { sharedKeys } from '@/service/shared/shared.key';
 
 const challengeCategories = [
   { id: 1, name: '참가중', apiValue: 'participating' },
@@ -22,15 +25,24 @@ const challengeCategories = [
 ];
 
 const ProfileDetail = () => {
+  const queryClient = useQueryClient();
   const { data, isLoading } = useGetUserRole();
   const UserData = data?.data?.UserData;
 
   const { data: profileDetail, isLoading: isLoadingProfileDetail } =
     useGetProfileDetail();
   const profileData = profileDetail?.data;
-  console.log(profileData);
 
   const { data: bookmarkData } = useGetBookmarkList();
+
+  const editUserMutation = useEditUser();
+
+  const [isEditNameMode, setIsEditNameMode] = useState(false);
+  const [editName, setEditName] = useState(UserData?.name);
+
+  useEffect(() => {
+    setEditName(UserData?.name);
+  }, [UserData?.name]);
 
   const bookmarkedChallengeIds =
     bookmarkData?.data?.map(
@@ -73,6 +85,44 @@ const ProfileDetail = () => {
     );
   };
 
+  const onCheckEditName = async () => {
+    if (editName && editName !== UserData?.name) {
+      const previousData = queryClient.getQueryData([
+        sharedKeys.useGetUserRole,
+      ]);
+
+      try {
+        queryClient.setQueryData([sharedKeys.useGetUserRole], (old: any) => ({
+          ...old,
+          data: {
+            ...old?.data,
+            UserData: {
+              ...old?.data?.UserData,
+              name: editName,
+            },
+          },
+        }));
+
+        await editUserMutation.mutateAsync({
+          name: editName,
+          profileImg: UserData?.profileImg || '',
+        });
+
+        setIsEditNameMode(false);
+
+        queryClient.invalidateQueries({
+          queryKey: [sharedKeys.useGetUserRole],
+        });
+      } catch (error) {
+        console.error('이름 수정 실패:', error);
+        queryClient.setQueryData([sharedKeys.useGetUserRole], previousData);
+        setEditName(UserData?.name);
+      }
+    } else {
+      setIsEditNameMode(false);
+    }
+  };
+
   if (isLoading || isLoadingProfileDetail) {
     return <Loading />;
   }
@@ -101,10 +151,39 @@ const ProfileDetail = () => {
             <div className="text-gray-500 text-b3">연속 인증 5일</div>
           </div>
 
-          <div className="flex items-center gap-1">
-            <div className="text-h3">{UserData?.name}님</div>
-            <PenIcon />
-          </div>
+          {isEditNameMode ? (
+            <div className="flex items-center gap-1">
+              <input
+                className="border-b w-14 text-h3"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    onCheckEditName();
+                  }
+                }}
+                autoFocus
+              />
+              님
+              <div onClick={onCheckEditName} className="cursor-pointer">
+                {editUserMutation.isPending ? (
+                  <div className="w-4 h-4 border-2 border-gray-300 rounded-full border-t-blue-500 animate-spin"></div>
+                ) : (
+                  <PenIcon />
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1">
+              <div className="text-h3">{UserData?.name}님</div>
+              <div
+                onClick={() => setIsEditNameMode(true)}
+                className="cursor-pointer"
+              >
+                <PenIcon />
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col w-full">
