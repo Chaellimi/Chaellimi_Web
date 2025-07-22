@@ -18,6 +18,7 @@ import { FireIcon } from '@public/icons/shared';
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { sharedKeys } from '@/service/shared/shared.key';
+import useStatusBarBridge from '@/lib/hooks/useStatusBarBridge';
 
 const challengeCategories = [
   { id: 1, name: '참가중', apiValue: 'participating' },
@@ -45,6 +46,12 @@ const ProfileDetail = () => {
   useEffect(() => {
     setEditName(UserData?.name);
   }, [UserData?.name]);
+
+  useStatusBarBridge({
+    backgroundColor: '#FFF',
+    translucent: true,
+    bottomBackgroundColor: '#FFF',
+  });
 
   const handleProfileImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -268,7 +275,7 @@ const ProfileDetail = () => {
             ))}
           </div>
 
-          <div className="grid grid-cols-2 gap-x-5 gap-y-5">
+          <div className="grid grid-cols-2 px-6 gap-x-5 gap-y-5">
             {profileData?.[
               challengeCategories[activeCategory - 1].apiValue
             ]?.map((item: any) => (
