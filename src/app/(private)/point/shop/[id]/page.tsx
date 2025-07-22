@@ -53,7 +53,7 @@ const ShopDetail = () => {
         backClick="/point/shop"
       />
 
-      <div className="relative flex flex-col justify-between pb-[1.38rem] overflow-y-scroll scrollbar-hide w-full">
+      <div className="relative flex flex-col justify-between w-full pb-20 overflow-y-scroll scrollbar-hide">
         <div className="flex flex-col w-full gap-4 px-6">
           <div className="relative rounded-full min-h-[20.5rem] max-h-[20.5rem] min-w[20.5rem] max-w-[20.5rem]">
             <div className="relative w-[328px] h-[328px] mx-auto">
@@ -68,7 +68,9 @@ const ShopDetail = () => {
 
           <div>
             <div className="text-c1">{productData?.brand}</div>
-            <div className="text-h3">{productData?.price}P</div>
+            <div className="text-h3">
+              {Number(productData?.price).toLocaleString()}P
+            </div>
             <div className="text-b3">{productData?.title}</div>
           </div>
 

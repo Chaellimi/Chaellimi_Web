@@ -1,11 +1,16 @@
 import React from 'react';
 
-const FireIcon = () => {
+interface FireIconProps {
+  width?: string;
+  height?: string;
+}
+
+const FireIcon = ({ width, height }: FireIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="17"
-      height="17"
+      width={width || '17'}
+      height={height || '17'}
       viewBox="0 0 16 17"
       fill="none"
     >

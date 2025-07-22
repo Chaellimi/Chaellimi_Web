@@ -1,12 +1,11 @@
-import { Challenge, Users, ChallengeParticipants } from '@/database/models';
+import { Challenge, ChallengeParticipants } from '@/database/models';
+import getUserFromRequest from '@/lib/utils/getUserFromRequest';
 import resUtil from '@/lib/utils/responseUtil';
 
 export async function GET() {
   try {
-    const userId = 1;
-
     // 사용자 정보 확인
-    const user = await Users.findByPk(userId);
+    const user = await getUserFromRequest();
     if (!user) {
       return resUtil.unauthorized({});
     }
@@ -14,7 +13,7 @@ export async function GET() {
     // 참가중인 챌린지 개수 조회
     const participatingCount = await ChallengeParticipants.count({
       where: {
-        userId: userId,
+        userId: user.id,
         status: 'active',
       },
     });
@@ -22,7 +21,7 @@ export async function GET() {
     // 완료한 챌린지 개수 조회
     const completedCount = await ChallengeParticipants.count({
       where: {
-        userId: userId,
+        userId: user.id,
         status: 'completed',
       },
     });
@@ -30,7 +29,7 @@ export async function GET() {
     // 개설한 챌린지 개수 조회
     const createdCount = await Challenge.count({
       where: {
-        userId: userId,
+        userId: user.id,
       },
     });
 
